@@ -8,8 +8,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.17001422841789665 -0.6805142437818497 -0.7127380487566836 5.226129118877551
-  position -29.593200929943436 -8.787152656064032 8.848971895105745
+  orientation 0.39506129833983905 -0.7017242294721342 -0.5928825147748752 4.53916476017376
+  position -23.451625667372532 -2.636382801049084 9.906338869811758
 }
 TexturedBackground {
 }
@@ -22,7 +22,7 @@ RectangleArena {
   floorAppearance PBRAppearance {
     baseColorMap ImageTexture {
       url [
-        "../../Robotics Project/Maze.png"
+        "../../Maze.png"
       ]
     }
     roughness 1
@@ -32,29 +32,29 @@ RectangleArena {
   wallHeight 2
 }
 Youbot {
-  hidden position_0_0 1031.172849135924
-  hidden position_0_1 1427.3077676056375
-  hidden position_0_2 1204.2349946151226
-  hidden position_0_3 1254.1706308806233
-  hidden position_17_0 -4.79088217106688e-06
-  hidden rotation_18 0 0 -1 4.790856574966695e-06
-  hidden position_18_0 3.612267041587578e-07
-  hidden rotation_19 0 -1 0 3.6133395591325035e-07
-  hidden position_19_0 2.0505712757668803e-06
-  hidden rotation_20 0 -1 0 2.0505210652077587e-06
-  hidden position_20_0 -4.725540063743346e-08
-  hidden rotation_21 0 1 0 5.16191365590357e-08
-  hidden position_21_0 8.629169846223596e-09
-  hidden position_22_0 6.961687052388054e-06
-  hidden position_22_1 6.870155690366294e-06
-  hidden translation_23 0 6.961687052388054e-06 0.09
-  hidden translation_24 0 -6.870155690366294e-06 0.09
-  hidden rotation_25 0 1 0 0.7304587584718429
-  hidden rotation_26 0 -1 0 5.258482431308179
-  hidden rotation_27 0 -1 0 2.136584363358044
-  hidden rotation_28 0 -1 0 2.4664305552939743
-  translation -24.2632 -2.32074 0.101652
-  rotation -0.0020559704244119 -0.003655140754527018 -0.9999912064271758 -1.1894796938995749
+  hidden position_0_0 794.0901318274974
+  hidden position_0_1 3681.239691626206
+  hidden position_0_2 1144.9305953613127
+  hidden position_0_3 3331.1862207097
+  hidden position_17_0 -7.212524132628518e-06
+  hidden rotation_18 0 0 -1 7.21253145864146e-06
+  hidden position_18_0 -3.8396284160132387e-07
+  hidden rotation_19 0 1 0 3.839760639287575e-07
+  hidden position_19_0 1.0676110972584112e-06
+  hidden rotation_20 0 -0.9999999999999999 0 1.0674890690191108e-06
+  hidden position_20_0 -7.17663331089202e-08
+  hidden rotation_21 0 1 0 7.300048299977715e-08
+  hidden position_21_0 3.237113785116825e-09
+  hidden position_22_0 1.322397806715737e-05
+  hidden position_22_1 1.3114912443017323e-05
+  hidden translation_23 0 1.322397806715737e-05 0.09
+  hidden translation_24 0 -1.3114912443017323e-05 0.09
+  hidden rotation_25 0 1 0 2.4087831228695338
+  hidden rotation_26 0 -1 0 0.7068983810317081
+  hidden rotation_27 0 0.9999999999999999 0 1.3908694546279872
+  hidden rotation_28 0 1 0 1.0980079045193047
+  translation -23.4757 -0.447848 0.103035
+  rotation 0.007352737630689234 0.008907625496529176 0.9999332935037956 1.2015280601365674
   controller "youbot_controller"
   bodySlot [
     DistanceSensor {
@@ -76,6 +76,10 @@ Youbot {
         }
       ]
       name "w_front"
+      lookupTable [
+        0 0 0
+        1.6 1000 0
+      ]
       type "infra-red"
     }
     DistanceSensor {
@@ -97,6 +101,10 @@ Youbot {
         }
       ]
       name "w_back"
+      lookupTable [
+        0 0 0
+        0.8 1000 0
+      ]
       type "infra-red"
     }
     DistanceSensor {
@@ -118,6 +126,10 @@ Youbot {
         }
       ]
       name "w_left"
+      lookupTable [
+        0 0 0
+        0.8 1000 0
+      ]
       type "infra-red"
     }
     DistanceSensor {
@@ -139,6 +151,10 @@ Youbot {
         }
       ]
       name "w_right"
+      lookupTable [
+        0 0 0
+        0.8 1000 0
+      ]
       type "infra-red"
     }
     Camera {

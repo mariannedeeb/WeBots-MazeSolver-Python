@@ -108,6 +108,8 @@ def process_camera_image():
 #####################################################################################################     
 #PID
 
+
+
 def follow_line_pid():
     # PID coefficients
     Kp = 0.05  # Proportional gain
@@ -171,51 +173,123 @@ def follow_line_pid():
 
 ######################################################################################
 # Constants
-SAFE_DISTANCE = 1000  # Adjust as needed
+# SAFE_DISTANCE = 300 
+
+# def maze_solver():
+    # print("Starting maze solving.")
+    # while robot.step(timestep) != -1:
+
+        # front_dist = max(wall_sensors["w_front"].getValue(), 0)
+        # left_dist = max(wall_sensors["w_left"].getValue(), 0)
+        # right_dist = max(wall_sensors["w_right"].getValue(), 0)
+
+
+        # print(f"Front distance: {front_dist}, Left distance: {left_dist}, Right distance: {right_dist}")
+
+
+        # if front_dist > SAFE_DISTANCE:
+            # print("Moving forward")
+            # move_forward()
+        # elif right_dist > left_dist:
+            # print("Turning right")
+            # turn_right()
+        # elif left_dist > 0:
+            # print("Turning left")
+            # turn_left()
+        # else:
+            # print("Turning around")
+            # turn_around()
+
+
+        # robot.step(10 * timestep)
+#######################################################
+#HRAYR'S FUNCTION
+
+SAFE_DISTANCE = 350 
 
 def maze_solver():
     print("Starting maze solving.")
     while robot.step(timestep) != -1:
-        # Read sensor values
+
         front_dist = max(wall_sensors["w_front"].getValue(), 0)
         left_dist = max(wall_sensors["w_left"].getValue(), 0)
         right_dist = max(wall_sensors["w_right"].getValue(), 0)
 
-        # Print sensor values for debugging
+
         print(f"Front distance: {front_dist}, Left distance: {left_dist}, Right distance: {right_dist}")
 
-        # Wall following logic
-        if front_dist > SAFE_DISTANCE:
-            print("Moving forward")
-            move_forward()
-        elif right_dist > left_dist:
-            print("Turning right")
-            turn_right()
-        elif left_dist > 0:
-            print("Turning left")
+
+        if left_dist > SAFE_DISTANCE and left_dist > 400 :
+            print("Getting close to the left wall")
             turn_left()
         else:
-            print("Turning around")
-            turn_around()
+            print("OK")
+            
+        if front_dist - 500 > SAFE_DISTANCE:
+            print("Moving forward")
+            move_forward()
+            
+            
+        if left_dist - SAFE_DISTANCE  < 100 :
+            print("SAFE_DISTANCE: ",SAFE_DISTANCE)
+            print("LEFT DISTANCE:", left_dist) 
+            print("SAFE DISTANCE REACHED")
 
-        # Pause briefly to allow the robot to complete its turn/move
+            
+         
+
         robot.step(10 * timestep)
 
+
+######################################################
+#HRAYR 2
+
+
+def adjust_to_wall():
+
+    right_dist = wall_sensors["w_right"].getValue()
+    left_dist = wall_sensors["w_left"].getValue()
+
+    # Target distance from the right wall
+    target_distance = 200  # Adjust this as needed
+
+    # Proportional gain for adjustment
+    Kp = 0.05
+
+    # Calculate the difference from the target distance
+    difference = right_dist - target_distance
+
+    # Calculate the adjustment value
+    adjustment = Kp * difference
+
+    # Adjust wheel speeds to maintain distance from the right wall
+    left_wheel_speed = 7.0 - adjustment
+    right_wheel_speed = 7.0 + adjustment
+
+    set_wheel_velocity(left_wheel_speed, right_wheel_speed, left_wheel_speed, right_wheel_speed)
+
+    # Debug print
+    print(f"Adjusting to wall. Wheel speeds: Left: {left_wheel_speed}, Right: {right_wheel_speed}")
+
+
+
+
+#######################################################
 def move_forward():
     set_wheel_velocity(7.0, 7.0, 7.0, 7.0)
 
 # Constants
-TURN_DURATION = 10  # Adjust this value based on trial and error
+TURN_DURATION = 7 # Adjust this value based on trial and error
 TURN_SPEED = 7.0    # Adjust the turning speed as needed
 
-def turn_right():
-    # Set wheels to turn right
+def turn_left():
+    # Set wheels to turn left
     set_wheel_velocity(TURN_SPEED, -TURN_SPEED, TURN_SPEED, -TURN_SPEED)
     robot.step(TURN_DURATION * timestep)
     halt()  # Stop the robot after turning
 
-def turn_left():
-    # Set wheels to turn left
+def turn_right():
+    # Set wheels to turn right
     set_wheel_velocity(-TURN_SPEED, TURN_SPEED, -TURN_SPEED, TURN_SPEED)
     robot.step(TURN_DURATION * timestep)
     halt()  # Stop the robot after turning
