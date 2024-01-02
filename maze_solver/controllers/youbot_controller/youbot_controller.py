@@ -205,7 +205,7 @@ def follow_line_pid():
 #######################################################
 #HRAYR'S FUNCTION
 
-SAFE_DISTANCE = 350 
+SAFE_DISTANCE = 600 
 
 def maze_solver():
     print("Starting maze solving.")
@@ -215,30 +215,29 @@ def maze_solver():
         left_dist = max(wall_sensors["w_left"].getValue(), 0)
         right_dist = max(wall_sensors["w_right"].getValue(), 0)
 
-
         print(f"Front distance: {front_dist}, Left distance: {left_dist}, Right distance: {right_dist}")
 
-
-        if left_dist > SAFE_DISTANCE and left_dist > 400 :
-            print("Getting close to the left wall")
-            turn_left()
-        else:
-            print("OK")
-            
-        if front_dist - 500 > SAFE_DISTANCE:
+        if front_dist > SAFE_DISTANCE:
             print("Moving forward")
             move_forward()
-            
-            
-        if left_dist - SAFE_DISTANCE  < 100 :
-            print("SAFE_DISTANCE: ",SAFE_DISTANCE)
-            print("LEFT DISTANCE:", left_dist) 
-            print("SAFE DISTANCE REACHED")
+        elif right_dist > SAFE_DISTANCE:
+            print("Turning right11")
+            turn_right()    
+        elif left_dist > SAFE_DISTANCE:
+            print("Turning left11")
+            turn_left() 
+        elif right_dist > left_dist:
+            print("Turning right")
+            turn_right()
+        elif left_dist > right_dist:
+            print("Turning left")
+            turn_left()
+        else:
+            print("Turning around")
+            turn_around()
+        
 
-            
-         
-
-        robot.step(10 * timestep)
+        robot.step(15 * timestep)
 
 
 ######################################################
@@ -276,10 +275,10 @@ def adjust_to_wall():
 
 #######################################################
 def move_forward():
-    set_wheel_velocity(7.0, 7.0, 7.0, 7.0)
+    set_wheel_velocity(10.0, 10.0, 10.0, 10.0)
 
 # Constants
-TURN_DURATION = 7 # Adjust this value based on trial and error
+TURN_DURATION = 5 # Adjust this value based on trial and error
 TURN_SPEED = 7.0    # Adjust the turning speed as needed
 
 def turn_left():

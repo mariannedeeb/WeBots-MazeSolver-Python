@@ -9,7 +9,8 @@ WorldInfo {
 }
 Viewpoint {
   orientation 0.39506129833983905 -0.7017242294721342 -0.5928825147748752 4.53916476017376
-  position -23.451625667372532 -2.636382801049084 9.906338869811758
+  position -24.085028482726774 -6.373722344318176 19.963164521409503
+  follow "youBot"
 }
 TexturedBackground {
 }
@@ -32,29 +33,29 @@ RectangleArena {
   wallHeight 2
 }
 Youbot {
-  hidden position_0_0 794.0901318274974
-  hidden position_0_1 3681.239691626206
-  hidden position_0_2 1144.9305953613127
-  hidden position_0_3 3331.1862207097
-  hidden position_17_0 -7.212524132628518e-06
-  hidden rotation_18 0 0 -1 7.21253145864146e-06
-  hidden position_18_0 -3.8396284160132387e-07
-  hidden rotation_19 0 1 0 3.839760639287575e-07
-  hidden position_19_0 1.0676110972584112e-06
-  hidden rotation_20 0 -0.9999999999999999 0 1.0674890690191108e-06
-  hidden position_20_0 -7.17663331089202e-08
-  hidden rotation_21 0 1 0 7.300048299977715e-08
-  hidden position_21_0 3.237113785116825e-09
-  hidden position_22_0 1.322397806715737e-05
-  hidden position_22_1 1.3114912443017323e-05
-  hidden translation_23 0 1.322397806715737e-05 0.09
-  hidden translation_24 0 -1.3114912443017323e-05 0.09
-  hidden rotation_25 0 1 0 2.4087831228695338
-  hidden rotation_26 0 -1 0 0.7068983810317081
-  hidden rotation_27 0 0.9999999999999999 0 1.3908694546279872
-  hidden rotation_28 0 1 0 1.0980079045193047
-  translation -23.4757 -0.447848 0.103035
-  rotation 0.007352737630689234 0.008907625496529176 0.9999332935037956 1.2015280601365674
+  hidden position_0_0 859.849520964695
+  hidden position_0_1 3691.0727146349
+  hidden position_0_2 1210.678014788609
+  hidden position_0_3 3341.019261273687
+  hidden position_17_0 -8.875620429107287e-06
+  hidden rotation_18 0 0 -1 8.87563997328823e-06
+  hidden position_18_0 -2.081111092736875e-07
+  hidden rotation_19 0 1 0 2.086162567138673e-07
+  hidden position_19_0 1.7582388113614408e-06
+  hidden rotation_20 0 -1 0 1.75833702087408e-06
+  hidden position_20_0 -4.770474811831689e-08
+  hidden rotation_21 0 1 0 5.16191365590357e-08
+  hidden position_21_0 -1.6962196947615092e-08
+  hidden position_22_0 1.364285483145358e-05
+  hidden position_22_1 1.3549922765656765e-05
+  hidden translation_23 0 1.364285483145358e-05 0.09
+  hidden translation_24 0 -1.3549922765656765e-05 0.09
+  hidden rotation_25 0 1 0 5.336319188271228
+  hidden rotation_26 0 -0.9999999999999999 0 3.4402459866968815
+  hidden rotation_27 0 1 0 4.306435810128458
+  hidden rotation_28 0 -1 0 1.6353221458531262
+  translation -24.1162 -1.9914 0.107852
+  rotation -0.0028221288613435765 0.0018648143110178747 0.9999942790117728 1.2051941098954368
   controller "youbot_controller"
   bodySlot [
     DistanceSensor {
@@ -81,6 +82,7 @@ Youbot {
         1.6 1000 0
       ]
       type "infra-red"
+      numberOfRays 3
     }
     DistanceSensor {
       translation -0.291681 0.000267394 -0.0299985
@@ -128,7 +130,7 @@ Youbot {
       name "w_left"
       lookupTable [
         0 0 0
-        0.8 1000 0
+        0.9 1000 0
       ]
       type "infra-red"
     }
@@ -153,7 +155,7 @@ Youbot {
       name "w_right"
       lookupTable [
         0 0 0
-        0.8 1000 0
+        0.9 1000 0
       ]
       type "infra-red"
     }
