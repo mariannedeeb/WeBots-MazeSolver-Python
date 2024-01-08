@@ -205,7 +205,11 @@ def follow_line_pid():
 #######################################################
 #HRAYR'S FUNCTION
 
-SAFE_DISTANCE = 600 
+SAFE_DISTANCE = 500
+
+# Constants for maintaining straight path (you can adjust these values)
+BALANCE_THRESHOLD = 70  # Adjust this threshold as needed
+BALANCE_SPEED = 1.0  # Adjust the balancing speed as needed
 
 def maze_solver():
     print("Starting maze solving.")
@@ -215,23 +219,44 @@ def maze_solver():
         left_dist = max(wall_sensors["w_left"].getValue(), 0)
         right_dist = max(wall_sensors["w_right"].getValue(), 0)
 
-        print(f"Front distance: {front_dist}, Left distance: {left_dist}, Right distance: {right_dist}")
+        print(f"Left distance: {left_dist},Front distance: {front_dist}, Right distance: {right_dist}")
 
         if front_dist > SAFE_DISTANCE:
-            print("Moving forward")
-            move_forward()
+            # Calculate the difference between left and right distances
+            diff = left_dist - right_dist
+
+            # Adjust wheel velocities to balance the distances
+            left_wheel_speed = 7.0
+            right_wheel_speed = 7.0
+            print(f"forward")
+
+            if diff > BALANCE_THRESHOLD:
+                left_wheel_speed -= BALANCE_SPEED
+                right_wheel_speed += BALANCE_SPEED
+                print(f"turn left")
+            elif diff < -BALANCE_THRESHOLD:
+                left_wheel_speed += BALANCE_SPEED
+                right_wheel_speed -= BALANCE_SPEED
+                print(f"turn right")
+            # Set balanced wheel velocities
+            set_wheel_velocity(left_wheel_speed, left_wheel_speed, right_wheel_speed, right_wheel_speed)
+            
         elif right_dist > SAFE_DISTANCE:
             print("Turning right11")
             turn_right()    
+            
         elif left_dist > SAFE_DISTANCE:
             print("Turning left11")
             turn_left() 
+            
         elif right_dist > left_dist:
             print("Turning right")
             turn_right()
+            
         elif left_dist > right_dist:
             print("Turning left")
             turn_left()
+            
         else:
             print("Turning around")
             turn_around()
@@ -244,43 +269,57 @@ def maze_solver():
 #HRAYR 2
 
 
-def adjust_to_wall():
+# def adjust_to_wall():
 
-    right_dist = wall_sensors["w_right"].getValue()
-    left_dist = wall_sensors["w_left"].getValue()
+    # right_dist = wall_sensors["w_right"].getValue()
+    # left_dist = wall_sensors["w_left"].getValue()
 
     # Target distance from the right wall
-    target_distance = 200  # Adjust this as needed
+    # target_distance = 200  # Adjust this as needed
 
     # Proportional gain for adjustment
-    Kp = 0.05
+    # Kp = 0.05
 
     # Calculate the difference from the target distance
-    difference = right_dist - target_distance
+    # difference = right_dist - target_distance
 
     # Calculate the adjustment value
-    adjustment = Kp * difference
+    # adjustment = Kp * difference
 
     # Adjust wheel speeds to maintain distance from the right wall
-    left_wheel_speed = 7.0 - adjustment
-    right_wheel_speed = 7.0 + adjustment
+    # left_wheel_speed = 7.0 - adjustment
+    # right_wheel_speed = 7.0 + adjustment
 
-    set_wheel_velocity(left_wheel_speed, right_wheel_speed, left_wheel_speed, right_wheel_speed)
+    # set_wheel_velocity(left_wheel_speed, right_wheel_speed, left_wheel_speed, right_wheel_speed)
 
     # Debug print
-    print(f"Adjusting to wall. Wheel speeds: Left: {left_wheel_speed}, Right: {right_wheel_speed}")
+    # print(f"Adjusting to wall. Wheel speeds: Left: {left_wheel_speed}, Right: {right_wheel_speed}")
 
 
 
 
 #######################################################
 def move_forward():
+    print(f"forward")
     set_wheel_velocity(10.0, 10.0, 10.0, 10.0)
 
 # Constants
 TURN_DURATION = 5 # Adjust this value based on trial and error
 TURN_SPEED = 7.0    # Adjust the turning speed as needed
 
+# Constants for slight turns
+SLIGHT_TURN_DURATION = 3  # Adjust this value based on trial and error
+SLIGHT_TURN_SPEED = 3.0    # Adjust the turning speed as needed
+
+def slight_left_turn():
+    # Set wheels for a slight left turn while moving forward
+    set_wheel_velocity(10.0 - SLIGHT_TURN_SPEED, 10.0 + SLIGHT_TURN_SPEED, 10.0 - SLIGHT_TURN_SPEED, 10.0 + SLIGHT_TURN_SPEED)
+
+
+def slight_right_turn():
+    # Set wheels for a slight right turn while moving forward
+    set_wheel_velocity(10.0 + SLIGHT_TURN_SPEED, 10.0 - SLIGHT_TURN_SPEED, 10.0 + SLIGHT_TURN_SPEED, 10.0 - SLIGHT_TURN_SPEED)
+    
 def turn_left():
     # Set wheels to turn left
     set_wheel_velocity(TURN_SPEED, -TURN_SPEED, TURN_SPEED, -TURN_SPEED)
