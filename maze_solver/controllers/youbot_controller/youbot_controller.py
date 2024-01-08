@@ -1,6 +1,5 @@
 from controller import Robot, DistanceSensor, Motor, Camera
 import numpy as np
-# import cv2
 import ctypes
 
 # Create the Robot instance.
@@ -8,6 +7,12 @@ robot = Robot()
 
 # Get the time step of the current world.
 timestep = int(robot.getBasicTimeStep())
+
+# Global flag to indicate maze completion
+maze_solved = False
+
+######################################################################################    
+#INITIALIZATIONS
 
 # Initialize the camera.
 camera = robot.getDevice("cam")
@@ -38,7 +43,7 @@ for name in line_sensor_names:
 
 # Initialize wall distance sensors.
 wall_sensors = {}
-wall_sensor_names = ["w_front", "w_back", "w_left", "w_right"]
+wall_sensor_names = ["w_front", "w_left", "w_right"]
 for name in wall_sensor_names:
     sensor = robot.getDevice(name)
     if sensor is None:
@@ -47,26 +52,10 @@ for name in wall_sensor_names:
     sensor.enable(timestep)
     wall_sensors[name] = sensor
 
-# Initialize arm motors.
-armMotors = []
-armMotorNames = ["arm1", "arm2", "arm3", "arm4", "arm5"]
-for name in armMotorNames:
-    motor = robot.getDevice(name)
-    motor.setVelocity(1.5)  # Set a suitable velocity
-    armMotors.append(motor)
-
-# Initialize arm position sensors.
-armPositionSensors = []
-armPositionSensorNames = ["arm1sensor", "arm2sensor", "arm3sensor", "arm4sensor", "arm5sensor"]
-for name in armPositionSensorNames:
-    sensor = robot.getDevice(name)
-    sensor.enable(timestep)
-    armPositionSensors.append(sensor)
    
 ####################################################################################
-
-
 # Function to set wheel velocities
+
 def set_wheel_velocity(v1, v2, v3, v4):
     wheels[0].setVelocity(v1)
     wheels[1].setVelocity(v2)
@@ -74,41 +63,10 @@ def set_wheel_velocity(v1, v2, v3, v4):
     wheels[3].setVelocity(v4)
     
     ################# Print statements for debugging #################
-    # print(f"Setting velocities: Wheel1: {v1}, Wheel2: {v2}, Wheel3: {v3}, Wheel4: {v4}")
+    print(f"Setting velocities: Wheel1: {v1}, Wheel2: {v2}, Wheel3: {v3}, Wheel4: {v4}")
 
-# Process and analyze camera image and recognized objects
-def process_camera_image():
-    recognized_objects = camera.getRecognitionObjects()
-    for obj in recognized_objects:
-        # Get the pointer to the color array
-        color_ptr = obj.getColors()
-
-        # Convert the pointer to an array of three doubles
-        color_array = ctypes.cast(color_ptr, ctypes.POINTER(ctypes.c_double * 3))
-
-        # Access the color values
-        color = color_array.contents
-        
-        # Get object's position, orientation, and size
-        position = obj.getPosition()
-        orientation = obj.getOrientation()
-        size = obj.getSize()
-        
-    ################# Print statements for debugging #################
-    
-        if color[0] == 1.0:
-            print(f"Recognized object color: Red")
-        elif color[1] == 1.0:
-            print(f"Recognized object color: Green")
-        elif color[2] == 1.0:
-            print(f"Recognized object color: Blue")
-            
-        # print(f"Recognized object color: {color[0]}, {color[1]}, {color[2]}")
-        # print(f"Position: {position}")
 #####################################################################################################     
 #PID
-
-
 
 def follow_line_pid():
     # PID coefficients
@@ -171,149 +129,82 @@ def follow_line_pid():
     # Apply new velocities to the wheels
     set_wheel_velocity(left_wheel_velocity, left_wheel_velocity, right_wheel_velocity, right_wheel_velocity)
 
-######################################################################################
-# Constants
-# SAFE_DISTANCE = 300 
-
-# def maze_solver():
-    # print("Starting maze solving.")
-    # while robot.step(timestep) != -1:
-
-        # front_dist = max(wall_sensors["w_front"].getValue(), 0)
-        # left_dist = max(wall_sensors["w_left"].getValue(), 0)
-        # right_dist = max(wall_sensors["w_right"].getValue(), 0)
-
-
-        # print(f"Front distance: {front_dist}, Left distance: {left_dist}, Right distance: {right_dist}")
-
-
-        # if front_dist > SAFE_DISTANCE:
-            # print("Moving forward")
-            # move_forward()
-        # elif right_dist > left_dist:
-            # print("Turning right")
-            # turn_right()
-        # elif left_dist > 0:
-            # print("Turning left")
-            # turn_left()
-        # else:
-            # print("Turning around")
-            # turn_around()
-
-
-        # robot.step(10 * timestep)
 #######################################################
-#HRAYR'S FUNCTION
+#MAZE SOLVING
 
 SAFE_DISTANCE = 500
 
-# Constants for maintaining straight path (you can adjust these values)
-BALANCE_THRESHOLD = 70  # Adjust this threshold as needed
-BALANCE_SPEED = 1.0  # Adjust the balancing speed as needed
+RED_AREA_THRESHOLD = 1000 # Define the threshold value for the red area
 
 def maze_solver():
+    global maze_solved  # Declare the use of the global variable
+    
     print("Starting maze solving.")
-    while robot.step(timestep) != -1:
+    while robot.step(timestep) != -1 and not maze_solved:  # Check the flag in the loop condition
 
         front_dist = max(wall_sensors["w_front"].getValue(), 0)
         left_dist = max(wall_sensors["w_left"].getValue(), 0)
-        right_dist = max(wall_sensors["w_right"].getValue(), 0)
-
-        print(f"Left distance: {left_dist},Front distance: {front_dist}, Right distance: {right_dist}")
-
-        if front_dist > SAFE_DISTANCE:
-            # Calculate the difference between left and right distances
-            diff = left_dist - right_dist
-
-            # Adjust wheel velocities to balance the distances
-            left_wheel_speed = 7.0
-            right_wheel_speed = 7.0
-            print(f"forward")
-
-            if diff > BALANCE_THRESHOLD:
-                left_wheel_speed -= BALANCE_SPEED
-                right_wheel_speed += BALANCE_SPEED
-                print(f"turn left")
-            elif diff < -BALANCE_THRESHOLD:
-                left_wheel_speed += BALANCE_SPEED
-                right_wheel_speed -= BALANCE_SPEED
-                print(f"turn right")
-            # Set balanced wheel velocities
-            set_wheel_velocity(left_wheel_speed, left_wheel_speed, right_wheel_speed, right_wheel_speed)
-            
-        elif right_dist > SAFE_DISTANCE:
-            print("Turning right11")
-            turn_right()    
-            
-        elif left_dist > SAFE_DISTANCE:
-            print("Turning left11")
-            turn_left() 
-            
-        elif right_dist > left_dist:
-            print("Turning right")
-            turn_right()
-            
-        elif left_dist > right_dist:
-            print("Turning left")
-            turn_left()
-            
-        else:
-            print("Turning around")
-            turn_around()
+        middle_sensor_value = line_sensors[1].getValue() # This is the ls_middle sensor value
         
+        print("middle sensor value: ", middle_sensor_value)
+        # Check if the middle sensor detects the red area
+        if middle_sensor_value == RED_AREA_THRESHOLD:
+            print("Red area detected. Maze solved!")
+            halt()  # Stop the robot
+            maze_solved = True  # Set the flag to indicate the maze is solved
+            break  # Break out of the while loop
+            
+        
+        # If there's a wall to the left and space in front, move forward
+        if left_dist < 1000 and front_dist > SAFE_DISTANCE:
+            set_wheel_velocity(7.0, 7.0, 7.0, 7.0)
 
-        robot.step(15 * timestep)
+        # If there's a wall in front, turn right
+        elif front_dist <= SAFE_DISTANCE:
+            set_wheel_velocity(-TURN_SPEED, TURN_SPEED, -TURN_SPEED, TURN_SPEED)
+            while robot.step(timestep) != -1 and max(wall_sensors["w_front"].getValue(), 0) <= SAFE_DISTANCE:
+                # Turning in place until there's space in front
+                pass
+            # Correct orientation to face down the new corridor
+            set_wheel_velocity(7.0, 7.0, 7.0, 7.0)
+
+        # If the left sensor value equals 1000, stop and turn left in place
+        elif left_dist == 1000:
+            # Stop the robot first
+            set_wheel_velocity(0, 0, 0, 0)
+            robot.step(timestep) # Update sensors before starting to turn
+            
+            # Turn left in place until the left sensor detects the wall again
+            while robot.step(timestep) != -1 and max(wall_sensors["w_left"].getValue(), 0) >= 1000:
+                set_wheel_velocity(TURN_SPEED, -TURN_SPEED, TURN_SPEED, -TURN_SPEED)
+            # Once the wall is detected, the robot can continue moving forward
+            set_wheel_velocity(7.0, 7.0, 7.0, 7.0)
+
+        # Perform a step to update sensor readings after each action
+        robot.step(timestep)
+
+
+
+
 
 
 ######################################################
-#HRAYR 2
 
-
-# def adjust_to_wall():
-
-    # right_dist = wall_sensors["w_right"].getValue()
-    # left_dist = wall_sensors["w_left"].getValue()
-
-    # Target distance from the right wall
-    # target_distance = 200  # Adjust this as needed
-
-    # Proportional gain for adjustment
-    # Kp = 0.05
-
-    # Calculate the difference from the target distance
-    # difference = right_dist - target_distance
-
-    # Calculate the adjustment value
-    # adjustment = Kp * difference
-
-    # Adjust wheel speeds to maintain distance from the right wall
-    # left_wheel_speed = 7.0 - adjustment
-    # right_wheel_speed = 7.0 + adjustment
-
-    # set_wheel_velocity(left_wheel_speed, right_wheel_speed, left_wheel_speed, right_wheel_speed)
-
-    # Debug print
-    # print(f"Adjusting to wall. Wheel speeds: Left: {left_wheel_speed}, Right: {right_wheel_speed}")
-
-
-
-
-#######################################################
 def move_forward():
     print(f"forward")
     set_wheel_velocity(10.0, 10.0, 10.0, 10.0)
 
 # Constants
-TURN_DURATION = 5 # Adjust this value based on trial and error
-TURN_SPEED = 7.0    # Adjust the turning speed as needed
-
-# Constants for slight turns
-SLIGHT_TURN_DURATION = 3  # Adjust this value based on trial and error
-SLIGHT_TURN_SPEED = 3.0    # Adjust the turning speed as needed
+TURN_DURATION = 5 
+TURN_SPEED = 7.0    
+###########################
+SLIGHT_TURN_DURATION = 3  
+SLIGHT_TURN_SPEED = 3.0    
 
 def slight_left_turn():
     # Set wheels for a slight left turn while moving forward
-    set_wheel_velocity(10.0 - SLIGHT_TURN_SPEED, 10.0 + SLIGHT_TURN_SPEED, 10.0 - SLIGHT_TURN_SPEED, 10.0 + SLIGHT_TURN_SPEED)
+    set_wheel_velocity(10.0 + SLIGHT_TURN_SPEED, 10.0 - SLIGHT_TURN_SPEED, 10.0 + SLIGHT_TURN_SPEED, 10.0 - SLIGHT_TURN_SPEED)
+    # set_wheel_velocity(10.0 - SLIGHT_TURN_SPEED, 10.0 + SLIGHT_TURN_SPEED, 10.0 - SLIGHT_TURN_SPEED, 10.0 + SLIGHT_TURN_SPEED)
 
 
 def slight_right_turn():
@@ -341,9 +232,6 @@ def turn_around():
 def halt():
     set_wheel_velocity(0, 0, 0, 0)  # Stop all wheels
 
-
-
-    
 ######################################################################################    
     
 # Movement functions
@@ -357,21 +245,14 @@ def backward(time):
         wheel.setVelocity(-7.0)  # Adjust max velocity as needed
     robot.step(time * timestep)
 
-def halt():
-    for wheel in wheels:
-        wheel.setVelocity(0.0)
-
-# Arm control functions (if needed)
-def pick_up():
-    pass  # Implement the pick-up functionality here
-
-def drop():
-    pass  # Implement the drop functionality here
+    
+######################################################################################    
 
 # Main robot control loop
 while robot.step(timestep) != -1:
+    if maze_solved:
+        print("Exiting the program.")
+        break  # Exit the loop if the maze is solved
+    
     follow_line_pid()  # Follow the line
-    # Insert conditions or triggers to call other functions like pick_up, drop, etc.
    
-    # Process and analyze the camera image
-    process_camera_image()

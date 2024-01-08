@@ -8,8 +8,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.39506129833983905 -0.7017242294721342 -0.5928825147748752 4.53916476017376
-  position -24.085028482726774 -6.373722344318176 19.963164521409503
+  orientation 0.2986281025607841 -0.7346289065465512 -0.609213941097185 4.829673912381761
+  position -25.5942243930709 -5.202574565266118 9.757199313307574
   follow "youBot"
 }
 TexturedBackground {
@@ -37,23 +37,23 @@ Youbot {
   hidden position_0_1 3691.0727146349
   hidden position_0_2 1210.678014788609
   hidden position_0_3 3341.019261273687
-  hidden position_17_0 -8.875620429107287e-06
-  hidden rotation_18 0 0 -1 8.87563997328823e-06
-  hidden position_18_0 -2.081111092736875e-07
-  hidden rotation_19 0 1 0 2.086162567138673e-07
-  hidden position_19_0 1.7582388113614408e-06
-  hidden rotation_20 0 -1 0 1.75833702087408e-06
-  hidden position_20_0 -4.770474811831689e-08
-  hidden rotation_21 0 1 0 5.16191365590357e-08
-  hidden position_21_0 -1.6962196947615092e-08
-  hidden position_22_0 1.364285483145358e-05
-  hidden position_22_1 1.3549922765656765e-05
-  hidden translation_23 0 1.364285483145358e-05 0.09
-  hidden translation_24 0 -1.3549922765656765e-05 0.09
-  hidden rotation_25 0 1 0 5.336319188271228
-  hidden rotation_26 0 -0.9999999999999999 0 3.4402459866968815
-  hidden rotation_27 0 1 0 4.306435810128458
-  hidden rotation_28 0 -1 0 1.6353221458531262
+  hidden position_15_0 -8.875620429107287e-06
+  hidden rotation_16 0 0 -1 8.87563997328823e-06
+  hidden position_16_0 -2.081111092736875e-07
+  hidden rotation_17 0 1 0 2.086162567138673e-07
+  hidden position_17_0 1.7582388113614408e-06
+  hidden rotation_18 0 -1 0 1.75833702087408e-06
+  hidden position_18_0 -4.770474811831689e-08
+  hidden rotation_19 0 1 0 5.16191365590357e-08
+  hidden position_19_0 -1.6962196947615092e-08
+  hidden position_20_0 1.364285483145358e-05
+  hidden position_20_1 1.3549922765656765e-05
+  hidden translation_21 0 1.364285483145358e-05 0.09
+  hidden translation_22 0 -1.3549922765656765e-05 0.09
+  hidden rotation_23 0 1 0 5.336319188271228
+  hidden rotation_24 0 -0.9999999999999999 0 3.4402459866968815
+  hidden rotation_25 0 1 0 4.306435810128458
+  hidden rotation_26 0 -1 0 1.6353221458531262
   translation -24.1162 -1.9914 0.107852
   rotation -0.0028221288613435765 0.0018648143110178747 0.9999942790117728 1.2051941098954368
   controller "youbot_controller"
@@ -79,33 +79,7 @@ Youbot {
       name "w_front"
       lookupTable [
         0 0 0
-        1.6 1000 0
-      ]
-      type "infra-red"
-      numberOfRays 3
-    }
-    DistanceSensor {
-      translation -0.291681 0.000267394 -0.0299985
-      rotation -1.2606205012942948e-06 0.7071072811860076 -0.70710628118561 3.14159
-      children [
-        Solid {
-          translation 0.01 -0.002 0.0006
-          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
-          children [
-            Shape {
-              appearance PBRAppearance {
-              }
-              geometry Box {
-                size 0.01 0.01 0.115
-              }
-            }
-          ]
-        }
-      ]
-      name "w_back"
-      lookupTable [
-        0 0 0
-        0.8 1000 0
+        1 1000 0
       ]
       type "infra-red"
     }
@@ -278,6 +252,24 @@ Solid {
     }
   ]
   name "R1"
+  boundingObject USE b1
+}
+Solid {
+  translation -22.4125 5.16003 0.0434087
+  rotation -1.1633899997478673e-05 1.7265499996258177e-05 0.9999999997832776 -1.962365307179586
+  children [
+    DEF b1 Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 1 0 0
+        }
+      }
+      geometry Box {
+        size 14.15 0.6 0.6
+      }
+    }
+  ]
+  name "R1(51)"
   boundingObject USE b1
 }
 Solid {
@@ -1052,6 +1044,24 @@ Solid {
     }
   ]
   name "R1(33)"
+  boundingObject USE b1
+}
+Solid {
+  translation -21.8925 0.356927 0.0487247
+  rotation -3.389314249066104e-17 -1.5078499169417248e-17 -1 1.9709910307427163
+  children [
+    DEF b1 Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 1 0 0
+        }
+      }
+      geometry Box {
+        size 5.55 0.6 0.6
+      }
+    }
+  ]
+  name "R1(18)"
   boundingObject USE b1
 }
 Solid {
