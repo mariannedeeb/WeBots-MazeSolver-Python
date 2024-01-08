@@ -134,11 +134,10 @@ def follow_line_pid():
 
 SAFE_DISTANCE = 500
 
-RED_AREA_THRESHOLD = 1000 # Define the threshold value for the red area
+RED_AREA_THRESHOLD = 650 # Define the threshold value for the red area
 
 def maze_solver():
     global maze_solved  # Declare the use of the global variable
-    
     print("Starting maze solving.")
     while robot.step(timestep) != -1 and not maze_solved:  # Check the flag in the loop condition
 
@@ -148,7 +147,7 @@ def maze_solver():
         
         print("middle sensor value: ", middle_sensor_value)
         # Check if the middle sensor detects the red area
-        if middle_sensor_value == RED_AREA_THRESHOLD:
+        if middle_sensor_value <= RED_AREA_THRESHOLD:
             print("Red area detected. Maze solved!")
             halt()  # Stop the robot
             maze_solved = True  # Set the flag to indicate the maze is solved

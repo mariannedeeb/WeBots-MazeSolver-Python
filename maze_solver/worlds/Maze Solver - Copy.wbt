@@ -8,8 +8,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.2986281025607841 -0.7346289065465512 -0.609213941097185 4.829673912381761
-  position -25.5942243930709 -5.202574565266118 9.757199313307574
+  orientation 0.27864102721659084 -0.6210006057393359 -0.7326100092293724 4.894308664995908
+  position -27.49270536872966 -14.095075687378447 16.802598450567135
   follow "youBot"
 }
 TexturedBackground {
@@ -23,7 +23,7 @@ RectangleArena {
   floorAppearance PBRAppearance {
     baseColorMap ImageTexture {
       url [
-        "../../Maze.png"
+        "../../Maze.jpg"
       ]
     }
     roughness 1
@@ -33,29 +33,29 @@ RectangleArena {
   wallHeight 2
 }
 Youbot {
-  hidden position_0_0 859.849520964695
-  hidden position_0_1 3691.0727146349
-  hidden position_0_2 1210.678014788609
-  hidden position_0_3 3341.019261273687
-  hidden position_15_0 -8.875620429107287e-06
-  hidden rotation_16 0 0 -1 8.87563997328823e-06
-  hidden position_16_0 -2.081111092736875e-07
-  hidden rotation_17 0 1 0 2.086162567138673e-07
-  hidden position_17_0 1.7582388113614408e-06
-  hidden rotation_18 0 -1 0 1.75833702087408e-06
-  hidden position_18_0 -4.770474811831689e-08
-  hidden rotation_19 0 1 0 5.16191365590357e-08
-  hidden position_19_0 -1.6962196947615092e-08
-  hidden position_20_0 1.364285483145358e-05
-  hidden position_20_1 1.3549922765656765e-05
-  hidden translation_21 0 1.364285483145358e-05 0.09
-  hidden translation_22 0 -1.3549922765656765e-05 0.09
-  hidden rotation_23 0 1 0 5.336319188271228
-  hidden rotation_24 0 -0.9999999999999999 0 3.4402459866968815
-  hidden rotation_25 0 1 0 4.306435810128458
-  hidden rotation_26 0 -1 0 1.6353221458531262
-  translation -24.1162 -1.9914 0.107852
-  rotation -0.0028221288613435765 0.0018648143110178747 0.9999942790117728 1.2051941098954368
+  hidden position_0_0 1090.2787465290735
+  hidden position_0_1 4042.7803779637584
+  hidden position_0_2 1441.107143888105
+  hidden position_0_3 3693.2432700782415
+  hidden position_15_0 -1.1298929858159337e-05
+  hidden rotation_16 0 0 -1 1.1298932598684526e-05
+  hidden position_16_0 -4.804495156276866e-07
+  hidden rotation_17 0 1 0 4.805480091749769e-07
+  hidden position_17_0 1.4389442432433924e-06
+  hidden rotation_18 0 -0.9999999999999999 0 1.4388689642636265e-06
+  hidden position_18_0 -4.270780553786844e-08
+  hidden rotation_19 0 0.9999999999999999 0 4.2146848510894035e-08
+  hidden position_19_0 -1.4596350793648308e-08
+  hidden position_20_0 1.3642607765573705e-05
+  hidden position_20_1 1.3553125100968695e-05
+  hidden translation_21 0 1.3642607765573705e-05 0.09
+  hidden translation_22 0 -1.3553125100968695e-05 0.09
+  hidden rotation_23 0 -1 0 2.99549692017456
+  hidden rotation_24 0 -0.9999999999999999 0 3.590959859895308
+  hidden rotation_25 0 -1 0 4.02547676319996
+  hidden rotation_26 0 -1 0 1.2696905433553545
+  translation -24.2293 -2.21977 0.114464
+  rotation 0.014696664357674126 -0.03233383157364327 0.9993690666578217 1.1691003061004253
   controller "youbot_controller"
   bodySlot [
     DistanceSensor {
@@ -1173,6 +1173,27 @@ Solid {
   boundingObject USE b1
   recognitionColors [
     0 0 1
+  ]
+}
+Solid {
+  translation 13.6402 -14.8723 -0.011275
+  rotation -3.389314249066104e-17 -1.5078499169417248e-17 -1 1.9709910307427163
+  children [
+    DEF b1 Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 1 0 0
+        }
+      }
+      geometry Box {
+        size 3 3 0.04
+      }
+    }
+  ]
+  name "END"
+  boundingObject USE b1
+  recognitionColors [
+    0 0 0
   ]
 }
 Solid {
