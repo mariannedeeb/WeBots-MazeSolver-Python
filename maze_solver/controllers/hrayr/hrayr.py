@@ -1,7 +1,7 @@
 from controller import Robot, DistanceSensor, Motor, Camera
 import numpy as np
 import ctypes
-
+import math
 # Create the Robot instance.
 robot = Robot()
 
@@ -13,6 +13,8 @@ maze_solved = False
 
 ######################################################################################    
 #INITIALIZATIONS
+imu = robot.getDevice('inertial unit')
+imu.enable(timestep)
 
 # Initialize the camera.
 camera = robot.getDevice("cam")
@@ -65,7 +67,53 @@ def set_wheel_velocity(v1, v2, v3, v4):
     ################# Print statements for debugging #################
     print(f"Setting velocities: Wheel1: {v1}, Wheel2: {v2}, Wheel3: {v3}, Wheel4: {v4}")
 
+
+
+
+
 #####################################################################################################     
+
+
+
+# Process and analyze camera image and recognized objects
+def process_camera_image():
+    recognized_objects = camera.getRecognitionObjects()
+    
+    for obj in recognized_objects:
+        # Get the pointer to the color array
+        color_ptr = obj.getColors()
+
+        # Convert the pointer to an array of three doubles
+        color_array = ctypes.cast(color_ptr, ctypes.POINTER(ctypes.c_double * 3))
+
+        # Access the color values
+        color = color_array.contents
+        
+        # Get object's position, orientation, and size
+        position = obj.getPosition()
+        print(position)
+        orientation = obj.getOrientation()
+        size = obj.getSize()
+        
+    ################# Print statements for debugging #################
+    
+        if color[0] == 1.0:
+            print(f"Recognized object color: Red")
+        elif color[1] == 1.0:
+            print(f"Recognized object color: Green")
+        elif color[2] == 1.0:
+            print(f"Recognized object color: Blue")
+            
+        # print(f"Recognized object color: {color[0]}, {color[1]}, {color[2]}")
+  
+  
+        # print(f"Position: {position}")
+        
+        
+        
+#####################################################################################################     
+
+
 #PID
 
 def follow_line_pid():
@@ -402,8 +450,78 @@ def check_box_distance():
             drop()
             open_grippers()
 
+def getIMUDegrees(): #convert radians to degrees and make range 180
+    return imu.getRollPitchYaw()[2]*180/math.pi + 180
+
+def getDirectionFacing():
+    degrees = getIMUDegrees()
+    if(degrees < 22.5 or degrees > 337.5):
+        return 'N'
+    if(degrees < 337.5 and degrees > 292.5):
+        return 'NE'
+    if(degrees < 292.5 and degrees > 247.5):
+        return 'E'
+    if(degrees < 247.5 and degrees > 202.5):
+        return 'SE'
+    if(degrees < 202.5 and degrees > 157.5):
+        return 'S'
+    if(degrees < 157.5 and degrees > 112.5):
+        return 'SW'
+    if(degrees < 112.5 and degrees > 67.5):
+        return 'W'
+    if(degrees < 67.5 and degrees > 22.5):
+        return 'NW'
+    return '?'
+    
+    
+    
+def IMUPrint(): # print robot orientation in degrees
+    print(' ')
+    print('[IMU: '+ str(round(getIMUDegrees(), 1)) + '° ' + getDirectionFacing() + ']')
+
+
+def GoalFacing(): # return object position, orientiation, size
+        
+    recognized_object_array = camera.getRecognitionObjects()
+    array_len = len(recognized_object_array)
+    
+    
+    if array_len == 0:
+        print('searching for goal...')
+        
+    else: 
+        print('goal found!')
+        recognized_object = camera.getRecognitionObjects()[0]
+        image_position = recognized_object.getPositionOnImage()
+        print("IMAGE POSITION" , image_position[0])
+        
+
+
+        if image_position[0] > 300:
+            print("Turning Left")
+
+
+            turn_right() #left spin
+        if image_position[0] < 300:
+
+            print("Turning Right")
+            turn_left() #right spin
+            
+        if image_position[0] > 300 and image_position[0] < 350 :
+            halt()
+             
+        elif image_position[0] == 300:
+            
+             forward(5)
+         
+
+        return [recognized_object.getPosition(),recognized_object.getOrientation(), recognized_object.getSize()]
+  
+        
 #######################################################################################
 # Main robot control loop
+
+
 while robot.step(timestep) != -1:
     # check_box_distance()
   
@@ -411,9 +529,12 @@ while robot.step(timestep) != -1:
         print("Exiting the program.")
         break  # Exit the loop if the maze is solved
     
-    follow_line_pid()  
-    
-    #forward(1)
+    # follow_line_pid()  
+    # process_camera_image()
+    IMUPrint()
+    #GoalFacing()
+    GoalFacing()
+
     #halt()
     #pick_up()
     # forward(300)
