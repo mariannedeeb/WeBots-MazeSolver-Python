@@ -43,7 +43,7 @@ for name in line_sensor_names:
 
 # Initialize wall distance sensors.
 wall_sensors = {}
-wall_sensor_names = ["w_front", "w_left", "w_right"]
+wall_sensor_names = ["w_front", "w_left", "w_right" , "b_front" , "b_right"]
 for name in wall_sensor_names:
     sensor = robot.getDevice(name)
     if sensor is None:
@@ -89,7 +89,7 @@ def follow_line_pid():
     # Define threshold values
     line_threshold = 1000
     off_line_threshold = 968
-
+    print(left_value < line_threshold and middle_value < line_threshold and right_value < line_threshold)
     # Check if robot needs to move straight forward
     if middle_value == line_threshold:
         set_wheel_velocity(base_velocity, base_velocity, base_velocity, base_velocity)
@@ -295,7 +295,7 @@ def forward(time):
     for wheel in wheels:
         wheel.setVelocity(7.0) # maxVelocity = 14.81
     robot.step(time * timestep)
-
+    
 def backward(time):
     for wheel in wheels:
         wheel.setVelocity(-7.0) # maxVelocity = 14.81
@@ -326,7 +326,7 @@ def turn_around(time):
     wheels[1].setVelocity(-14)
     wheels[2].setVelocity(14)
     wheels[3].setVelocity(-14)
-    robot.step(time * timestep)
+    robot.step(70 * timestep)
     # forward()
 
 def pick_up():
@@ -379,28 +379,47 @@ def hand_up():
 
 
 
+def check_box_distance():
 
+    box_detected = 0 
 
-
-
-
-
+    while (box_detected == 0):
+        forward(1) 
+        b_dist_front = max(wall_sensors["b_front"].getValue(), 0)
+        b_dist_right = max(wall_sensors["b_right"].getValue(), 0)
+        print("FRONT BOX SENSOR: ", b_dist_front)
+        print("RIGHT BOX SENSOR: ", b_dist_right)
+        
+        if b_dist_right < 1000:
+            halt()
+            print("STOPPED") 
+            box_detected = 1
+            turn_around(700)
+            
+        elif  b_dist_front < 120:
+            halt()
+            pick_up()
+            drop()
+            open_grippers()
 
 #######################################################################################
 # Main robot control loop
 while robot.step(timestep) != -1:
+    # check_box_distance()
+  
     if maze_solved:
         print("Exiting the program.")
         break  # Exit the loop if the maze is solved
     
-    # follow_line_pid()  
-    # forward(520)
-    halt()
-    pick_up()
-    forward(300)
-    drop()
-    open_grippers()
-    hand_up()
-    break
+    follow_line_pid()  
+    
+    #forward(1)
+    #halt()
+    #pick_up()
+    # forward(300)
+    # drop()
+    # open_grippers()
+    # hand_up()
+    # break
 
  

@@ -8,8 +8,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.36092947050390506 0.46896722157526566 -0.8061015211558321 1.1850917554318294
-  position 1.8395053858414605 -25.12596459845354 3.127489606875311
+  orientation -0.3790872283997689 -0.15677874059781416 0.9119831685731623 4.141101688141728
+  position 6.708085986949208 -26.451596042486422 3.773570101955748
   follow "youBot"
 }
 TexturedBackground {
@@ -33,8 +33,28 @@ RectangleArena {
   wallHeight 2
 }
 Youbot {
-  translation 5.15201 -29.1343 0.112091
-  rotation 0.002892621303283109 0.012030205420261375 0.9999234505198596 2.9073
+  hidden position_0_0 43.451072943018275
+  hidden position_0_1 43.449848571060855
+  hidden position_0_2 43.35504560723242
+  hidden position_0_3 43.09847691338358
+  hidden position_19_0 -7.115305942185286e-06
+  hidden rotation_20 0 0 -0.9999999999999999 7.115331775806378e-06
+  hidden position_20_0 2.164515469029068e-07
+  hidden rotation_21 0 -1 0 2.1696418193818693e-07
+  hidden position_21_0 -3.4331734636065555e-07
+  hidden rotation_22 0 1 0 3.4369714840265545e-07
+  hidden position_22_0 -8.220464321982514e-09
+  hidden position_23_0 3.6181244333574103e-09
+  hidden position_24_0 7.347735025848895e-11
+  hidden position_24_1 -2.440694749110743e-11
+  hidden translation_25 0 7.347735025848895e-11 0.09
+  hidden translation_26 0 2.440694749110743e-11 0.09
+  hidden rotation_27 0 1 0 5.751961099940756
+  hidden rotation_28 0 1 0 5.750736727983336
+  hidden rotation_29 0 1 0 5.6559337641549
+  hidden rotation_30 0 1 0 5.399365070306059
+  translation 5.23994107862511 -29.150020855007096 0.0988751855967639
+  rotation -0.002124292467524749 0.00024274645067927296 0.9999977142252243 2.8753319719340134
   controller "hrayr"
   bodySlot [
     DistanceSensor {
@@ -61,6 +81,32 @@ Youbot {
         1 1000 0
       ]
       type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.328319 -0.0097326 -0.07
+      rotation 0.9999999999971059 -1.620879999995309e-06 -1.7779899999948542e-06 -1.5707953071795862
+      children [
+        Solid {
+          translation 0.01 -0.002 0.0006
+          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Box {
+                size 0.01 0.01 0.115
+              }
+            }
+          ]
+        }
+      ]
+      name "b_front"
+      lookupTable [
+        0 0 0
+        1 1000 0
+      ]
+      type "sonar"
+      redColorSensitivity 0
     }
     DistanceSensor {
       translation 0.028319 0.180267 -0.03
@@ -111,6 +157,31 @@ Youbot {
         0.9 1000 0
       ]
       type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.028319 -0.199733 -0.06
+      rotation -0.5773512691895147 0.5773502691890485 -0.5773492691885823 2.0944
+      children [
+        Solid {
+          translation 0.01 -0.002 0.0006
+          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Box {
+                size 0.01 0.01 0.115
+              }
+            }
+          ]
+        }
+      ]
+      name "b_right"
+      lookupTable [
+        0 0 0
+        0.9 1000 0
+      ]
+      type "sonar"
     }
     Camera {
       translation 0.28 0 0.04
@@ -1134,8 +1205,8 @@ Solid {
   boundingObject USE b1
 }
 Solid {
-  translation 4.71258 -29.0296 0.084919
-  rotation 0.0002272243504749619 0.00018160637798092543 0.9999999576941081 1.5691293193336309
+  translation -1.9549099999981958 -27.60089999999886 0.024950950000007428
+  rotation 4.3445014767715266e-17 -5.6259495640411804e-18 1 1.5691386894397792
   children [
     DEF b1 Shape {
       appearance Appearance {
@@ -1157,8 +1228,31 @@ Solid {
   ]
 }
 Solid {
-  translation 4.7241 -29.0223 0.0249251
-  rotation 1.919287310536971e-05 0.00017369286700166607 0.9999999847312105 1.428923431291582
+  translation 17.54208647660988 4.928578649137519 0.034915843044233945
+  rotation -0.00021158091802107398 -3.95591736615484e-05 0.9999999768342931 1.5691390870232154
+  children [
+    DEF b1 Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 1
+        }
+      }
+      geometry Box {
+        size 0.05 0.05 0.05
+      }
+    }
+  ]
+  name "BLUE BOX(1)"
+  boundingObject USE b1
+  physics Physics {
+  }
+  recognitionColors [
+    0 0 1
+  ]
+}
+Solid {
+  translation 17.544603549257204 4.927693219700164 0.004941139890278939
+  rotation 7.58649326185923e-05 -0.00010000654793147743 -0.9999999921216012 1.9744651240187776
   children [
     DEF b1 Shape {
       appearance Appearance {
@@ -1171,7 +1265,7 @@ Solid {
       }
     }
   ]
-  name "Platform"
+  name "Platform(1)"
   boundingObject USE b1
   physics Physics {
   }
