@@ -432,7 +432,7 @@ def check_box_distance():
     box_detected = 0 
 
     while (box_detected == 0):
-        forward(1) 
+
         b_dist_front = max(wall_sensors["b_front"].getValue(), 0)
         b_dist_right = max(wall_sensors["b_right"].getValue(), 0)
         print("FRONT BOX SENSOR: ", b_dist_front)
@@ -496,10 +496,8 @@ def GoalFacing(): # return object position, orientiation, size
         print("IMAGE POSITION" , image_position[0])
         
 
-
         if image_position[0] > 300:
             print("Turning Left")
-
 
             turn_right() #left spin
         if image_position[0] < 300:
@@ -518,6 +516,70 @@ def GoalFacing(): # return object position, orientiation, size
         return [recognized_object.getPosition(),recognized_object.getOrientation(), recognized_object.getSize()]
   
         
+        
+        
+def GetBox():
+
+    box_detected = 0 
+
+    while (box_detected == 0):
+
+        b_dist_front = max(wall_sensors["b_front"].getValue(), 0)
+        
+        recognized_object_array = camera.getRecognitionObjects()
+        array_len = len(recognized_object_array)
+
+               
+        print("FRONT BOX SENSOR: ", b_dist_front) 
+             
+        
+        if array_len == 0:
+            print('searching for goal...')
+            if  b_dist_front < 70:
+                backward(50)
+                
+            break
+            
+        else: 
+            print('Box in sight! ')
+            recognized_object = camera.getRecognitionObjects()[0]
+            image_position = recognized_object.getPositionOnImage()           
+            print("IMAGE POSITION" , image_position[0])
+ 
+            if  b_dist_front < 80:
+                backward(50)
+                         
+            if  b_dist_front < 115:
+                halt()
+                pick_up()
+                drop()
+                open_grippers()
+                hand_up()
+
+
+                               
+            if image_position[0] > 300:
+            
+                print("Turning Right")
+                turn_right() 
+                          
+            if image_position[0] < 300:
+    
+                print("Turning Left")
+                turn_left() 
+                
+            if image_position[0] > 300 and image_position[0] < 350 :
+                halt()
+                 
+            elif image_position[0] == 300:
+                
+                 forward(5)   
+                          
+            return [recognized_object.getPosition(),recognized_object.getOrientation(), recognized_object.getSize()]
+          
+            
+         
+    
 #######################################################################################
 # Main robot control loop
 
@@ -533,7 +595,7 @@ while robot.step(timestep) != -1:
     # process_camera_image()
     IMUPrint()
     #GoalFacing()
-    GoalFacing()
+    GetBox()
 
     #halt()
     #pick_up()
