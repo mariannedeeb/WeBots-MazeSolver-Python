@@ -58,19 +58,23 @@ for name in wall_sensor_names:
 ####################################################################################
 # Function to set wheel velocities
 
+MAX_VELOCITY = 14.81  # Maximum allowed wheel velocity
+
 def set_wheel_velocity(v1, v2, v3, v4):
+
+    # Clamp each wheel's velocity to be within the maximum limit
+    v1 = max(min(v1, MAX_VELOCITY), -MAX_VELOCITY)
+    v2 = max(min(v2, MAX_VELOCITY), -MAX_VELOCITY)
+    v3 = max(min(v3, MAX_VELOCITY), -MAX_VELOCITY)
+    v4 = max(min(v4, MAX_VELOCITY), -MAX_VELOCITY)
+
     wheels[0].setVelocity(v1)
     wheels[1].setVelocity(v2)
     wheels[2].setVelocity(v3)
     wheels[3].setVelocity(v4)
     
-    ################# Print statements for debugging #################
-    print(f"Setting velocities: Wheel1: {v1}, Wheel2: {v2}, Wheel3: {v3}, Wheel4: {v4}")
-
-
-
-
-
+    #print(f"Setting velocities: Wheel1: {v1}, Wheel2: {v2}, Wheel3: {v3}, Wheel4: {v4}")
+    
 #####################################################################################################     
 
 
@@ -101,8 +105,10 @@ def process_camera_image():
             print(f"Recognized object color: Red")
         elif color[1] == 1.0:
             print(f"Recognized object color: Green")
+            PickupBox(obj)
         elif color[2] == 1.0:
             print(f"Recognized object color: Blue")
+            AvoidBox(obj)
             
         # print(f"Recognized object color: {color[0]}, {color[1]}, {color[2]}")
   
@@ -137,12 +143,13 @@ def follow_line_pid():
     # Define threshold values
     line_threshold = 1000
     off_line_threshold = 968
-    print(left_value < line_threshold and middle_value < line_threshold and right_value < line_threshold)
+    
+    #print(left_value < line_threshold and middle_value < line_threshold and right_value < line_threshold)
     # Check if robot needs to move straight forward
-    if middle_value == line_threshold:
-        set_wheel_velocity(base_velocity, base_velocity, base_velocity, base_velocity)
-        return
-    elif left_value < line_threshold and middle_value < line_threshold and right_value < line_threshold:
+    # if middle_value == line_threshold:
+        # set_wheel_velocity(base_velocity, base_velocity, base_velocity, base_velocity)
+        # return
+    if left_value < line_threshold and middle_value < line_threshold and right_value < line_threshold:
         # Robot entered the maze, exit follow_line_pid and start solving
         maze_solver()
         return
@@ -293,12 +300,6 @@ def backward(time):
     robot.step(time * timestep)
 
   
-  
-  
-  
-  
-  
-    
 ######################################################################################    
 # THE BOX CODE
 
@@ -480,7 +481,7 @@ def IMUPrint(): # print robot orientation in degrees
     print('[IMU: '+ str(round(getIMUDegrees(), 1)) + '° ' + getDirectionFacing() + ']')
 
 
-def GoalFacing(): # return object position, orientiation, size
+def GoalFacing(): 
         
     recognized_object_array = camera.getRecognitionObjects()
     array_len = len(recognized_object_array)
@@ -518,91 +519,156 @@ def GoalFacing(): # return object position, orientiation, size
         
         
         
-def GetBox():
+# def GetBox():
 
-    box_detected = 0 
+    # box_detected = 0 
+    # going_back = False
+    # while (box_detected == 0):
 
-    while (box_detected == 0):
-
-        b_dist_front = max(wall_sensors["b_front"].getValue(), 0)
+        # b_dist_front = max(wall_sensors["b_front"].getValue(), 0)
         
-        recognized_object_array = camera.getRecognitionObjects()
-        array_len = len(recognized_object_array)
+        # recognized_object_array = camera.getRecognitionObjects()
+        # array_len = len(recognized_object_array)
 
                
-        print("FRONT BOX SENSOR: ", b_dist_front) 
+        # print("FRONT BOX SENSOR: ", b_dist_front) 
              
         
-        if array_len == 0:
-            print('searching for goal...')
-            if  b_dist_front < 70:
-                backward(50)
+        # if array_len == 0:
+            # print('searching for goal...')
+            # if  b_dist_front < 70:
+                # backward(50)
                 
-            break
+            # break
             
-        else: 
-            print('Box in sight! ')
-            recognized_object = camera.getRecognitionObjects()[0]
-            image_position = recognized_object.getPositionOnImage()           
-            print("IMAGE POSITION" , image_position[0])
+        # else: 
+            # print('Box in sight! ')
+            # recognized_object = camera.getRecognitionObjects()[0]
+            # image_position = recognized_object.getPositionOnImage()           
+            # print("IMAGE POSITION" , image_position[0])
  
-            if  b_dist_front < 80:
-                backward(50)
+            # if  b_dist_front < 80:
+                # going_back = True
+                # backward(50)
                          
-            if  b_dist_front < 115:
-                halt()
-                pick_up()
-                drop()
-                open_grippers()
-                hand_up()
+            # if  b_dist_front < 115 and going_back == False:
+                # halt()
+                # pick_up()
+                # drop()
+                # open_grippers()
+                # hand_up()
 
 
                                
-            if image_position[0] > 300:
+            # if image_position[0] > 300:
             
-                print("Turning Right")
-                turn_right() 
+                # print("Turning Right")
+                # turn_right() 
                           
-            if image_position[0] < 300:
+            # if image_position[0] < 300:
     
-                print("Turning Left")
-                turn_left() 
+                # print("Turning Left")
+                # turn_left() 
                 
-            if image_position[0] > 300 and image_position[0] < 350 :
-                halt()
+            # if image_position[0] > 300 and image_position[0] < 350 :
+                # halt()
                  
-            elif image_position[0] == 300:
+            # elif image_position[0] == 300:
                 
-                 forward(5)   
+                 # forward(3)   
                           
-            return [recognized_object.getPosition(),recognized_object.getOrientation(), recognized_object.getSize()]
+            # return [recognized_object.getPosition(),recognized_object.getOrientation(), recognized_object.getSize()]
           
+# Function to turn the robot left for a specified duration
+def turn_left_seconds(duration_seconds):
+    set_wheel_velocity(10, -10, 10, -10)
+    robot.step(int(duration_seconds * 1000 / timestep))  # Convert seconds to milliseconds
+      # Stop the robot after turning
+
+# Function to turn the robot right for a specified duration
+def turn_right_seconds(duration_seconds):
+    set_wheel_velocity(-10, 10, -10, 10)
+    robot.step(int(duration_seconds * 1000 / timestep))  # Convert seconds to milliseconds
+    halt()  # Stop the robot after turning
+       
+
+        
+def PickupBox(box):
+
+    box_detected = 0 
+    going_back = False
+    while (box_detected == 0):
+
+        b_dist_front = max(wall_sensors["b_front"].getValue(), 0)
+                       
+        print("FRONT BOX SENSOR: ", b_dist_front) 
+             
+
+        print('Box in sight! ')
+
+        image_position = box.getPositionOnImage()           
+        print("IMAGE POSITION" , image_position[0])
+
+        if  b_dist_front < 80:
+            going_back = True
+            backward(50)
+                     
+        if  b_dist_front < 115 and going_back == False:
+            halt()
+            pick_up()
+            drop()
+            open_grippers()
+            hand_up()
+
+
+                           
+        if image_position[0] > 300:
+        
+            print("Turning Right")
+            turn_right() 
+                      
+        if image_position[0] < 300:
+
+            print("Turning Left")
+            turn_left() 
             
-         
-    
+        if image_position[0] > 300 and image_position[0] < 350 :
+            halt()
+             
+        elif image_position[0] == 300:
+            
+             forward(3)   
+                      
+        return [box.getPosition(),box.getOrientation(), box.getSize()]
+       
+
+
+
+def AvoidBox():
+
+    print("Avoiding Box.")
+                 
+             
+
 #######################################################################################
 # Main robot control loop
 
 
 while robot.step(timestep) != -1:
-    # check_box_distance()
   
     if maze_solved:
         print("Exiting the program.")
         break  # Exit the loop if the maze is solved
     
-    # follow_line_pid()  
-    # process_camera_image()
-    IMUPrint()
-    #GoalFacing()
-    GetBox()
-
+    
+    #AvoidBox()
+    follow_line_pid()  
+    #process_camera_image()
+    #IMUPrint()
+    #LeftRight()
     #halt()
     #pick_up()
-    # forward(300)
-    # drop()
-    # open_grippers()
-    # hand_up()
-    # break
+
+
 
  
