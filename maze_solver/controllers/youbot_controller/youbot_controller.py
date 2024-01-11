@@ -120,7 +120,7 @@ def set_wheel_velocity(v1, v2, v3, v4):
     wheels[2].setVelocity(v3)
     wheels[3].setVelocity(v4)
     
-    print(f"Setting velocities: Wheel1: {v1}, Wheel2: {v2}, Wheel3: {v3}, Wheel4: {v4}")
+   # print(f"Setting velocities: Wheel1: {v1}, Wheel2: {v2}, Wheel3: {v3}, Wheel4: {v4}")
     
 #####################################################################################################     
 
@@ -165,68 +165,74 @@ def process_camera_image():
 #####################################################################################################     
 
 #PID
+line_follower = False
 
 def follow_line_pid():
-    # PID coefficients
-    Kp = 0.05  # Proportional gain
-    Ki = 0.0   # Integral gain
-    Kd = 0.02  # Derivative gain
-
-    # PID variables
-    integral = 0
-    last_error = 0
-    base_velocity = 8.0  # Base speed of the robot
-
-    # Retrieve sensor values
-    left_value = line_sensors[0].getValue()
-    middle_value = line_sensors[1].getValue()
-    right_value = line_sensors[2].getValue()
-
-    # print(f"Sensor Readings - Left: {left_value}, Middle: {middle_value}, Right: {right_value}")
-
-    # Define threshold values
-    line_threshold = 1000
-    off_line_threshold = 968
-
-    # Check if robot needs to move straight forward
-    if middle_value == line_threshold:
-        set_wheel_velocity(base_velocity, base_velocity, base_velocity, base_velocity)
-        return
-    elif left_value < line_threshold and middle_value < line_threshold and right_value < line_threshold:
-        # Robot entered the maze, exit follow_line_pid and start solving
-        maze_solver()
-        return
-    elif left_value < off_line_threshold:
-        if right_value == line_threshold:
-            # Sharp turn to the right
-            set_wheel_velocity(-7.0, 7.0, 0.0, 0.0)
-            # print("sharp turn to the right")
+    global line_follower
+    # Get the recognized objects from the camera
+    recognized_objects = camera.getRecognitionObjects()
+    while robot.step(timestep) != -1 and not line_follower and recognized_objects:
+        # PID coefficients
+        Kp = 0.05  # Proportional gain
+        Ki = 0.0   # Integral gain
+        Kd = 0.02  # Derivative gain
+    
+        # PID variables
+        integral = 0
+        last_error = 0
+        base_velocity = 8.0  # Base speed of the robot
+    
+        # Retrieve sensor values
+        left_value = line_sensors[0].getValue()
+        middle_value = line_sensors[1].getValue()
+        right_value = line_sensors[2].getValue()
+    
+        # print(f"Sensor Readings - Left: {left_value}, Middle: {middle_value}, Right: {right_value}")
+    
+        # Define threshold values
+        line_threshold = 1000
+        off_line_threshold = 968
+    
+        # Check if robot needs to move straight forward
+        if middle_value == line_threshold:
+            set_wheel_velocity(base_velocity, base_velocity, base_velocity, base_velocity)
+            return
+        elif left_value < line_threshold and middle_value < line_threshold and right_value < line_threshold:
+            # Robot entered the maze, exit follow_line_pid and start solving
+            print(f"Done Line")
+            line_follower = True
+            
+        elif left_value < off_line_threshold:
+            if right_value == line_threshold:
+                # Sharp turn to the right
+                set_wheel_velocity(-7.0, 7.0, 0.0, 0.0)
+                # print("sharp turn to the right")
+                return
+            else:
+                error = off_line_threshold - left_value
+        elif right_value < off_line_threshold:
+            # Sharp turn to the left
+            set_wheel_velocity(7.0, -7.0, 0.0, 0.0)
             return
         else:
-            error = off_line_threshold - left_value
-    elif right_value < off_line_threshold:
-        # Sharp turn to the left
-        set_wheel_velocity(7.0, -7.0, 0.0, 0.0)
-        return
-    else:
-        # Calculate error based on the deviation from the line
-        error = right_value - left_value
-
-    # PID calculations
-    P = error
-    integral += error
-    I = integral
-    D = error - last_error
-    pid_output = Kp * P + Ki * I + Kd * D
-    last_error = error
-
-    # Set wheel velocities based on PID output
-    left_wheel_velocity = base_velocity + pid_output
-    right_wheel_velocity = base_velocity - pid_output
-
-    # Apply new velocities to the wheels
-    set_wheel_velocity(left_wheel_velocity, left_wheel_velocity, right_wheel_velocity, right_wheel_velocity)
-
+            # Calculate error based on the deviation from the line
+            error = right_value - left_value
+    
+            # PID calculations
+            P = error
+            integral += error
+            I = integral
+            D = error - last_error
+            pid_output = Kp * P + Ki * I + Kd * D
+            last_error = error
+        
+            # Set wheel velocities based on PID output
+            left_wheel_velocity = base_velocity + pid_output
+            right_wheel_velocity = base_velocity - pid_output
+        
+            # Apply new velocities to the wheels
+            set_wheel_velocity(left_wheel_velocity, left_wheel_velocity, right_wheel_velocity, right_wheel_velocity)
+    
 #######################################################
 #MAZE SOLVING
 
@@ -237,7 +243,9 @@ RED_AREA_THRESHOLD = 650 # Define the threshold value for the red area
 def maze_solver():
     global maze_solved  # Declare the use of the global variable
     print("Starting maze solving.")
-    while robot.step(timestep) != -1 and not maze_solved:  # Check the flag in the loop condition
+    # Get the recognized objects from the camera
+    recognized_objects = camera.getRecognitionObjects()
+    while robot.step(timestep) != -1 and not maze_solved and not recognized_objects:  # Check the flag in the loop condition
 
         front_dist = max(wall_sensors["w_front"].getValue(), 0)
         left_dist = max(wall_sensors["w_left"].getValue(), 0)
@@ -769,9 +777,13 @@ def process_camera_image_and_act():
     b_front2 = max(box_sensors["b_front2"].getValue(), 0)
     # Get the recognized objects from the camera
     recognized_objects = camera.getRecognitionObjects()
-
+    
     # If there are no recognized objects, simply return
     if not recognized_objects:
+        if not line_follower:
+               follow_line_pid()
+        elif not maze_solved:
+                maze_solver()
         return
 
     # Loop through recognized objects
@@ -787,27 +799,43 @@ def process_camera_image_and_act():
 
         # If first_object_color has not been set, store the color of the first encountered object
         if first_object_color is None:
-            
-            first_object_color = (color[0], color[1], color[2])
-            print(f"Detected first object, Color is:", str(first_object_color))
-            # Call the AvoidBox() function for the first object
-            AvoidBox()
-            return  # After handling the first object, return
-
-        # For subsequent objects, check if their color matches the first object's color
-        if (color[0], color[1], color[2]) == first_object_color:
             if b_front < safe_distance or b_front1 < safe_distance or b_front2 < safe_distance:
-                # Call the AvoidBox() function for objects with matching color
-                print(f"Same Color")
+                first_object_color = (color[0], color[1], color[2])
+                print(f"Detected first object, Color is:", str(first_object_color))
+                # Call the AvoidBox() function for the first object
                 AvoidBox()
-                return
-            else:
-                return
-            
+                return  # After handling the first object, return
                 
+            else:
+                if not line_follower:
+                    print("line follower L" , line_follower ) 
+                    follow_line_pid()
+                elif not maze_solved:
+
+                    maze_solver()
+            
         else:
-            # Call another function for objects with a different color
-            AnotherFunction(obj)
+            # For subsequent objects, check if their color matches the first object's color
+            if b_front < safe_distance or b_front1 < safe_distance or b_front2 < safe_distance:
+                if (color[0], color[1], color[2]) == first_object_color:
+               
+                    # Call the AvoidBox() function for objects with matching color
+                    print(f"Same Color")
+                    AvoidBox()
+                    return
+                
+            
+            elif (color[0], color[1], color[2]) != first_object_color:
+                # Call another function for objects with a different color
+                AnotherFunction(obj)
+                
+            else:
+                    if not line_follower:
+                        follow_line_pid()
+                    elif not maze_solved:
+                        maze_solver()   
+                
+        
 
 def AnotherFunction(obj):
     # Placeholder for another function that handles objects with a different color
