@@ -8,8 +8,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.28482685902936594 0.8793065930981553 -0.3816982783686362 1.58822047951225
-  position -2.8581799010895947 17.086568867562416 81.23157865863863
+  orientation -0.281895035577206 -0.24307851414383083 0.9281422438821288 4.303380521905956
+  position 16.132942634273178 37.01641004491872 19.567302477666
   follow "youBot"
 }
 TexturedBackground {
@@ -351,26 +351,6 @@ DEF black Solid {
     }
   ]
   name "BLACK MAZE"
-  boundingObject USE black
-}
-DEF black Solid {
-  translation -15.2128 -19.774 0
-  rotation 0 0 1 -0.3926946938995747
-  children [
-    DEF black Shape {
-      appearance PBRAppearance {
-        baseColor 1 0 0
-        roughness 1
-        metalness 0
-      }
-      geometry Mesh {
-        url [
-          "../protos/black.stl"
-        ]
-      }
-    }
-  ]
-  name "BLACK MAZE(1)"
   boundingObject USE black
 }
 Solid {
