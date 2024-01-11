@@ -288,7 +288,6 @@ SAFE_DISTANCE = 600
 f_speed = 10
 RED_AREA_THRESHOLD = 650 
 
-
 DEFAULT_DESIRED_DISTANCE = 400
 DISTANCE_THRESHOLD = 50  # Adjust as needed
 MAX_VELOCITY = 14  # Adjust as needed
@@ -587,7 +586,6 @@ def GoalFacing():
 # Pickup Box      
  
 def PickupBox(box):
-
     box_detected = 0 
     going_back = False
     while (box_detected == 0):
@@ -784,88 +782,86 @@ def AvoidBox():
 
              
 ######################################################################################    
-# Global variable to store the color of the first encountered object
-first_object_color = None
 
-def process_camera_image_and_act():
-    global first_object_color
-    safe_distance = 850  # Safe distance to maintain from the box
-    b_front = max(box_sensors["b_front"].getValue(), 0)
-    b_front1 = max(box_sensors["b_front1"].getValue(), 0)
-    b_front2 = max(box_sensors["b_front2"].getValue(), 0)
-    # Get the recognized objects from the camera
-    recognized_objects = camera.getRecognitionObjects()
+# first_object_color = None
+
+# def process_camera_image_and_act():
+    # global first_object_color
+    # safe_distance = 850 
+    # b_front = max(box_sensors["b_front"].getValue(), 0)
+    # b_front1 = max(box_sensors["b_front1"].getValue(), 0)
+    # b_front2 = max(box_sensors["b_front2"].getValue(), 0)
+
+    # recognized_objects = camera.getRecognitionObjects()
     
-    # If there are no recognized objects, simply return
-    if not recognized_objects:
-        if not line_follower:
-               follow_line_pid()
-        elif not maze_solved:
-                maze_solver()
-        return
 
-    # Loop through recognized objects
-    for obj in recognized_objects:
-        # Get the pointer to the color array
-        color_ptr = obj.getColors()
-        
-        # Convert the pointer to an array of three doubles
-        color_array = ctypes.cast(color_ptr, ctypes.POINTER(ctypes.c_double * 3))
-        
-        # Access the color values
-        color = color_array.contents
+    # if not recognized_objects:
+        # if not line_follower:
+               # follow_line_pid()
+        # elif not maze_solved:
+                # maze_solver()
+        # return
 
-        # If first_object_color has not been set, store the color of the first encountered object
-        if first_object_color is None:
-            if b_front < safe_distance or b_front1 < safe_distance or b_front2 < safe_distance:
-                first_object_color = (color[0], color[1], color[2])
-                print(f"Detected first object, Color is:", str(first_object_color))
-                # Call the AvoidBox() function for the first object
-                AvoidBox()
-                return  # After handling the first object, return
+
+    # for obj in recognized_objects:
+       
+        # color_ptr = obj.getColors()
+        
+
+        # color_array = ctypes.cast(color_ptr, ctypes.POINTER(ctypes.c_double * 3))
+        
+
+        # color = color_array.contents
+
+
+        # if first_object_color is None:
+            # if b_front < safe_distance or b_front1 < safe_distance or b_front2 < safe_distance:
+                # first_object_color = (color[0], color[1], color[2])
+                # print(f"Detected first object, Color is:", str(first_object_color))
+              
+                # AvoidBox()
+                # return  
                 
-            else:
-                if not line_follower:
-                    print("line follower L" , line_follower ) 
-                    follow_line_pid()
-                elif not maze_solved:
+            # else:
+                # if not line_follower:
+                    # print("line follower L" , line_follower ) 
+                    # follow_line_pid()
+                # elif not maze_solved:
 
-                    maze_solver()
+                    # maze_solver()
             
-        else:
-            # For subsequent objects, check if their color matches the first object's color
-            if b_front < safe_distance or b_front1 < safe_distance or b_front2 < safe_distance:
-                if (color[0], color[1], color[2]) == first_object_color:
+        # else:
+            
+            # if b_front < safe_distance or b_front1 < safe_distance or b_front2 < safe_distance:
+                # if (color[0], color[1], color[2]) == first_object_color:
                
-                    # Call the AvoidBox() function for objects with matching color
-                    print(f"Same Color")
-                    AvoidBox()
-                    return
+
+                    # print(f"Same Color")
+                    # AvoidBox()
+                    # return
                 
             
-            elif (color[0], color[1], color[2]) != first_object_color:
-                # Call another function for objects with a different color
-                AnotherFunction(obj)
+            # elif (color[0], color[1], color[2]) != first_object_color:
+
+                # AnotherFunction(obj)
                 
-            else:
-                    if not line_follower:
-                        follow_line_pid()
-                    elif not maze_solved:
-                        maze_solver()   
+            # else:
+                    # if not line_follower:
+                        # follow_line_pid()
+                    # elif not maze_solved:
+                        # maze_solver()   
 
         
+# def AnotherFunction(obj):
 
-def AnotherFunction(obj):
-    # Placeholder for another function that handles objects with a different color
-    # Implement the desired behavior here
-    print(f"I SHOULD GRAB THAT")
-    pass
+    # print(f"I SHOULD GRAB THAT")
+    # pass
 
-# Main robot control loop
+######################################################################################
 while robot.step(timestep) != -1:
     if maze_solved:
         print("Exiting the program.")
-        break  # Exit the loop if the maze is solved
+        break  
 
     #process_camera_image_and_act()
 
