@@ -8,8 +8,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.3082117982437393 -0.4249174698692871 -0.8511466567068475 5.083374899222152
-  position -27.26805222589367 -4.474553133162557 3.9600440910035366
+  orientation 0.28482685902936594 0.8793065930981553 -0.3816982783686362 1.58822047951225
+  position -2.8581799010895947 17.086568867562416 81.23157865863863
   follow "youBot"
 }
 TexturedBackground {
@@ -28,8 +28,8 @@ RectangleArena {
   wallHeight 2
 }
 Youbot {
-  translation -23.7059 -0.906674 0.0988574
-  rotation -0.0024683260685349115 0.0022574808598808905 0.9999944055576444 1.1919665700167281
+  translation -23.5153 -0.568248 0.120031
+  rotation 0.004162789405877861 0.0009780298604135024 0.9999908572791825 1.22114
   controller "youbot_controller"
   bodySlot [
     DistanceSensor {
@@ -51,6 +51,31 @@ Youbot {
         }
       ]
       name "w_front"
+      lookupTable [
+        0 0 0
+        1 1000 0
+      ]
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.303319 0.0689277 -0.03
+      rotation 0.9351130202381839 0.25056100542276666 -0.2505650054228532 -1.6378353071795866
+      children [
+        Solid {
+          translation 0.01 -0.002 0.0006
+          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Box {
+                size 0.01 0.01 0.115
+              }
+            }
+          ]
+        }
+      ]
+      name "sonarf"
       lookupTable [
         0 0 0
         1 1000 0
@@ -309,7 +334,7 @@ DEF red Solid {
   ]
 }
 DEF black Solid {
-  translation -15.068 -19.4983 0
+  translation -15.068 -19.4989 0
   rotation 0 0 1 -0.3926946938995747
   children [
     DEF black Shape {
@@ -326,6 +351,26 @@ DEF black Solid {
     }
   ]
   name "BLACK MAZE"
+  boundingObject USE black
+}
+DEF black Solid {
+  translation -15.2128 -19.774 0
+  rotation 0 0 1 -0.3926946938995747
+  children [
+    DEF black Shape {
+      appearance PBRAppearance {
+        baseColor 1 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Mesh {
+        url [
+          "../protos/black.stl"
+        ]
+      }
+    }
+  ]
+  name "BLACK MAZE(1)"
   boundingObject USE black
 }
 Solid {

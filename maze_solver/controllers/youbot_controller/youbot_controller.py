@@ -46,7 +46,7 @@ for name in line_sensor_names:
 
 # Initialize wall distance sensors.
 wall_sensors = {}
-wall_sensor_names = ["w_front", "w_left", "w_right", "front_left", "rear_left","sonarl"]
+wall_sensor_names = ["w_front", "w_left", "w_right", "front_left", "rear_left","sonarl","sonarf"]
 for name in wall_sensor_names:
     sensor = robot.getDevice(name)
     if sensor is None:
@@ -270,83 +270,6 @@ def maze_solver():
 ######################################################
 #Hrayr's Edition
 
-
-SAFE_DISTANCE = 550
-f_speed = 10
-RED_AREA_THRESHOLD = 650 # Define the threshold value for the red area
-
-# Constants
-DESIRED_DISTANCE = 400
-DISTANCE_THRESHOLD = 50  # Adjust as needed
-MAX_VELOCITY = 14  # Adjust as needed
-
-def adjust_speed(desired, actual):
-    # Proportional control to adjust the speed based on the distance difference
-    error = desired - actual
-    k_p = 0.01  # Proportional gain, adjust as needed
-    return max(-MAX_VELOCITY, min(MAX_VELOCITY, k_p * error))
-
-def maze_solverr():
-    global maze_solved  # Declare the use of the global variable
-    print("Starting maze solving.")
-    
-    while robot.step(timestep) != -1 and not maze_solved:  # Check the flag in the loop condition
-
-        front_dist = max(wall_sensors["w_front"].getValue(), 0)
-        left_dist = max(wall_sensors["w_left"].getValue(), 0)
-        rear_left = max(wall_sensors["rear_left"].getValue(), 0)
-        front_left = max(wall_sensors["front_left"].getValue(), 0)
-        sonarl = max(wall_sensors["sonarl"].getValue(), 0)
-
-        middle_sensor_value = line_sensors[1].getValue()  # This is the ls_middle sensor value
-
-        # print("middle sensor value: ", middle_sensor_value)
-        # Check if the middle sensor detects the red area
-        if middle_sensor_value <= RED_AREA_THRESHOLD:
-            print("Red area detected. Maze solved!")
-            halt()  # Stop the robot
-            maze_solved = True  # Set the flag to indicate the maze is solved
-            break  # Break out of the while loop
-
-        ############################ MOVING CASES ############################
-
-        # Calculate the adjustment to the left wheel speed based on the distance error
-        left_speed_adjustment = adjust_speed(DESIRED_DISTANCE, left_dist)
-
-        # If there's a wall to the left and space in front, move forward with left speed adjustment
-        if left_dist < 1000 and front_dist > SAFE_DISTANCE:
-            print("FORWARD - Adjusted Left Speed:", left_speed_adjustment)
-            set_wheel_velocity(f_speed , f_speed + left_speed_adjustment, f_speed , f_speed + left_speed_adjustment)
-
-        # If there's a wall in front, turn right
-        elif front_dist <= SAFE_DISTANCE and left_dist < 1000:
-            print("TURN RIGHT")
-            set_wheel_velocity(0, 0, 0, 0)
-            robot.step(timestep)  # Update sensors before starting to turn
-
-            while robot.step(timestep) != -1 and max(wall_sensors["w_front"].getValue(), 0) < 1000:
-                print("TURN RIGHT - Adjusted Left Speed:", left_speed_adjustment)
-                set_wheel_velocity(-14, 14, -14, 14)
-
-        # If the left sensor value equals 1000, stop and turn left in place
-        elif left_dist == 1000:
-            print("TURN LEFT")
-            set_wheel_velocity(0, 0, 0, 0)
-            robot.step(timestep)  # Update sensors before starting to turn
-
-            # Turn left in place until the left sensor detects the wall again
-            while robot.step(timestep) != -1 and max(wall_sensors["w_left"].getValue(), 0) >= 1000:
-                print("TURN LEFT - Adjusted Left Speed:", left_speed_adjustment)
-                set_wheel_velocity(14, -14, 14, -14)
-
-            # Once the wall is detected, the robot can continue moving forward
-            set_wheel_velocity(f_speed + left_speed_adjustment, f_speed, f_speed + left_speed_adjustment, f_speed)
-
-        # Perform a step to update sensor readings after each action
-        robot.step(timestep)
-
-
-
 DEFAULT_DESIRED_DISTANCE = 400
 DISTANCE_THRESHOLD = 50  # Adjust as needed
 MAX_VELOCITY = 14  # Adjust as needed
@@ -369,6 +292,7 @@ def maze_solverrr():
         rear_left = max(wall_sensors["rear_left"].getValue(), 0)
         front_left = max(wall_sensors["front_left"].getValue(), 0)
         sonarl = max(wall_sensors["sonarl"].getValue(), 0)
+        sonarf = max(wall_sensors["sonarf"].getValue(), 0)
 
         middle_sensor_value = line_sensors[1].getValue()  # This is the ls_middle sensor value
 
@@ -386,12 +310,13 @@ def maze_solverrr():
         left_speed_adjustment = adjust_speed(400, left_dist)
 
         # If there's a wall to the left and space in front, move forward with left speed adjustment
-        if left_dist < 1000 and front_dist > SAFE_DISTANCE:
+        if left_dist < 1000 and sonarl < 1000 and front_dist > SAFE_DISTANCE:
+            print("Sonar Front Distance: ",sonarf)
             print("FORWARD - Adjusted Left Speed:", left_speed_adjustment)
             set_wheel_velocity(f_speed , f_speed + left_speed_adjustment, f_speed , f_speed + left_speed_adjustment)
 
         # If there's a wall in front, turn right
-        elif front_dist <= SAFE_DISTANCE and left_dist < 1000:
+        elif front_dist <= SAFE_DISTANCE and left_dist < 1000 and sonarf < 1000:
             print("TURN RIGHT")
             set_wheel_velocity(0, 0, 0, 0)
             robot.step(timestep)  # Update sensors before starting to turn
@@ -401,8 +326,8 @@ def maze_solverrr():
                 set_wheel_velocity(-14, 14, -14, 14)
 
         # If the left sensor value equals 1000, stop and turn left in place
-        elif left_dist == 1000:
-            print("TURN LEFT")
+        elif left_dist == 1000 and sonarl == 1000:
+            print("Sonar Distance: ",sonarl)
             set_wheel_velocity(0, 0, 0, 0)
             robot.step(timestep)  # Update sensors before starting to turn
 
