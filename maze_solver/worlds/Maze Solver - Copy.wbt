@@ -8,8 +8,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.22177527737473168 -0.4130836525263602 -0.8832766397685622 5.577537927303919
-  position -27.528216194864342 -5.662553106658969 1.347780991687557
+  orientation 0.22093754620263717 -0.876103683527563 -0.4285194702547287 5.624560584406484
+  position -69.19870934468719 -21.29654448279676 56.075972703003416
   follow "youBot"
 }
 TexturedBackground {
@@ -402,7 +402,7 @@ Solid {
     DEF b1 Shape {
       appearance Appearance {
         material Material {
-          diffuseColor 0 1 1
+          diffuseColor 0 0 1
         }
       }
       geometry Box {
@@ -419,13 +419,13 @@ Solid {
   ]
 }
 Solid {
-  translation -24.7162 -3.31697 0.0387247
+  translation 28.7319 5.76771 0.0187247
   rotation -2.93474e-17 -1.79724e-17 -1 2.23279
   children [
     DEF b1 Shape {
       appearance Appearance {
         material Material {
-          diffuseColor 0 0 1
+          diffuseColor 0 1 0
         }
       }
       geometry Box {
@@ -463,8 +463,8 @@ Solid {
   ]
 }
 Solid {
-  translation -9.51274 11.974 0.0487247
-  rotation 1.13152e-17 2.94518e-17 1 2.7414
+  translation -9.51889 11.9661 0.048725
+  rotation -1.4344e-08 1.64804e-08 -1 -0.9087953071795862
   children [
     DEF b1 Shape {
       appearance Appearance {
@@ -473,12 +473,14 @@ Solid {
         }
       }
       geometry Box {
-        size 0.08 0.08 0.08
+        size 0.05 0.05 0.07
       }
     }
   ]
   name "GREEN BOX"
   boundingObject USE b1
+  physics Physics {
+  }
   recognitionColors [
     0 1 0
   ]

@@ -317,12 +317,7 @@ def maze_solverrr():
             break
         # Perform a step to update sensor readings after each action
         robot.step(timestep)
-        
-        
-        
-        
-########################################################
-
+               
 
 ######################################################
 
@@ -537,9 +532,11 @@ def GoalFacing():
  
 def PickupBox(box):
     print(f"PICKUP")
-    box_detected = 0 
+    box_detected = False 
+    global picked
+    
     going_back = False
-    while (box_detected == 0):
+    while (box_detected == False):
         
         b_dist_front = max(box_sensors["b_front"].getValue(), 0)
                        
@@ -561,6 +558,7 @@ def PickupBox(box):
             drop()
             open_grippers()
             hand_up()
+            picked = True
 
 
                            
@@ -610,7 +608,7 @@ def AvoidBox():
         turn_duration_right1 = 2.5  # Turning time to the right in seconds
         turn_duration_forward = 1.5  # Turning time to more forward in seconds
         turn_duration_left = 4.0   # Turning time to the left in seconds
-        turn_duration_left1 = 2.2   # Turning time to the left in seconds
+        turn_duration_left1 = 3.2   # Turning time to the left in seconds
     
     
         # print("############\nAvoiding Box.")
@@ -740,6 +738,7 @@ def AvoidBox():
 ######################################################################################    
 # Global variable to store the color of the first encountered object
 first_object_color = None
+picked = False
 
 def process_camera_image_and_act():
     global first_object_color
@@ -765,6 +764,8 @@ def process_camera_image_and_act():
 
     # Loop through recognized objects
     for obj in recognized_objects:
+    
+        global picked
         # Get the pointer to the color array
         color_ptr = obj.getColors()
         
@@ -783,12 +784,6 @@ def process_camera_image_and_act():
                 AvoidBox()
                 return  # After handling the first object, return
                 
-            # else:
-                # if CheckLine():
-                    # print("line follower L" , line_follower ) 
-                    # follow_line_pid()
-                # elif not CheckLine() and CheckMaze():
-                    # maze_solver()
             
         else:
             # For subsequent objects, check if their color matches the first object's color
@@ -804,7 +799,15 @@ def process_camera_image_and_act():
             elif (color[0], color[1], color[2]) != first_object_color:
                 # Call another function for objects with a different color
                 print(f"PPPPPPPPPPPPPPPPPPPPPP")
-                PickupBox(obj)
+                
+                while(picked == False):
+                    print("picked is false")
+                    PickupBox(obj)
+                    recognized_objects= []
+                slight_left_turn()
+                    
+                     
+                    
                 
             # else:
                     # if CheckLine():
@@ -849,13 +852,13 @@ while robot.step(timestep) != -1:
         print("Exiting the program.")
         break  # Exit the loop if the maze is solved
 
-    #process_camera_image_and_act()
+    process_camera_image_and_act()
     # Other robot behaviors...
     # AvoidBox()
     # follow_line_pid()  
     #process_camera_image()
     #LeftRight()
     #halt()
-    pickupcamera()
+    #pickupcamera()
    
    
