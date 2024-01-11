@@ -8,8 +8,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.2975673497585312 -0.42338635347879167 -0.8556854959888098 5.130237333820562
-  position -26.751223032154904 -5.255100311237082 4.200367186921954
+  orientation 0.3082117982437393 -0.4249174698692871 -0.8511466567068475 5.083374899222152
+  position -27.26805222589367 -4.474553133162557 3.9600440910035366
   follow "youBot"
 }
 TexturedBackground {
@@ -28,28 +28,7 @@ RectangleArena {
   wallHeight 2
 }
 Youbot {
-  hidden position_0_0 3795.0463853289602
-  hidden position_0_1 6741.777522994706
-  hidden position_0_2 3361.543947847513
-  hidden position_0_3 5609.2213492254705
-  hidden position_19_0 -6.4269237602021944e-06
-  hidden rotation_20 0 0 -1 6.42694527645985e-06
-  hidden position_20_0 0.001395639310451031
-  hidden rotation_21 0 -1 0 0.001395639310381889
-  hidden position_21_0 1.6128528894952698e-06
-  hidden rotation_22 0 -1 0 1.6129087361973733e-06
-  hidden position_22_0 -2.890102186841391e-08
-  hidden rotation_23 0 1 0 2.9802322387695313e-08
-  hidden position_23_0 -1.4345626048398106e-08
-  hidden position_24_0 1.3847320806434396e-05
-  hidden position_24_1 1.5880988931524365e-05
-  hidden translation_25 0 1.3847320806434396e-05 0.09
-  hidden translation_26 0 -1.5880988931524365e-05 0.09
-  hidden rotation_27 0 1 0 0.0024597924899278367
-  hidden rotation_28 0 1 0 6.202873698188876
-  hidden rotation_29 0 -0.9999999999999999 0 6.2433768007451445
-  hidden rotation_30 0 1 0 4.620055221279339
-  translation -23.7046 -0.906663 0.0988563
+  translation -23.7059 -0.906674 0.0988574
   rotation -0.0024683260685349115 0.0022574808598808905 0.9999944055576444 1.1919665700167281
   controller "youbot_controller"
   bodySlot [
@@ -99,9 +78,34 @@ Youbot {
       name "w_left"
       lookupTable [
         0 0 0
-        0.9 1000 0
+        1 1000 0
       ]
       type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.008319 0.180267 -0.03
+      rotation 0.5773492691885823 0.5773502691890485 -0.5773512691895147 -2.094395307179586
+      children [
+        Solid {
+          translation 0.01 -0.002 0.0006
+          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Box {
+                size 0.01 0.01 0.115
+              }
+            }
+          ]
+        }
+      ]
+      name "sonarl"
+      lookupTable [
+        0 0 0
+        0.9 1000 0
+      ]
+      type "sonar"
     }
     DistanceSensor {
       translation -0.151681 0.180267 -0.03
