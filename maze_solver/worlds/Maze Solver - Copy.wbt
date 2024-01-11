@@ -8,8 +8,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.23239954371695487 -0.2682398546875977 0.9348999050365379 4.568660890242588
-  position -23.874319823542166 2.7787369648657325 3.298999521027872
+  orientation 0.31841134326364917 -0.6341202163589844 -0.7046316539056937 5.255516369319519
+  position -28.272010376182063 -6.35983702382774 3.6551089443447515
   follow "youBot"
 }
 TexturedBackground {
@@ -131,56 +131,6 @@ Youbot {
         0.9 1000 0
       ]
       type "sonar"
-    }
-    DistanceSensor {
-      translation -0.151681 0.180267 -0.03
-      rotation 0.5773492691885823 0.5773502691890485 -0.5773512691895147 -2.094395307179586
-      children [
-        Solid {
-          translation 0.01 -0.002 0.0006
-          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
-          children [
-            Shape {
-              appearance PBRAppearance {
-              }
-              geometry Box {
-                size 0.01 0.01 0.115
-              }
-            }
-          ]
-        }
-      ]
-      name "rear_left"
-      lookupTable [
-        0 0 0
-        0.9 1000 0
-      ]
-      type "infra-red"
-    }
-    DistanceSensor {
-      translation 0.158319 0.180267 -0.03
-      rotation 0.5773492691885823 0.5773502691890485 -0.5773512691895147 -2.094395307179586
-      children [
-        Solid {
-          translation 0.01 -0.002 0.0006
-          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
-          children [
-            Shape {
-              appearance PBRAppearance {
-              }
-              geometry Box {
-                size 0.01 0.01 0.115
-              }
-            }
-          ]
-        }
-      ]
-      name "front_left"
-      lookupTable [
-        0 0 0
-        0.9 1000 0
-      ]
-      type "infra-red"
     }
     DistanceSensor {
       translation 0.028319 -0.199733 -0.03
