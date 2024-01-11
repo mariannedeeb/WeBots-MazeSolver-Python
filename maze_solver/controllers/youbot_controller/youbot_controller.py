@@ -280,7 +280,7 @@ def adjust_speed(desired, actual):
     error = desired - actual
     k_p = 0.01  # Proportional gain, adjust as needed
     return max(-MAX_VELOCITY, min(MAX_VELOCITY, k_p * error))
-
+    
 def maze_solverrr():
     global maze_solved  # Declare the use of the global variable
     print("Starting maze solving.")
@@ -308,13 +308,15 @@ def maze_solverrr():
 
         # Calculate the adjustment to the left wheel speed based on the distance error
         left_speed_adjustment = adjust_speed(400, left_dist)
-
+  
         # If there's a wall to the left and space in front, move forward with left speed adjustment
+        
+        
         if left_dist < 1000 and sonarl < 1000 and front_dist > SAFE_DISTANCE:
             print("Sonar Front Distance: ",sonarf)
             print("FORWARD - Adjusted Left Speed:", left_speed_adjustment)
             set_wheel_velocity(f_speed , f_speed + left_speed_adjustment, f_speed , f_speed + left_speed_adjustment)
-
+                
         # If there's a wall in front, turn right
         elif front_dist <= SAFE_DISTANCE and left_dist < 1000 and sonarf < 1000:
             print("TURN RIGHT")
@@ -324,7 +326,7 @@ def maze_solverrr():
             while robot.step(timestep) != -1 and max(wall_sensors["w_front"].getValue(), 0) < 1000:
                 print("TURN RIGHT - Adjusted Left Speed:", left_speed_adjustment)
                 set_wheel_velocity(-14, 14, -14, 14)
-
+                
         # If the left sensor value equals 1000, stop and turn left in place
         elif left_dist == 1000 and sonarl == 1000:
             print("Sonar Distance: ",sonarl)
@@ -335,8 +337,10 @@ def maze_solverrr():
             DEFAULT_DESIRED_DISTANCE = min(TURNING_DESIRED_DISTANCE, left_dist - DISTANCE_THRESHOLD)
 
             # Turn left in place until the left sensor detects the wall again
-            while robot.step(timestep) != -1 and max(wall_sensors["w_left"].getValue(), 0) >= 1000:
+            while robot.step(timestep) != -1 and max(wall_sensors["w_left"].getValue(), 0) >= 900:
                 print("TURN LEFT - Adjusted Left Speed:", left_speed_adjustment)
+                print(f"Sensor Readings - Left: {left_dist}, Front: {front_dist} , Sonar Left: {sonarl}")
+
                 set_wheel_velocity(14, -14, 14, -14)
 
             # Once the wall is detected, the robot can continue moving forward
@@ -344,7 +348,12 @@ def maze_solverrr():
             DEFAULT_DESIRED_DISTANCE = 400  # Reset the desired distance after turning
 
         # Perform a step to update sensor readings after each action
+        print(f"Sensor Readings - Left: {left_dist}, Front: {front_dist} , Sonar Left: {sonarl}")
         robot.step(timestep)
+        
+        
+        
+        
 ########################################################
 def move_forward():
     print(f"forward")

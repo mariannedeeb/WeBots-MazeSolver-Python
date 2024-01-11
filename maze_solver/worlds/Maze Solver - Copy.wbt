@@ -8,8 +8,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.281895035577206 -0.24307851414383083 0.9281422438821288 4.303380521905956
-  position 16.132942634273178 37.01641004491872 19.567302477666
+  orientation 0.2834148130149589 -0.8163103891481786 -0.5033024859191989 5.321709648995039
+  position -51.060033451741305 -20.690394522443718 50.11184857255989
   follow "youBot"
 }
 TexturedBackground {
@@ -28,8 +28,8 @@ RectangleArena {
   wallHeight 2
 }
 Youbot {
-  translation -23.5153 -0.568248 0.120031
-  rotation 0.004162789405877861 0.0009780298604135024 0.9999908572791825 1.22114
+  translation -25.0925 -4.10254 0.114253
+  rotation -0.0041627994057031464 -0.0009780298603727893 -0.9999908572375551 -1.2211453071795866
   controller "youbot_controller"
   bodySlot [
     DistanceSensor {
@@ -316,7 +316,7 @@ DEF red Solid {
   children [
     DEF red Shape {
       appearance PBRAppearance {
-        baseColor 1 0 0
+        baseColor 0.7 0.4 0
         roughness 1
         metalness 0
       }
@@ -334,18 +334,18 @@ DEF red Solid {
   ]
 }
 DEF black Solid {
-  translation -15.068 -19.4989 0
+  translation -15.1201 -19.3896 0
   rotation 0 0 1 -0.3926946938995747
   children [
     DEF black Shape {
       appearance PBRAppearance {
-        baseColor 0 0 0
+        baseColor 1 1 0.5
         roughness 1
         metalness 0
       }
       geometry Mesh {
         url [
-          "../protos/black.stl"
+          "../protos/90Degrees.stl"
         ]
       }
     }
