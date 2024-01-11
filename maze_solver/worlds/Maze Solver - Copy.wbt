@@ -8,8 +8,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.2990797208058336 -0.38899065868661714 -0.8713424057494599 5.055334632058553
-  position -27.943400251872934 -9.734111641643555 4.490196302211337
+  orientation 0.22177527737473168 -0.4130836525263602 -0.8832766397685622 5.577537927303919
+  position -27.528216194864342 -5.662553106658969 1.347780991687557
   follow "youBot"
 }
 TexturedBackground {
@@ -56,6 +56,81 @@ Youbot {
         1 1000 0
       ]
       type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.308319 -0.0197325 -0.06
+      rotation 0.9999999999971059 -1.620879999995309e-06 -1.7779899999948542e-06 -1.5707953071795862
+      children [
+        Solid {
+          translation 0.01 -0.002 0.0006
+          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Box {
+                size 0.01 0.01 0.115
+              }
+            }
+          ]
+        }
+      ]
+      name "b_front"
+      lookupTable [
+        0 0 0
+        1 1000 0
+      ]
+      type "sonar"
+    }
+    DistanceSensor {
+      translation 0.308319 0.0602675 -0.06
+      rotation 0.9999999999971059 -1.620879999995309e-06 -1.7779899999948542e-06 -1.5707953071795862
+      children [
+        Solid {
+          translation 0.01 -0.002 0.0006
+          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Box {
+                size 0.01 0.01 0.115
+              }
+            }
+          ]
+        }
+      ]
+      name "b_front1"
+      lookupTable [
+        0 0 0
+        1 1000 0
+      ]
+      type "sonar"
+    }
+    DistanceSensor {
+      translation 0.308319 -0.0797325 -0.06
+      rotation 0.9999999999971059 -1.620879999995309e-06 -1.7779899999948542e-06 -1.5707953071795862
+      children [
+        Solid {
+          translation 0.01 -0.002 0.0006
+          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Box {
+                size 0.01 0.01 0.115
+              }
+            }
+          ]
+        }
+      ]
+      name "b_front2"
+      lookupTable [
+        0 0 0
+        1 1000 0
+      ]
+      type "sonar"
     }
     DistanceSensor {
       translation 0.303319 0.0689277 -0.03
@@ -321,13 +396,13 @@ Solid {
   name "line"
 }
 Solid {
-  translation 8.7177 -32.3891 0.0487247
-  rotation -3.389314249066104e-17 -1.5078499169417248e-17 -1 1.9709910307427163
+  translation -24.7162 -3.31698 0.0687247
+  rotation -2.93474e-17 -1.79724e-17 -1 2.23279
   children [
     DEF b1 Shape {
       appearance Appearance {
         material Material {
-          diffuseColor 0 0 1
+          diffuseColor 0 1 1
         }
       }
       geometry Box {
@@ -337,8 +412,75 @@ Solid {
   ]
   name "BLUE BOX"
   boundingObject USE b1
+  physics Physics {
+  }
   recognitionColors [
     0 0 1
+  ]
+}
+Solid {
+  translation -24.7162 -3.31697 0.0387247
+  rotation -2.93474e-17 -1.79724e-17 -1 2.23279
+  children [
+    DEF b1 Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 1
+        }
+      }
+      geometry Box {
+        size 0.05 0.05 0.01
+      }
+    }
+  ]
+  name "PLATFORM"
+  boundingObject USE b1
+  physics Physics {
+  }
+  recognitionColors [
+    0 0 1
+  ]
+}
+Solid {
+  translation -0.303932 3.26073 0.0487247
+  rotation -2.27507e-17 5.11385e-17 1 1.1706
+  children [
+    DEF b1 Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 1
+        }
+      }
+      geometry Box {
+        size 0.08 0.08 0.08
+      }
+    }
+  ]
+  name "BLUE BOX(1)"
+  boundingObject USE b1
+  recognitionColors [
+    0 0 1
+  ]
+}
+Solid {
+  translation -9.51274 11.974 0.0487247
+  rotation 1.13152e-17 2.94518e-17 1 2.7414
+  children [
+    DEF b1 Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 1 0
+        }
+      }
+      geometry Box {
+        size 0.08 0.08 0.08
+      }
+    }
+  ]
+  name "GREEN BOX"
+  boundingObject USE b1
+  recognitionColors [
+    0 1 0
   ]
 }
 Solid {
