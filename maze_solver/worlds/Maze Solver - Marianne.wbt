@@ -1,0 +1,556 @@
+#VRML_SIM R2023b utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/kuka/youbot/protos/Youbot.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/RectangleArena.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  orientation 0.3694292495102763 -0.5744981565414167 -0.7303929748681789 4.7432693600633895
+  position -24.724897663445034 -4.414423628288151 3.9830438248927766
+  follow "youBot"
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  rotation 0 0 -1 0.406
+  floorSize 60 60
+  floorTileSize 60 60
+  floorAppearance PBRAppearance {
+    roughness 1
+    metalness 0
+  }
+  wallThickness 2
+  wallHeight 2
+}
+Youbot {
+  hidden position_0_0 4293.9813798645755
+  hidden position_0_1 6455.158312016917
+  hidden position_0_2 3860.0249189182064
+  hidden position_0_3 5316.250573930389
+  hidden linearVelocity_0 4.470162293157725e-06 -1.0402877595777465e-06 -7.88041010170831e-05
+  hidden angularVelocity_0 1.5972497827556107e-05 6.898425914246919e-05 -1.8309669299339009e-07
+  hidden position_19_0 -4.062348950236053e-06
+  hidden rotation_20 0 0 -1 4.062309077117841e-06
+  hidden position_20_0 0.0013954820766513781
+  hidden linearVelocity_20 1.5059803366049058e-05 -4.978537404841784e-06 -8.140942725411526e-05
+  hidden angularVelocity_20 1.5996103736875434e-05 6.907987512004789e-05 2.3276927912757664e-05
+  hidden rotation_21 0 -1 0 0.0013954820765314348
+  hidden position_21_0 1.937936325587832e-06
+  hidden linearVelocity_21 2.16645678201987e-05 -5.73420070066737e-06 -8.529196899093158e-05
+  hidden angularVelocity_21 1.7394245954879188e-05 6.852238326037976e-05 2.3276974931995234e-05
+  hidden rotation_22 0 -1 0 1.937838579059779e-06
+  hidden position_22_0 -3.073194827786979e-08
+  hidden linearVelocity_22 3.084198802340758e-05 -9.524757674491534e-06 -8.279750302122685e-05
+  hidden angularVelocity_22 2.0523350402805357e-05 6.727570500053748e-05 2.3277178806151947e-05
+  hidden rotation_23 0 1 0 2.9802322387695313e-08
+  hidden position_23_0 -1.4272881669449049e-08
+  hidden linearVelocity_23 3.748143811148288e-05 -1.0995113009967064e-05 -8.516624739274109e-05
+  hidden angularVelocity_23 2.052314993181915e-05 6.72754689701674e-05 2.327716079494704e-05
+  hidden position_24_0 1.3847325943871651e-05
+  hidden position_24_1 1.58809861285855e-05
+  hidden linearVelocity_24 4.42000694575846e-05 -1.3045244597006052e-05 -8.59559144935389e-05
+  hidden angularVelocity_24 2.052297186369061e-05 6.727544246807782e-05 2.3276351321003856e-05
+  hidden translation_25 0 1.3847325943871651e-05 0.09
+  hidden linearVelocity_25 4.848073375876266e-05 -1.4598976520315461e-05 -8.576077099885514e-05
+  hidden angularVelocity_25 2.052295904415378e-05 6.727543546099883e-05 2.3276350027222835e-05
+  hidden translation_26 0 -1.58809861285855e-05 0.09
+  hidden linearVelocity_26 4.86534428814094e-05 -1.4165085053135947e-05 -8.716482981049731e-05
+  hidden angularVelocity_26 2.052296370948915e-05 6.727544623218754e-05 2.3276352530012383e-05
+  hidden rotation_27 0 -0.9999999999999999 0 3.7173702462616487
+  hidden linearVelocity_27 -1.5207855705789816e-06 -1.3611781179544922e-05 -9.170770569674992e-05
+  hidden angularVelocity_27 1.7241147005470815e-05 6.847391520403081e-05 -1.8427153937288208e-07
+  hidden rotation_28 0 -0.9999999999999999 0 3.9561837636978185
+  hidden linearVelocity_28 -1.6431444846206062e-06 -1.3695353259803105e-05 -6.968546382469848e-05
+  hidden angularVelocity_28 1.725456917928854e-05 6.847457703726025e-05 -1.8465082166394478e-07
+  hidden rotation_29 0 1 0 2.1491403099402704
+  hidden linearVelocity_29 8.572891995440983e-06 1.2183768525711969e-05 -8.719268129342412e-05
+  hidden angularVelocity_29 1.4683676089668277e-05 6.950151544474153e-05 -1.8419178002981064e-07
+  hidden rotation_30 0 1 0 0.6758040564586226
+  hidden linearVelocity_30 8.398690847105252e-06 1.1925444344658541e-05 -6.49944618502199e-05
+  hidden angularVelocity_30 1.4713098695904029e-05 6.949353018427663e-05 -1.841815134857362e-07
+  translation -24.24551565358084 -2.169136677293409 0.0988848681857073
+  rotation -0.002181189292746876 0.003071039103144269 0.9999929055408823 1.1921948123537074
+  controller "youbot_controller"
+  bodySlot [
+    DistanceSensor {
+      translation 0.308319 0.000267428 -0.03
+      rotation 0.9999999999971059 -1.620879999995309e-06 -1.7779899999948542e-06 -1.5707953071795862
+      children [
+        Solid {
+          translation 0.01 -0.002 0.0006
+          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Box {
+                size 0.01 0.01 0.115
+              }
+            }
+          ]
+        }
+      ]
+      name "w_front"
+      lookupTable [
+        0 0 0
+        1 1000 0
+      ]
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.008319 0.180267 -0.03
+      rotation 0.5773492691885823 0.5773502691890485 -0.5773512691895147 -2.094395307179586
+      children [
+        Solid {
+          translation 0.01 -0.002 0.0006
+          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Box {
+                size 0.01 0.01 0.115
+              }
+            }
+          ]
+        }
+      ]
+      name "w_left"
+      lookupTable [
+        0 0 0
+        0.9 1000 0
+      ]
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.151681 0.180267 -0.03
+      rotation 0.5773492691885823 0.5773502691890485 -0.5773512691895147 -2.094395307179586
+      children [
+        Solid {
+          translation 0.01 -0.002 0.0006
+          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Box {
+                size 0.01 0.01 0.115
+              }
+            }
+          ]
+        }
+      ]
+      name "rear_left"
+      lookupTable [
+        0 0 0
+        0.9 1000 0
+      ]
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.158319 0.180267 -0.03
+      rotation 0.5773492691885823 0.5773502691890485 -0.5773512691895147 -2.094395307179586
+      children [
+        Solid {
+          translation 0.01 -0.002 0.0006
+          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Box {
+                size 0.01 0.01 0.115
+              }
+            }
+          ]
+        }
+      ]
+      name "front_left"
+      lookupTable [
+        0 0 0
+        0.9 1000 0
+      ]
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.0283189 -0.12973 -0.0300004
+      rotation -0.5773512691895147 0.5773502691890485 -0.5773492691885823 2.0944
+      children [
+        Solid {
+          translation 0.01 -0.002 0.0006
+          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Box {
+                size 0.01 0.01 0.115
+              }
+            }
+          ]
+        }
+      ]
+      name "w_right"
+      lookupTable [
+        0 0 0
+        0.9 1000 0
+      ]
+      type "infra-red"
+    }
+    Camera {
+      translation 0.28 0 0.04
+      children [
+        Solid {
+          rotation 0 1 0 1.5708
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Cylinder {
+                height 0.1
+                radius 0.02
+              }
+            }
+          ]
+        }
+      ]
+      name "cam"
+      fieldOfView 1
+      width 640
+      height 640
+      far 10
+      recognition Recognition {
+        frameThickness 5
+      }
+    }
+    DistanceSensor {
+      translation 0.322588 -0.139659 -0.04
+      rotation 0.1294279597735375 -0.9831056944488314 -0.1294279597735375 -1.5878353071795859
+      children [
+        DEF ls_right Solid {
+          translation 0 0.0496411 -0.028
+          rotation 1 0 0 1.0472
+          children [
+            DEF ls_right Shape {
+              appearance PBRAppearance {
+                baseColor 1 0.4 0
+                roughness 1
+                metalness 0
+              }
+              geometry Box {
+                size 0.02 0.02 0.115
+              }
+            }
+          ]
+          name "ls_right"
+        }
+      ]
+      name "ls_right"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.32967 0.121655 -0.0419665
+      rotation 0.6232131723564657 -0.5529947563641509 -0.552993798550349 -2.0944003061004253
+      children [
+        DEF ls_left Solid {
+          translation 0 0.0496411 -0.028
+          rotation 1 0 0 1.0472
+          children [
+            DEF ls_left Shape {
+              appearance PBRAppearance {
+                baseColor 1 0.4 0
+                roughness 1
+                metalness 0
+              }
+              geometry Box {
+                size 0.02 0.02 0.115
+              }
+            }
+          ]
+          name "ls_left"
+        }
+      ]
+      name "ls_left"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.338319 0.000267444 -0.04
+      rotation -0.44721312362157567 0.7745972141192264 0.44721312362157567 1.82348
+      children [
+        DEF ls_middle Solid {
+          translation 0 0.0496411 -0.028
+          rotation 1 0 0 1.0472
+          children [
+            DEF ls_middle Shape {
+              appearance PBRAppearance {
+                baseColor 1 0.4 0
+                roughness 1
+                metalness 0
+              }
+              geometry Box {
+                size 0.02 0.02 0.115
+              }
+            }
+          ]
+          name "ls_middle"
+        }
+      ]
+      name "ls_middle"
+      type "infra-red"
+    }
+  ]
+}
+DEF start Solid {
+  translation -20.0518 -26.4939 0
+  rotation 0 0 -1 0.130895
+  children [
+    DEF start Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+      }
+      geometry Mesh {
+        url [
+          "../protos/start.stl"
+        ]
+      }
+    }
+  ]
+  name "start"
+  recognitionColors [
+    0 0 0
+  ]
+}
+DEF end Solid {
+  translation -14.8954 -19.5263 0
+  rotation 0 0 1 -0.3926946938995747
+  children [
+    DEF end Shape {
+      appearance PBRAppearance {
+        baseColor 1 0 0
+        metalness 0
+      }
+      geometry Mesh {
+        url [
+          "../protos/end.stl"
+        ]
+      }
+    }
+  ]
+  name "end"
+  recognitionColors [
+    0 0 0
+  ]
+}
+DEF red Solid {
+  translation -15.0989 -19.442 0
+  rotation 0 0 1 -0.3926946938995747
+  children [
+    DEF red Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 1 0.4 0
+        }
+      }
+      geometry Mesh {
+        url [
+          "../protos/letters.stl"
+        ]
+      }
+    }
+  ]
+  name "LETTERS MAZE(1)"
+  boundingObject USE red
+  recognitionColors [
+    0 0 0
+  ]
+}
+DEF black Solid {
+  translation -15.068 -19.4983 0
+  rotation 0 0 1 -0.3926946938995747
+  children [
+    DEF black Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Mesh {
+        url [
+          "../protos/black.stl"
+        ]
+      }
+    }
+  ]
+  name "BLACK MAZE"
+  boundingObject USE black
+}
+DEF names Solid {
+  translation -15.068 -19.4983 0
+  rotation 0 0 1 -0.3926946938995747
+  children [
+    DEF black Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Mesh {
+        url [
+          "../protos/names.stl"
+        ]
+      }
+    }
+  ]
+  name "BLACK MAZE(1)"
+  boundingObject USE black
+}
+DEF maze Solid {
+  translation -15.068 -19.4983 0
+  rotation 0 0 1 -0.3926946938995747
+  children [
+    DEF black Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Mesh {
+        url [
+          "../protos/maze_title.stl"
+        ]
+      }
+    }
+  ]
+  name "BLACK MAZE(2)"
+  boundingObject USE black
+}
+DEF line_follower_title Solid {
+  translation -15.068 -19.4983 0
+  rotation 0 0 1 -0.3926946938995747
+  children [
+    DEF black Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Mesh {
+        url [
+          "../protos/line_title.stl"
+        ]
+      }
+    }
+  ]
+  name "BLACK MAZE(3)"
+  boundingObject USE black
+}
+Solid {
+  translation -15.2868 -19.6795 -0.39
+  rotation 0 0 -1 0.39269530610042536
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+      }
+      geometry Mesh {
+        url [
+          "../protos/line.stl"
+        ]
+      }
+    }
+  ]
+  name "line"
+}
+Solid {
+  translation 10.877 -15.575 0.0336759
+  rotation -2.424487051533373e-14 4.076627120236062e-14 -1 1.9869787120693798
+  children [
+    DEF b1 Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.1 0.5 1
+        }
+      }
+      geometry Box {
+        size 0.05 0.05 0.05
+      }
+    }
+  ]
+  name "BLUE BOX"
+  boundingObject USE b1
+  physics Physics {
+  }
+  recognitionColors [
+    0 0 1
+  ]
+}
+Solid {
+  translation 10.9899 -15.4458 0.0336759
+  rotation -2.486340918861178e-14 3.622129430377691e-14 -0.9999999999999999 1.9700532114641076
+  children [
+    DEF b1 Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 1 0.4 0
+        }
+      }
+      geometry Box {
+        size 0.05 0.05 0.05
+      }
+    }
+  ]
+  name "BLUE BOX(1)"
+  boundingObject USE b1
+  physics Physics {
+  }
+  recognitionColors [
+    0 0 1
+  ]
+}
+Solid {
+  translation 12.4391 -13.5816 -0.011275
+  rotation -3.389314249066104e-17 -1.5078499169417248e-17 -1 1.9709910307427163
+  children [
+    DEF b1 Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 1 0 0
+        }
+      }
+      geometry Box {
+        size 1.97 3 0.04
+      }
+    }
+  ]
+  name "END"
+  boundingObject USE b1
+  recognitionColors [
+    0 0 0
+  ]
+}
+Solid {
+  translation 11.8649 -30.6093 -0.011275
+  rotation -3.389314249066104e-17 -1.5078499169417248e-17 -1 1.7091903061004252
+  children [
+    DEF b1 Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 1 0
+        }
+      }
+      geometry Box {
+        size 2 2 0.04
+      }
+    }
+  ]
+  name "START"
+  boundingObject USE b1
+  recognitionColors [
+    0 0 0
+  ]
+}
