@@ -834,7 +834,7 @@ def process_camera_image_and_act():
                         follow_line_pid()
                     elif not maze_solved:
                         maze_solver()   
-                
+
         
 
 def AnotherFunction(obj):
