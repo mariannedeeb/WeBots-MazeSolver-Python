@@ -212,61 +212,6 @@ def maze_solver():
         robot.step(timestep)
 
 
-
-
-
-
-########
-
-
-
-# Constants for the wall following behavior
-# SAFE_DISTANCE_FRONT = 500  # Safe distance from the front wall (in mm)
-# SAFE_DISTANCE_LEFT = 500   # Safe distance from the left wall (in mm)
-# TURN_SPEED = 3.0           # Speed of the robot when turning
-# FORWARD_SPEED = 5.0        # Speed of the robot when moving forward
-
-# def maze_solver():
-    # global maze_solved
-    # Initialize PID variables
-    # last_error = 0
-    # integral = 0
-    # Kp = 0.05  # Proportional gain
-    # Ki = 0.0   # Integral gain
-    # Kd = 0.02  # Derivative gain
-
-    # print("Starting maze solving.")
-    # while robot.step(timestep) != -1 and not maze_solved:
-        # front_dist = max(wall_sensors["w_front"].getValue(), 0)
-        # left_dist = max(wall_sensors["w_left"].getValue(), 0)
-        # middle_sensor_value = line_sensors[1].getValue()
-
-        # print("Sensor Readings - Left: {}, Front: {}".format(left_dist, front_dist))
-
-        # Check if the middle sensor detects the red area
-        # if middle_sensor_value <= RED_AREA_THRESHOLD:
-            # print("Red area detected. Maze solved!")
-            # halt()
-            # maze_solved = True
-            # break
-
-        # Wall following logic
-        # if front_dist < SAFE_DISTANCE_FRONT:
-            # Turn right if an obstacle is detected in front
-            # set_wheel_velocity(-TURN_SPEED, TURN_SPEED, -TURN_SPEED, TURN_SPEED)
-        # else:
-            # Adjust the robot's course based on the left distance sensor
-            # error = left_dist - SAFE_DISTANCE_LEFT
-            # P = error
-            # integral += error
-            # pid_output = Kp * P + Ki * integral + Kd * (error - last_error)
-            # last_error = error
-
-            # Apply new velocities to the wheels
-            # left_wheel_velocity = FORWARD_SPEED + pid_output
-            # right_wheel_velocity = FORWARD_SPEED - pid_output
-            # set_wheel_velocity(left_wheel_velocity, left_wheel_velocity, right_wheel_velocity, right_wheel_velocity)
-
 ######################################################
 #Hrayr's Edition
 
