@@ -9,4 +9,4 @@ orthographicViewHeight: 1
 textFiles: 0 "controllers/youbot_controller/youbot_controller.py"
 globalOptionalRendering: DistanceSensorRays
 consoles: Console:All:All
-renderingDevicePerspectives: youBot:cam;1;0.125;0;0
+renderingDevicePerspectives: youBot:cam;1;0.546875;0;0

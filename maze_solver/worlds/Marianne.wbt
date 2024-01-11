@@ -8,8 +8,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.35598132715829134 0.5646370022130901 0.7446222871002697 1.558418211675487
-  position -24.1570684927382 -1.2948463894300033 2.063550186460312
+  orientation -0.3108574757418334 0.4846204897492608 0.8176249816942985 1.4029887825832517
+  position -26.030215651962887 -6.078123302450624 7.649835140658639
   follow "youBot"
 }
 TexturedBackground {
@@ -478,12 +478,14 @@ DEF black Solid {
     DEF black Shape {
       appearance Appearance {
         material Material {
-          diffuseColor 0 0 0
+          diffuseColor 1 0.1 0
+          emissiveColor 0.9 0 0
+          specularColor 1 0 0
         }
       }
       geometry Mesh {
         url [
-          "../protos/black.stl"
+          "../protos/90Degrees.stl"
         ]
       }
     }
@@ -589,6 +591,52 @@ Solid {
   }
   recognitionColors [
     0 0 1
+  ]
+}
+Solid {
+  translation -21.0582 5.8449 0.0388285
+  rotation 9.269692000114307e-17 -3.5359296505454824e-17 -1 1.9709910307427163
+  children [
+    DEF b1 Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 1
+        }
+      }
+      geometry Box {
+        size 0.08 0.08 0.08
+      }
+    }
+  ]
+  name "BLUE BOX(1)"
+  boundingObject USE b1
+  physics Physics {
+  }
+  recognitionColors [
+    0 0 1
+  ]
+}
+Solid {
+  translation -19.1584 10.0794 0.0388285
+  rotation 9.269692000114307e-17 -3.5359296505454824e-17 -1 1.9709910307427163
+  children [
+    DEF b1 Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 1 0 0
+        }
+      }
+      geometry Box {
+        size 0.08 0.08 0.08
+      }
+    }
+  ]
+  name "BLUE BOX(2)"
+  boundingObject USE b1
+  physics Physics {
+  }
+  recognitionColors [
+    1 0 0
   ]
 }
 Solid {

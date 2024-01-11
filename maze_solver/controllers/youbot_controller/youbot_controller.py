@@ -12,6 +12,8 @@ timestep = int(robot.getBasicTimeStep())
 # Global flag to indicate maze completion
 maze_solved = False
 
+Avoided = False
+
 ######################################################################################    
 #INITIALIZATIONS
 
@@ -608,153 +610,220 @@ def PickupBox(box):
 # Avoiding the Box with the same stored color
 
 def AvoidBox():
-
-    # Assuming 'robot' and 'timestep' are already defined in your global scope
-    global robot, timestep
+    global Avoided, robot, timestep # Declare the use of the global variable
+    print("############\nAvoiding Loop.")
+    while robot.step(timestep) != -1 and not Avoided:  # Check the flag in the loop condition
     
-    b_front = max(box_sensors["b_front"].getValue(), 0)
-    b_front1 = max(box_sensors["b_front1"].getValue(), 0)
-    b_front2 = max(box_sensors["b_front2"].getValue(), 0)
     
-    set_wheel_velocity(5.0, 5.0, 5.0, 5.0)
+        b_front = max(box_sensors["b_front"].getValue(), 0)
+        b_front1 = max(box_sensors["b_front1"].getValue(), 0)
+        b_front2 = max(box_sensors["b_front2"].getValue(), 0)
+        
+        set_wheel_velocity(5.0, 5.0, 5.0, 5.0)
+        
+        # Parameters for obstacle avoidance
+        safe_distance = 850  # Safe distance to maintain from the box
+        turn_speed = 4.0     # Speed for turning
+        turn_speed1 = 4.0     # Speed for turning
+        forward_speed = 5.0  # Speed for moving forward
+        turn_duration_right = 2.2  # Turning time to the right in seconds
+        turn_duration_right1 = 2.5  # Turning time to the right in seconds
+        turn_duration_forward = 1.5  # Turning time to more forward in seconds
+        turn_duration_left = 4.0   # Turning time to the left in seconds
+        turn_duration_left1 = 2.2   # Turning time to the left in seconds
     
-    # Parameters for obstacle avoidance
-    safe_distance = 850  # Safe distance to maintain from the box
-    turn_speed = 4.0     # Speed for turning
-    turn_speed1 = 4.0     # Speed for turning
-    forward_speed = 5.0  # Speed for moving forward
-    turn_duration_right = 2.2  # Turning time to the right in seconds
-    turn_duration_right1 = 2.5  # Turning time to the right in seconds
-    turn_duration_forward = 1.5  # Turning time to more forward in seconds
-    turn_duration_left = 4.0   # Turning time to the left in seconds
-    turn_duration_left1 = 2.2   # Turning time to the left in seconds
-
-
-    print("############\nAvoiding Box.")
-    print(f"Sensors Values: \nLeft: {b_front1}\nRight: {b_front2}\nFront: {b_front}")
     
-    # Calculate the number of simulation steps for the desired turn durations
-    num_steps_to_turn_right = int((turn_duration_right * 1000) / timestep)
-    num_steps_to_turn_right1 = int((turn_duration_right1 * 1000) / timestep)
-    num_steps_to_turn_left = int((turn_duration_left * 1000) / timestep)
-    num_steps_to_turn_left1 = int((turn_duration_left1 * 1000) / timestep)
-    num_steps_to_turn_forward = int((turn_duration_forward * 1000) / timestep)
+        print("############\nAvoiding Box.")
+        print(f"Avoided Value: ", str(Avoided))
+        print(f"Sensors Values: \nLeft: {b_front1}\nRight: {b_front2}\nFront: {b_front}")
+        
+        # Calculate the number of simulation steps for the desired turn durations
+        num_steps_to_turn_right = int((turn_duration_right * 1000) / timestep)
+        num_steps_to_turn_right1 = int((turn_duration_right1 * 1000) / timestep)
+        num_steps_to_turn_left = int((turn_duration_left * 1000) / timestep)
+        num_steps_to_turn_left1 = int((turn_duration_left1 * 1000) / timestep)
+        num_steps_to_turn_forward = int((turn_duration_forward * 1000) / timestep)
+        
+        if b_front < safe_distance or b_front1 < safe_distance:
+            # Turn right for a set duration
+            for _ in range(num_steps_to_turn_right):
+                # Perform the turn
+                set_wheel_velocity(forward_speed - turn_speed, forward_speed, forward_speed - turn_speed, forward_speed)
+                # Step simulation to proceed to the next time step
+                if robot.step(timestep) == -1:
+                    break
+            # After turning right, move forward for a set duration
+            for _ in range(num_steps_to_turn_forward):
+                set_wheel_velocity(forward_speed, forward_speed, forward_speed, forward_speed)
+                # Step simulation to proceed to the next time step
+                if robot.step(timestep) == -1:
+                    break       
+                    
+             # After moving forward, turn left for a set duration
+            for _ in range(num_steps_to_turn_left1):
+                # Perform the turn
+                # set_wheel_velocity(forward_speed - turn_speed, forward_speed, forward_speed - turn_speed, forward_speed)
+                set_wheel_velocity(forward_speed, forward_speed - turn_speed, forward_speed, forward_speed - turn_speed)
+                # Step simulation to proceed to the next time step
+                if robot.step(timestep) == -1:
+                    break
+                    
+            # move forward for a set duration
+            for _ in range(num_steps_to_turn_forward):
+                set_wheel_velocity(forward_speed, forward_speed, forward_speed, forward_speed)
+                # Step simulation to proceed to the next time step
+                if robot.step(timestep) == -1:
+                    break     
+                    
+                    
+            #################### Correct place ####################      
+             # After turning left, turn left for a set duration
+            for _ in range(num_steps_to_turn_left1):
+                # Perform the turn
+                # set_wheel_velocity(forward_speed - turn_speed, forward_speed, forward_speed - turn_speed, forward_speed)
+                set_wheel_velocity(forward_speed, forward_speed - turn_speed, forward_speed, forward_speed - turn_speed)
+                # Step simulation to proceed to the next time step
+                if robot.step(timestep) == -1:
+                    break
+                    
+             # Turn right for a set duration
+            for _ in range(num_steps_to_turn_right):
+                # Perform the turn
+                set_wheel_velocity(forward_speed - turn_speed, forward_speed, forward_speed - turn_speed, forward_speed)
+                print(f"AAAAAAAAAAAAAAAAAAAAAAAAA ")
+                Avoided = True
+                # Step simulation to proceed to the next time step
+                if robot.step(timestep) == -1:
+                    break
+                
+    #################### Extra time for the right turn because the box is on the right ####################         
     
-    if b_front < safe_distance or b_front1 < safe_distance:
-        # Turn right for a set duration
-        for _ in range(num_steps_to_turn_right):
-            # Perform the turn
-            set_wheel_velocity(forward_speed - turn_speed, forward_speed, forward_speed - turn_speed, forward_speed)
-            # Step simulation to proceed to the next time step
-            if robot.step(timestep) == -1:
-                break
-        # After turning right, move forward for a set duration
-        for _ in range(num_steps_to_turn_forward):
-            set_wheel_velocity(forward_speed, forward_speed, forward_speed, forward_speed)
-            # Step simulation to proceed to the next time step
-            if robot.step(timestep) == -1:
-                break       
+        elif b_front2 < safe_distance:
+            # Turn right for a set duration
+            for _ in range(num_steps_to_turn_right1):
+                # Perform the turn
+                set_wheel_velocity(forward_speed - turn_speed, forward_speed, forward_speed - turn_speed, forward_speed)
+                # Step simulation to proceed to the next time step
+                if robot.step(timestep) == -1:
+                    break
+            # After turning right, move forward for a set duration
+            for _ in range(num_steps_to_turn_forward):
+                set_wheel_velocity(forward_speed, forward_speed, forward_speed, forward_speed)
+                # Step simulation to proceed to the next time step
+                if robot.step(timestep) == -1:
+                    break       
+                    
+             # After moving forward, turn left for a set duration
+            for _ in range(num_steps_to_turn_left1):
+                # Perform the turn
+                # set_wheel_velocity(forward_speed - turn_speed, forward_speed, forward_speed - turn_speed, forward_speed)
+                set_wheel_velocity(forward_speed, forward_speed - turn_speed, forward_speed, forward_speed - turn_speed)
+                # Step simulation to proceed to the next time step
+                if robot.step(timestep) == -1:
+                    break
+                    
+            # move forward for a set duration
+            for _ in range(num_steps_to_turn_forward):
+                set_wheel_velocity(forward_speed, forward_speed, forward_speed, forward_speed)
+                # Step simulation to proceed to the next time step
+                if robot.step(timestep) == -1:
+                    break     
+                    
+                    
+            #################### Correct place ####################      
+             # After turning left, turn left for a set duration
+            for _ in range(num_steps_to_turn_left1):
+                # Perform the turn
+                # set_wheel_velocity(forward_speed - turn_speed, forward_speed, forward_speed - turn_speed, forward_speed)
+                set_wheel_velocity(forward_speed, forward_speed - turn_speed, forward_speed, forward_speed - turn_speed)
+                # Step simulation to proceed to the next time step
+                if robot.step(timestep) == -1:
+                    break
+                    
+             # Turn right for a set duration
+            for _ in range(num_steps_to_turn_right):
+                # Perform the turn
+                set_wheel_velocity(forward_speed - turn_speed, forward_speed, forward_speed - turn_speed, forward_speed)
+                print(f"AAAAAAAAAAAAAAAAAAAAAAAAA ")
+                Avoided = True
                 
-         # After moving forward, turn left for a set duration
-        for _ in range(num_steps_to_turn_left1):
-            # Perform the turn
-            # set_wheel_velocity(forward_speed - turn_speed, forward_speed, forward_speed - turn_speed, forward_speed)
-            set_wheel_velocity(forward_speed, forward_speed - turn_speed, forward_speed, forward_speed - turn_speed)
-            # Step simulation to proceed to the next time step
-            if robot.step(timestep) == -1:
-                break
-                
-        # move forward for a set duration
-        for _ in range(num_steps_to_turn_forward):
-            set_wheel_velocity(forward_speed, forward_speed, forward_speed, forward_speed)
-            # Step simulation to proceed to the next time step
-            if robot.step(timestep) == -1:
-                break     
-                
-                
-        # Correct place        
-         # After turning left, turn left for a set duration
-        for _ in range(num_steps_to_turn_left1):
-            # Perform the turn
-            # set_wheel_velocity(forward_speed - turn_speed, forward_speed, forward_speed - turn_speed, forward_speed)
-            set_wheel_velocity(forward_speed, forward_speed - turn_speed, forward_speed, forward_speed - turn_speed)
-            # Step simulation to proceed to the next time step
-            if robot.step(timestep) == -1:
-                break
-                
-         # Turn right for a set duration
-        for _ in range(num_steps_to_turn_right):
-            # Perform the turn
-            set_wheel_velocity(forward_speed - turn_speed, forward_speed, forward_speed - turn_speed, forward_speed)
-            # Step simulation to proceed to the next time step
-            if robot.step(timestep) == -1:
-                break
-                
-    elif b_front2 < safe_distance:
-        # Turn right for a set duration
-        for _ in range(num_steps_to_turn_right1):
-            # Perform the turn
-            set_wheel_velocity(forward_speed - turn_speed, forward_speed, forward_speed - turn_speed, forward_speed)
-            # Step simulation to proceed to the next time step
-            if robot.step(timestep) == -1:
-                break
-        # After turning right, move forward for a set duration
-        for _ in range(num_steps_to_turn_forward):
-            set_wheel_velocity(forward_speed, forward_speed, forward_speed, forward_speed)
-            # Step simulation to proceed to the next time step
-            if robot.step(timestep) == -1:
-                break       
-                
-         # After moving forward, turn left for a set duration
-        for _ in range(num_steps_to_turn_left1):
-            # Perform the turn
-            # set_wheel_velocity(forward_speed - turn_speed, forward_speed, forward_speed - turn_speed, forward_speed)
-            set_wheel_velocity(forward_speed, forward_speed - turn_speed, forward_speed, forward_speed - turn_speed)
-            # Step simulation to proceed to the next time step
-            if robot.step(timestep) == -1:
-                break
-                
-        # move forward for a set duration
-        for _ in range(num_steps_to_turn_forward):
-            set_wheel_velocity(forward_speed, forward_speed, forward_speed, forward_speed)
-            # Step simulation to proceed to the next time step
-            if robot.step(timestep) == -1:
-                break     
-                
-                
-        # Correct place        
-         # After turning left, turn left for a set duration
-        for _ in range(num_steps_to_turn_left1):
-            # Perform the turn
-            # set_wheel_velocity(forward_speed - turn_speed, forward_speed, forward_speed - turn_speed, forward_speed)
-            set_wheel_velocity(forward_speed, forward_speed - turn_speed, forward_speed, forward_speed - turn_speed)
-            # Step simulation to proceed to the next time step
-            if robot.step(timestep) == -1:
-                break
-                
-         # Turn right for a set duration
-        for _ in range(num_steps_to_turn_right):
-            # Perform the turn
-            set_wheel_velocity(forward_speed - turn_speed, forward_speed, forward_speed - turn_speed, forward_speed)
-            # Step simulation to proceed to the next time step
-            if robot.step(timestep) == -1:
-                break
-                
-    else:
-        # If no box is detected within the safe distance, move forward
-        set_wheel_velocity(forward_speed, forward_speed, forward_speed, forward_speed)
+                # Step simulation to proceed to the next time step
+                if robot.step(timestep) == -1:
+                    break
+                    
+        # else:
+            # If no box is detected within the safe distance, move forward
+            # set_wheel_velocity(forward_speed, forward_speed, forward_speed, forward_speed)
+            # Avoided = True
 
              
 ######################################################################################    
+# Global variable to store the color of the first encountered object
+first_object_color = None
+
+def process_camera_image_and_act():
+    global first_object_color
+    safe_distance = 850  # Safe distance to maintain from the box
+    b_front = max(box_sensors["b_front"].getValue(), 0)
+    b_front1 = max(box_sensors["b_front1"].getValue(), 0)
+    b_front2 = max(box_sensors["b_front2"].getValue(), 0)
+    # Get the recognized objects from the camera
+    recognized_objects = camera.getRecognitionObjects()
+
+    # If there are no recognized objects, simply return
+    if not recognized_objects:
+        return
+
+    # Loop through recognized objects
+    for obj in recognized_objects:
+        # Get the pointer to the color array
+        color_ptr = obj.getColors()
+        
+        # Convert the pointer to an array of three doubles
+        color_array = ctypes.cast(color_ptr, ctypes.POINTER(ctypes.c_double * 3))
+        
+        # Access the color values
+        color = color_array.contents
+
+        # If first_object_color has not been set, store the color of the first encountered object
+        if first_object_color is None:
+            
+            first_object_color = (color[0], color[1], color[2])
+            print(f"Detected first object, Color is:", str(first_object_color))
+            # Call the AvoidBox() function for the first object
+            AvoidBox()
+            return  # After handling the first object, return
+
+        # For subsequent objects, check if their color matches the first object's color
+        if (color[0], color[1], color[2]) == first_object_color:
+            if b_front < safe_distance or b_front1 < safe_distance or b_front2 < safe_distance:
+                # Call the AvoidBox() function for objects with matching color
+                print(f"Same Color")
+                AvoidBox()
+                return
+            else:
+                return
+            
+                
+        else:
+            # Call another function for objects with a different color
+            AnotherFunction(obj)
+
+def AnotherFunction(obj):
+    # Placeholder for another function that handles objects with a different color
+    # Implement the desired behavior here
+    print(f"I SHOULD GRAB THAT")
+    pass
 
 # Main robot control loop
 while robot.step(timestep) != -1:
     if maze_solved:
         print("Exiting the program.")
         break  # Exit the loop if the maze is solved
-    
-    
-    AvoidBox()
+
+    process_camera_image_and_act()
+    # Other robot behaviors...
+    # AvoidBox()
     # follow_line_pid()  
     #process_camera_image()
     #LeftRight()
