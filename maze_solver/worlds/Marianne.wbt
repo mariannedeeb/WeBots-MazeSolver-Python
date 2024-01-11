@@ -8,8 +8,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.3548056040709816 -0.6139000070774732 -0.705152298890179 4.846040715488881
-  position -27.007615303377516 -8.376684348689723 11.765610980082629
+  orientation 0.32203372513216627 -0.5380713988581826 -0.7789566416741687 4.902878848117984
+  position -25.951987786190404 -6.045386391484383 4.4316762403645225
   follow "youBot"
 }
 TexturedBackground {
@@ -58,11 +58,11 @@ Youbot {
       type "infra-red"
     }
     DistanceSensor {
-      translation 0.308319 0.0602674 -0.03
+      translation 0.311979 0.0739272 -0.03
       rotation 0.9351127859349406 0.25056194264161724 -0.25056494264093043 -1.6378353071795866
       children [
         Solid {
-          translation 0.01 -0.00200005 0.0106
+          translation 0.00999998 -0.002 0.0006
           rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
           children [
             Shape {
