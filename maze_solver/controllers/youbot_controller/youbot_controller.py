@@ -166,7 +166,7 @@ def process_camera_image():
 #PID
     
 def follow_line_pid():
-    # PID coefficients
+
     Kp = 0.05  # Proportional gain
     Ki = 0.0   # Integral gain
     Kd = 0.02  # Derivative gain
@@ -189,7 +189,7 @@ def follow_line_pid():
 
     if left_value < line_threshold and middle_value < line_threshold and right_value < line_threshold:
         # Robot entered the maze, exit follow_line_pid and start solving
-        maze_solver()
+        maze_solverrr()
         return
     elif left_value < off_line_threshold:
         if right_value == line_threshold:
@@ -223,64 +223,7 @@ def follow_line_pid():
     set_wheel_velocity(left_wheel_velocity, left_wheel_velocity, right_wheel_velocity, right_wheel_velocity)
     
     
-    
-    
-    
-    
-    
-    
-#######################################################
-#MAZE SOLVING
-
-
-
-# def maze_solver():
-    # global maze_solved  
-    # print("Starting maze solving.")
-
-    # recognized_objects = camera.getRecognitionObjects()
-    # while robot.step(timestep) != -1 and not maze_solved and not recognized_objects:  # Check the flag in the loop condition
-
-        # front_dist = max(wall_sensors["w_front"].getValue(), 0)
-        # left_dist = max(wall_sensors["w_left"].getValue(), 0)
-        # middle_sensor_value = line_sensors[1].getValue() 
-        
-        # print("middle sensor value: ", middle_sensor_value)
-     
-        # if middle_sensor_value <= RED_AREA_THRESHOLD:
-            # print("Red area detected. Maze solved!")
-            # halt() 
-            # maze_solved = True  
-            # break  
-            
-        
-
-        # if left_dist < 1000 and front_dist > SAFE_DISTANCE:
-            # set_wheel_velocity(7.0, 7.0, 7.0, 7.0)
-
-
-        # elif front_dist <= SAFE_DISTANCE:
-            # set_wheel_velocity(-TURN_SPEED, TURN_SPEED, -TURN_SPEED, TURN_SPEED)
-            # while robot.step(timestep) != -1 and max(wall_sensors["w_front"].getValue(), 0) <= SAFE_DISTANCE:
-
-                # pass
-
-            # set_wheel_velocity(7.0, 7.0, 7.0, 7.0)
-
-
-        # elif left_dist == 1000:
-
-            # set_wheel_velocity(0, 0, 0, 0)
-            # robot.step(timestep) 
-            
-
-            # while robot.step(timestep) != -1 and max(wall_sensors["w_left"].getValue(), 0) >= 1000:
-                # set_wheel_velocity(TURN_SPEED, -TURN_SPEED, TURN_SPEED, -TURN_SPEED)
-
-            # set_wheel_velocity(7.0, 7.0, 7.0, 7.0)
-
-
-        # robot.step(timestep)
+   
 
 ######################################################
 
@@ -299,7 +242,7 @@ def adjust_speed(desired, actual):
     k_p = 0.01  
     return max(-MAX_VELOCITY, min(MAX_VELOCITY, k_p * error))
     
-def maze_solver():
+def maze_solverrr():
     global maze_solved  # Declare the use of the global variable
     print("Starting maze solving.")
     
@@ -325,10 +268,11 @@ def maze_solver():
         # Calculate the adjustment to the left wheel speed based on the distance error
         left_speed_adjustment = adjust_speed(400, left_dist)
   
-        # If there's a wall to the left and space in front, move forward with left speed adjustment       
+        # If there's a wall to the left and space in front, move forward with left speed adjustment
         
-        if left_dist < 1000 and sonarl < 1000 and front_dist > SAFE_DISTANCE:
-            print("Sonar Front Distance: ", sonarf)
+        
+        if left_dist < 900 and sonarl < 1000 and front_dist > SAFE_DISTANCE:
+            print("Sonar Front Distance: ",sonarf)
             print("FORWARD - Adjusted Left Speed:", left_speed_adjustment)
             set_wheel_velocity(f_speed , f_speed + left_speed_adjustment, f_speed , f_speed + left_speed_adjustment)
                 
@@ -363,11 +307,10 @@ def maze_solver():
             DEFAULT_DESIRED_DISTANCE = 400  # Reset the desired distance after turning
 
         # Perform a step to update sensor readings after each action
-        print(f"Sensor Readings - Left: {left_dist}, Front: {front_dist} , Sonar Left: {sonarl} , Sonar Front: {sonarf}")
+        print(f"Sensor Readings - Left: {left_dist}, Front: {front_dist} , Sonar Left: {sonarl}")
         robot.step(timestep)
         
-        
-
+     
 
 
 
