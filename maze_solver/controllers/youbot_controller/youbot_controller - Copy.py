@@ -55,7 +55,7 @@ for name in wall_sensor_names:
 
 # Initialize box distance sensors.
 box_sensors = {}
-box_sensor_names = ["b_front", "b_front1", "b_front2"]
+box_sensor_names = ["b_front", "b_left", "b_right"]
 for name in box_sensor_names:
     sensor = robot.getDevice(name)
     if sensor is None:
@@ -64,42 +64,7 @@ for name in box_sensor_names:
     sensor.enable(timestep)
     box_sensors[name] = sensor
 
-#! Initialize arm motors.
-armMotors = []
-armMotors.append(robot.getDevice("arm1"))
-armMotors.append(robot.getDevice("arm2"))
-armMotors.append(robot.getDevice("arm3"))
-armMotors.append(robot.getDevice("arm4"))
-armMotors.append(robot.getDevice("arm5"))
-# Set the maximum motor velocity.
-armMotors[0].setVelocity(1.5) # maxVelocity = 1.5
-armMotors[1].setVelocity(1.5)
-armMotors[2].setVelocity(1.5)
-armMotors[3].setVelocity(0.5)
-armMotors[4].setVelocity(1.5)
-
-#! Initialize arm position sensors.
-# These sensors can be used to get the current 
-# joint position and monitor the joint movements.
-armPositionSensors = []
-armPositionSensors.append(robot.getDevice("arm1sensor"))
-armPositionSensors.append(robot.getDevice("arm2sensor"))
-armPositionSensors.append(robot.getDevice("arm3sensor"))
-armPositionSensors.append(robot.getDevice("arm4sensor"))
-armPositionSensors.append(robot.getDevice("arm5sensor"))
-for sensor in armPositionSensors:
-    sensor.enable(timestep)
-
-#! Initialize gripper motors.
-finger1 = robot.getDevice("finger::left")
-finger2 = robot.getDevice("finger::right")
-# Set the maximum motor velocity.
-finger1.setVelocity(1.5)
-finger2.setVelocity(1.5) # 0.03
-# Read the miminum and maximum position of the gripper motors.
-fingerMinPosition = finger1.getMinPosition()
-fingerMaxPosition = finger1.getMaxPosition()
-
+   
 ####################################################################################
 # Function to set wheel velocities
 
@@ -312,32 +277,11 @@ def turn_right():
     set_wheel_velocity(-TURN_SPEED, TURN_SPEED, -TURN_SPEED, TURN_SPEED)
     robot.step(TURN_DURATION * timestep)
     halt()  # Stop the robot after turning
-    
-def turn_around(time):
-#TODO: robot.step(70 * timestep) - produces a 90 degrees turn
-    wheels[0].setVelocity(14)
-    wheels[1].setVelocity(-14)
-    wheels[2].setVelocity(14)
-    wheels[3].setVelocity(-14)
-    robot.step(70 * timestep)
-    # forward()
-    
-def turn_around1():
+
+def turn_around():
     # Set wheels to turn around (180 degrees)
     set_wheel_velocity(TURN_SPEED, -TURN_SPEED, TURN_SPEED, -TURN_SPEED)
     robot.step(2 * TURN_DURATION * timestep)  # Double the duration for a full turn
-    halt()  # Stop the robot after turning
-
-# Function to turn the robot left for a specified duration
-def turn_left_seconds(duration_seconds):
-    set_wheel_velocity(10, -10, 10, -10)
-    robot.step(int(duration_seconds * 1000 / timestep))  # Convert seconds to milliseconds
-      # Stop the robot after turning
-
-# Function to turn the robot right for a specified duration
-def turn_right_seconds(duration_seconds):
-    set_wheel_velocity(-10, 10, -10, 10)
-    robot.step(int(duration_seconds * 1000 / timestep))  # Convert seconds to milliseconds
     halt()  # Stop the robot after turning
 
 def halt():
@@ -357,7 +301,59 @@ def backward(time):
     robot.step(time * timestep)
 
 ######################################################################################    
-# Robotic Arm Movement Functions
+# THE BOX CODE
+
+#! Initialize arm motors.
+armMotors = []
+armMotors.append(robot.getDevice("arm1"))
+armMotors.append(robot.getDevice("arm2"))
+armMotors.append(robot.getDevice("arm3"))
+armMotors.append(robot.getDevice("arm4"))
+armMotors.append(robot.getDevice("arm5"))
+# Set the maximum motor velocity.
+armMotors[0].setVelocity(1.5) # maxVelocity = 1.5
+armMotors[1].setVelocity(1.5)
+armMotors[2].setVelocity(1.5)
+armMotors[3].setVelocity(0.5)
+armMotors[4].setVelocity(1.5)
+
+#! Initialize arm position sensors.
+# These sensors can be used to get the current 
+# joint position and monitor the joint movements.
+armPositionSensors = []
+armPositionSensors.append(robot.getDevice("arm1sensor"))
+armPositionSensors.append(robot.getDevice("arm2sensor"))
+armPositionSensors.append(robot.getDevice("arm3sensor"))
+armPositionSensors.append(robot.getDevice("arm4sensor"))
+armPositionSensors.append(robot.getDevice("arm5sensor"))
+for sensor in armPositionSensors:
+    sensor.enable(timestep)
+
+#! Initialize gripper motors.
+finger1 = robot.getDevice("finger::left")
+finger2 = robot.getDevice("finger::right")
+# Set the maximum motor velocity.
+finger1.setVelocity(1.5)
+finger2.setVelocity(1.5) # 0.03
+# Read the miminum and maximum position of the gripper motors.
+fingerMinPosition = finger1.getMinPosition()
+fingerMaxPosition = finger1.getMaxPosition()
+
+#! Generic forward motion function
+def forward(time):
+    for wheel in wheels:
+        wheel.setVelocity(7.0) # maxVelocity = 14.81
+    robot.step(time * timestep)
+    
+def backward(time):
+    for wheel in wheels:
+        wheel.setVelocity(-7.0) # maxVelocity = 14.81
+    robot.step(time * timestep)
+
+#! Generic stop function
+def halt():
+    for wheel in wheels:
+        wheel.setVelocity(0.0)
 
 def fold_arms():
     armMotors[0].setPosition(-2.9)
@@ -373,7 +369,14 @@ def stretch_arms():
     armMotors[3].setPosition(-1.7)
     armMotors[4].setPosition(0)
 
-
+def turn_around(time):
+#TODO: robot.step(70 * timestep) - produces a 90 degrees turn
+    wheels[0].setVelocity(14)
+    wheels[1].setVelocity(-14)
+    wheels[2].setVelocity(14)
+    wheels[3].setVelocity(-14)
+    robot.step(70 * timestep)
+    # forward()
 
 def pick_up():
     armMotors[1].setPosition(-1.1)
@@ -396,6 +399,7 @@ def pick_up():
     armMotors[1].setPosition(0)    # Lift arm.
     # Wait until the arm is lifted.
     # robot.step(200 * timestep)
+    
     
 def open_grippers():
     finger1.setPosition(fingerMaxPosition)
@@ -420,11 +424,9 @@ def hand_up():
     armMotors[3].setPosition(0)
     armMotors[4].setPosition(0)
     finger1.setPosition(fingerMaxPosition)
-    finger2.setPosition(fingerMaxPosition)  
-    
-######################################################################################    
-# THE BOX CODE
-######################################################################################    
+    finger2.setPosition(fingerMaxPosition)
+
+
 
 def check_box_distance():
 
@@ -432,8 +434,8 @@ def check_box_distance():
 
     while (box_detected == 0):
 
-        b_dist_front = max(box_sensors["b_front"].getValue(), 0)
-        b_dist_right = max(box_sensors["b_right"].getValue(), 0)
+        b_dist_front = max(wall_sensors["b_front"].getValue(), 0)
+        b_dist_right = max(wall_sensors["b_right"].getValue(), 0)
         print("FRONT BOX SENSOR: ", b_dist_front)
         print("RIGHT BOX SENSOR: ", b_dist_right)
         
@@ -449,7 +451,35 @@ def check_box_distance():
             drop()
             open_grippers()
 
-######################################################################################    
+def getIMUDegrees(): #convert radians to degrees and make range 180
+    return imu.getRollPitchYaw()[2]*180/math.pi + 180
+
+def getDirectionFacing():
+    degrees = getIMUDegrees()
+    if(degrees < 22.5 or degrees > 337.5):
+        return 'N'
+    if(degrees < 337.5 and degrees > 292.5):
+        return 'NE'
+    if(degrees < 292.5 and degrees > 247.5):
+        return 'E'
+    if(degrees < 247.5 and degrees > 202.5):
+        return 'SE'
+    if(degrees < 202.5 and degrees > 157.5):
+        return 'S'
+    if(degrees < 157.5 and degrees > 112.5):
+        return 'SW'
+    if(degrees < 112.5 and degrees > 67.5):
+        return 'W'
+    if(degrees < 67.5 and degrees > 22.5):
+        return 'NW'
+    return '?'
+    
+    
+    
+def IMUPrint(): # print robot orientation in degrees
+    print(' ')
+    print('[IMU: '+ str(round(getIMUDegrees(), 1)) + '° ' + getDirectionFacing() + ']')
+
 
 def GoalFacing(): 
         
@@ -487,8 +517,8 @@ def GoalFacing():
         return [recognized_object.getPosition(),recognized_object.getOrientation(), recognized_object.getSize()]
   
         
-######################################################################################    
-
+        
+        
 # def GetBox():
 
     # box_detected = 0 
@@ -549,18 +579,27 @@ def GoalFacing():
                           
             # return [recognized_object.getPosition(),recognized_object.getOrientation(), recognized_object.getSize()]
           
+# Function to turn the robot left for a specified duration
+def turn_left_seconds(duration_seconds):
+    set_wheel_velocity(10, -10, 10, -10)
+    robot.step(int(duration_seconds * 1000 / timestep))  # Convert seconds to milliseconds
+      # Stop the robot after turning
 
+# Function to turn the robot right for a specified duration
+def turn_right_seconds(duration_seconds):
+    set_wheel_velocity(-10, 10, -10, 10)
+    robot.step(int(duration_seconds * 1000 / timestep))  # Convert seconds to milliseconds
+    halt()  # Stop the robot after turning
        
-######################################################################################    
-# Pickup Box      
- 
+
+        
 def PickupBox(box):
 
     box_detected = 0 
     going_back = False
     while (box_detected == 0):
 
-        b_dist_front = max(box_sensors["b_front"].getValue(), 0)
+        b_dist_front = max(wall_sensors["b_front"].getValue(), 0)
                        
         print("FRONT BOX SENSOR: ", b_dist_front) 
              
@@ -604,146 +643,11 @@ def PickupBox(box):
        
 
 
-######################################################################################    
-# Avoiding the Box with the same stored color
 
 def AvoidBox():
 
-    # Assuming 'robot' and 'timestep' are already defined in your global scope
-    global robot, timestep
-    
-    b_front = max(box_sensors["b_front"].getValue(), 0)
-    b_front1 = max(box_sensors["b_front1"].getValue(), 0)
-    b_front2 = max(box_sensors["b_front2"].getValue(), 0)
-    
-    set_wheel_velocity(5.0, 5.0, 5.0, 5.0)
-    
-    # Parameters for obstacle avoidance
-    safe_distance = 850  # Safe distance to maintain from the box
-    turn_speed = 4.0     # Speed for turning
-    turn_speed1 = 4.0     # Speed for turning
-    forward_speed = 5.0  # Speed for moving forward
-    turn_duration_right = 2.2  # Turning time to the right in seconds
-    turn_duration_right1 = 2.5  # Turning time to the right in seconds
-    turn_duration_forward = 1.5  # Turning time to more forward in seconds
-    turn_duration_left = 4.0   # Turning time to the left in seconds
-    turn_duration_left1 = 2.2   # Turning time to the left in seconds
-
-
-    print("############\nAvoiding Box.")
-    print(f"Sensors Values: \nLeft: {b_front1}\nRight: {b_front2}\nFront: {b_front}")
-    
-    # Calculate the number of simulation steps for the desired turn durations
-    num_steps_to_turn_right = int((turn_duration_right * 1000) / timestep)
-    num_steps_to_turn_right1 = int((turn_duration_right1 * 1000) / timestep)
-    num_steps_to_turn_left = int((turn_duration_left * 1000) / timestep)
-    num_steps_to_turn_left1 = int((turn_duration_left1 * 1000) / timestep)
-    num_steps_to_turn_forward = int((turn_duration_forward * 1000) / timestep)
-    
-    if b_front < safe_distance or b_front1 < safe_distance:
-        # Turn right for a set duration
-        for _ in range(num_steps_to_turn_right):
-            # Perform the turn
-            set_wheel_velocity(forward_speed - turn_speed, forward_speed, forward_speed - turn_speed, forward_speed)
-            # Step simulation to proceed to the next time step
-            if robot.step(timestep) == -1:
-                break
-        # After turning right, move forward for a set duration
-        for _ in range(num_steps_to_turn_forward):
-            set_wheel_velocity(forward_speed, forward_speed, forward_speed, forward_speed)
-            # Step simulation to proceed to the next time step
-            if robot.step(timestep) == -1:
-                break       
-                
-         # After moving forward, turn left for a set duration
-        for _ in range(num_steps_to_turn_left1):
-            # Perform the turn
-            # set_wheel_velocity(forward_speed - turn_speed, forward_speed, forward_speed - turn_speed, forward_speed)
-            set_wheel_velocity(forward_speed, forward_speed - turn_speed, forward_speed, forward_speed - turn_speed)
-            # Step simulation to proceed to the next time step
-            if robot.step(timestep) == -1:
-                break
-                
-        # move forward for a set duration
-        for _ in range(num_steps_to_turn_forward):
-            set_wheel_velocity(forward_speed, forward_speed, forward_speed, forward_speed)
-            # Step simulation to proceed to the next time step
-            if robot.step(timestep) == -1:
-                break     
-                
-                
-        # Correct place        
-         # After turning left, turn left for a set duration
-        for _ in range(num_steps_to_turn_left1):
-            # Perform the turn
-            # set_wheel_velocity(forward_speed - turn_speed, forward_speed, forward_speed - turn_speed, forward_speed)
-            set_wheel_velocity(forward_speed, forward_speed - turn_speed, forward_speed, forward_speed - turn_speed)
-            # Step simulation to proceed to the next time step
-            if robot.step(timestep) == -1:
-                break
-                
-         # Turn right for a set duration
-        for _ in range(num_steps_to_turn_right):
-            # Perform the turn
-            set_wheel_velocity(forward_speed - turn_speed, forward_speed, forward_speed - turn_speed, forward_speed)
-            # Step simulation to proceed to the next time step
-            if robot.step(timestep) == -1:
-                break
-                
-    elif b_front2 < safe_distance:
-        # Turn right for a set duration
-        for _ in range(num_steps_to_turn_right1):
-            # Perform the turn
-            set_wheel_velocity(forward_speed - turn_speed, forward_speed, forward_speed - turn_speed, forward_speed)
-            # Step simulation to proceed to the next time step
-            if robot.step(timestep) == -1:
-                break
-        # After turning right, move forward for a set duration
-        for _ in range(num_steps_to_turn_forward):
-            set_wheel_velocity(forward_speed, forward_speed, forward_speed, forward_speed)
-            # Step simulation to proceed to the next time step
-            if robot.step(timestep) == -1:
-                break       
-                
-         # After moving forward, turn left for a set duration
-        for _ in range(num_steps_to_turn_left1):
-            # Perform the turn
-            # set_wheel_velocity(forward_speed - turn_speed, forward_speed, forward_speed - turn_speed, forward_speed)
-            set_wheel_velocity(forward_speed, forward_speed - turn_speed, forward_speed, forward_speed - turn_speed)
-            # Step simulation to proceed to the next time step
-            if robot.step(timestep) == -1:
-                break
-                
-        # move forward for a set duration
-        for _ in range(num_steps_to_turn_forward):
-            set_wheel_velocity(forward_speed, forward_speed, forward_speed, forward_speed)
-            # Step simulation to proceed to the next time step
-            if robot.step(timestep) == -1:
-                break     
-                
-                
-        # Correct place        
-         # After turning left, turn left for a set duration
-        for _ in range(num_steps_to_turn_left1):
-            # Perform the turn
-            # set_wheel_velocity(forward_speed - turn_speed, forward_speed, forward_speed - turn_speed, forward_speed)
-            set_wheel_velocity(forward_speed, forward_speed - turn_speed, forward_speed, forward_speed - turn_speed)
-            # Step simulation to proceed to the next time step
-            if robot.step(timestep) == -1:
-                break
-                
-         # Turn right for a set duration
-        for _ in range(num_steps_to_turn_right):
-            # Perform the turn
-            set_wheel_velocity(forward_speed - turn_speed, forward_speed, forward_speed - turn_speed, forward_speed)
-            # Step simulation to proceed to the next time step
-            if robot.step(timestep) == -1:
-                break
-                
-    else:
-        # If no box is detected within the safe distance, move forward
-        set_wheel_velocity(forward_speed, forward_speed, forward_speed, forward_speed)
-
+    print("Avoiding Box.")
+                 
              
 ######################################################################################    
 
@@ -757,6 +661,7 @@ while robot.step(timestep) != -1:
     AvoidBox()
     # follow_line_pid()  
     #process_camera_image()
+    #IMUPrint()
     #LeftRight()
     #halt()
     #pick_up()

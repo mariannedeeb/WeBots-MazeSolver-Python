@@ -1,0 +1,635 @@
+#VRML_SIM R2023b utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/kuka/youbot/protos/Youbot.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/RectangleArena.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  orientation -0.35598132715829134 0.5646370022130901 0.7446222871002697 1.558418211675487
+  position -24.1570684927382 -1.2948463894300033 2.063550186460312
+  follow "youBot"
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  rotation 0 0 -1 0.406
+  floorSize 60 60
+  floorTileSize 60 60
+  floorAppearance PBRAppearance {
+    roughness 1
+    metalness 0
+  }
+  wallThickness 2
+  wallHeight 2
+}
+Youbot {
+  hidden position_0_0 3821.1055403189794
+  hidden position_0_1 6767.836674271372
+  hidden position_0_2 3387.6031048490845
+  hidden position_0_3 5635.280502388812
+  hidden position_29_0 -8.578663990594534e-06
+  hidden rotation_30 0 0 -1 8.57866980819553e-06
+  hidden position_30_0 0.001395498352976682
+  hidden rotation_31 0 -1 0 0.0013954983531290189
+  hidden position_31_0 1.2508381440455617e-06
+  hidden rotation_32 0 -1 0 1.2509877599367917e-06
+  hidden position_32_0 -2.7597000269716147e-08
+  hidden rotation_33 0 1 0 2.9802322387695313e-08
+  hidden position_33_0 -2.3417851336527702e-08
+  hidden rotation_34 0 0 -1 2.9802322387695313e-08
+  hidden position_34_0 1.3858031850658812e-05
+  hidden position_34_1 1.5895159256367004e-05
+  hidden translation_35 0 1.3858031850658812e-05 0.09
+  hidden translation_36 0 -1.5895159256367004e-05 0.09
+  hidden rotation_37 0 1 0 0.9288735537907872
+  hidden rotation_38 0 -1 0 5.437086868221792
+  hidden rotation_39 0 -1 0 5.316961027892195
+  hidden rotation_40 0 1 0 5.5464671559027545
+  translation -23.6809 -0.445024 0.101888
+  rotation -0.0024594606569838056 0.002181341530569809 0.9999945963866024 1.1919208382759305
+  controller "youbot_controller"
+  bodySlot [
+    DistanceSensor {
+      translation 0.308319 0.000267428 -0.03
+      rotation 0.9999999999971059 -1.620879999995309e-06 -1.7779899999948542e-06 -1.5707953071795862
+      children [
+        Solid {
+          translation 0.01 -0.002 0.0006
+          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Box {
+                size 0.01 0.01 0.115
+              }
+            }
+          ]
+        }
+      ]
+      name "w_front"
+      lookupTable [
+        0 0 0
+        1 1000 0
+      ]
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.308319 0.000267468 -0.07
+      rotation 0.9999999999971059 -1.620879999995309e-06 -1.7779899999948542e-06 -1.5707953071795862
+      children [
+        Solid {
+          translation 0.01 -0.002 0.0006
+          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Box {
+                size 0.01 0.01 0.115
+              }
+            }
+          ]
+        }
+      ]
+      name "b_front"
+      lookupTable [
+        0 0 0
+        1 1000 0
+      ]
+      type "sonar"
+    }
+    DistanceSensor {
+      translation 0.308319 0.110267 -0.07
+      rotation 0.9999999999971059 -1.620879999995309e-06 -1.7779899999948542e-06 -1.5707953071795862
+      children [
+        Solid {
+          translation 0.01 -0.002 0.0006
+          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Box {
+                size 0.01 0.01 0.115
+              }
+            }
+          ]
+        }
+      ]
+      name "b_front1"
+      lookupTable [
+        0 0 0
+        1 1000 0
+      ]
+      type "sonar"
+    }
+    DistanceSensor {
+      translation 0.308319 -0.119733 -0.07
+      rotation 0.9999999999971059 -1.620879999995309e-06 -1.7779899999948542e-06 -1.5707953071795862
+      children [
+        Solid {
+          translation 0.01 -0.002 0.0006
+          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Box {
+                size 0.01 0.01 0.115
+              }
+            }
+          ]
+        }
+      ]
+      name "b_front2"
+      lookupTable [
+        0 0 0
+        1 1000 0
+      ]
+      type "sonar"
+    }
+    DistanceSensor {
+      translation 0.008319 0.180267 -0.03
+      rotation 0.5773492691885823 0.5773502691890485 -0.5773512691895147 -2.094395307179586
+      children [
+        Solid {
+          translation 0.01 -0.002 0.0006
+          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Box {
+                size 0.01 0.01 0.115
+              }
+            }
+          ]
+        }
+      ]
+      name "w_left"
+      lookupTable [
+        0 0 0
+        0.9 1000 0
+      ]
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.00831892 0.180267 -0.07
+      rotation 0.5773492691885823 0.5773502691890485 -0.5773512691895147 -2.094395307179586
+      children [
+        Solid {
+          translation 0.01 -0.002 0.0006
+          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Box {
+                size 0.01 0.01 0.115
+              }
+            }
+          ]
+        }
+      ]
+      name "b_left"
+      lookupTable [
+        0 0 0
+        0.9 1000 0
+      ]
+      type "sonar"
+    }
+    DistanceSensor {
+      translation -0.151681 0.180267 -0.03
+      rotation 0.5773492691885823 0.5773502691890485 -0.5773512691895147 -2.094395307179586
+      children [
+        Solid {
+          translation 0.01 -0.002 0.0006
+          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Box {
+                size 0.01 0.01 0.115
+              }
+            }
+          ]
+        }
+      ]
+      name "rear_left"
+      lookupTable [
+        0 0 0
+        0.9 1000 0
+      ]
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.158319 0.180267 -0.03
+      rotation 0.5773492691885823 0.5773502691890485 -0.5773512691895147 -2.094395307179586
+      children [
+        Solid {
+          translation 0.01 -0.002 0.0006
+          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Box {
+                size 0.01 0.01 0.115
+              }
+            }
+          ]
+        }
+      ]
+      name "front_left"
+      lookupTable [
+        0 0 0
+        0.9 1000 0
+      ]
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.028319 -0.199733 -0.03
+      rotation -0.5773512691895147 0.5773502691890485 -0.5773492691885823 2.0944
+      children [
+        Solid {
+          translation 0.01 -0.002 0.0006
+          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Box {
+                size 0.01 0.01 0.115
+              }
+            }
+          ]
+        }
+      ]
+      name "w_right"
+      lookupTable [
+        0 0 0
+        0.9 1000 0
+      ]
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.028319 -0.199733 -0.06
+      rotation -0.5773512691895147 0.5773502691890485 -0.5773492691885823 2.0944
+      children [
+        Solid {
+          translation 0.01 -0.002 0.0006
+          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Box {
+                size 0.01 0.01 0.115
+              }
+            }
+          ]
+        }
+      ]
+      name "b_right"
+      lookupTable [
+        0 0 0
+        0.9 1000 0
+      ]
+      type "sonar"
+    }
+    Camera {
+      translation 0.28 0 0.04
+      children [
+        Solid {
+          rotation 0 1 0 1.5708
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Cylinder {
+                height 0.1
+                radius 0.02
+              }
+            }
+          ]
+        }
+      ]
+      name "cam"
+      fieldOfView 1
+      width 640
+      height 640
+      far 10
+      recognition Recognition {
+        frameThickness 5
+      }
+    }
+    DistanceSensor {
+      translation 0.322588 -0.139659 -0.04
+      rotation 0.1294279597735375 -0.9831056944488314 -0.1294279597735375 -1.5878353071795859
+      children [
+        DEF ls_right Solid {
+          translation 0 0.0496411 -0.028
+          rotation 1 0 0 1.0472
+          children [
+            DEF ls_right Shape {
+              appearance PBRAppearance {
+                baseColor 1 0.4 0
+                roughness 1
+                metalness 0
+              }
+              geometry Box {
+                size 0.02 0.02 0.115
+              }
+            }
+          ]
+          name "ls_right"
+        }
+      ]
+      name "ls_right"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.32967 0.121655 -0.0419665
+      rotation 0.6232131723564657 -0.5529947563641509 -0.552993798550349 -2.0944003061004253
+      children [
+        DEF ls_left Solid {
+          translation 0 0.0496411 -0.028
+          rotation 1 0 0 1.0472
+          children [
+            DEF ls_left Shape {
+              appearance PBRAppearance {
+                baseColor 1 0.4 0
+                roughness 1
+                metalness 0
+              }
+              geometry Box {
+                size 0.02 0.02 0.115
+              }
+            }
+          ]
+          name "ls_left"
+        }
+      ]
+      name "ls_left"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.338319 0.000267444 -0.04
+      rotation -0.44721312362157567 0.7745972141192264 0.44721312362157567 1.82348
+      children [
+        DEF ls_middle Solid {
+          translation 0 0.0496411 -0.028
+          rotation 1 0 0 1.0472
+          children [
+            DEF ls_middle Shape {
+              appearance PBRAppearance {
+                baseColor 1 0.4 0
+                roughness 1
+                metalness 0
+              }
+              geometry Box {
+                size 0.02 0.02 0.115
+              }
+            }
+          ]
+          name "ls_middle"
+        }
+      ]
+      name "ls_middle"
+      type "infra-red"
+    }
+  ]
+}
+DEF start Solid {
+  translation -20.0518 -26.4939 0
+  rotation 0 0 -1 0.130895
+  children [
+    DEF start Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+      }
+      geometry Mesh {
+        url [
+          "../protos/start.stl"
+        ]
+      }
+    }
+  ]
+  name "start"
+  recognitionColors [
+    0 0 0
+  ]
+}
+DEF end Solid {
+  translation -14.8954 -19.5263 0
+  rotation 0 0 1 -0.3926946938995747
+  children [
+    DEF end Shape {
+      appearance PBRAppearance {
+        baseColor 1 0 0
+        metalness 0
+      }
+      geometry Mesh {
+        url [
+          "../protos/end.stl"
+        ]
+      }
+    }
+  ]
+  name "end"
+  recognitionColors [
+    0 0 0
+  ]
+}
+DEF red Solid {
+  translation -15.0989 -19.442 0
+  rotation 0 0 1 -0.3926946938995747
+  children [
+    DEF red Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 1 0.4 0
+        }
+      }
+      geometry Mesh {
+        url [
+          "../protos/letters.stl"
+        ]
+      }
+    }
+  ]
+  name "LETTERS MAZE(1)"
+  boundingObject USE red
+  recognitionColors [
+    0 0 0
+  ]
+}
+DEF black Solid {
+  translation -15.068 -19.4983 0
+  rotation 0 0 1 -0.3926946938995747
+  children [
+    DEF black Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Mesh {
+        url [
+          "../protos/black.stl"
+        ]
+      }
+    }
+  ]
+  name "BLACK MAZE"
+  boundingObject USE black
+}
+DEF names Solid {
+  translation -15.068 -19.4983 0
+  rotation 0 0 1 -0.3926946938995747
+  children [
+    DEF black Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Mesh {
+        url [
+          "../protos/names.stl"
+        ]
+      }
+    }
+  ]
+  name "BLACK MAZE(1)"
+  boundingObject USE black
+}
+DEF maze Solid {
+  translation -15.068 -19.4983 0
+  rotation 0 0 1 -0.3926946938995747
+  children [
+    DEF black Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Mesh {
+        url [
+          "../protos/maze_title.stl"
+        ]
+      }
+    }
+  ]
+  name "BLACK MAZE(2)"
+  boundingObject USE black
+}
+DEF line_follower_title Solid {
+  translation -15.068 -19.4983 0
+  rotation 0 0 1 -0.3926946938995747
+  children [
+    DEF black Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Mesh {
+        url [
+          "../protos/line_title.stl"
+        ]
+      }
+    }
+  ]
+  name "BLACK MAZE(3)"
+  boundingObject USE black
+}
+Solid {
+  translation -15.2868 -19.6795 -0.39
+  rotation 0 0 -1 0.39269530610042536
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+      }
+      geometry Mesh {
+        url [
+          "../protos/line.stl"
+        ]
+      }
+    }
+  ]
+  name "line"
+}
+Solid {
+  translation -22.9298 1.4241 0.03882850969617535
+  rotation 9.269692000114307e-17 -3.5359296505454824e-17 -1 1.9709910307427163
+  children [
+    DEF b1 Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 1
+        }
+      }
+      geometry Box {
+        size 0.08 0.08 0.08
+      }
+    }
+  ]
+  name "BLUE BOX"
+  boundingObject USE b1
+  physics Physics {
+  }
+  recognitionColors [
+    0 0 1
+  ]
+}
+Solid {
+  translation 12.4391 -13.5816 -0.011275
+  rotation -3.389314249066104e-17 -1.5078499169417248e-17 -1 1.9709910307427163
+  children [
+    DEF b1 Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 1 0 0
+        }
+      }
+      geometry Box {
+        size 1.97 3 0.04
+      }
+    }
+  ]
+  name "END"
+  boundingObject USE b1
+  recognitionColors [
+    0 0 0
+  ]
+}
+Solid {
+  translation 11.8649 -30.6093 -0.011275
+  rotation -3.389314249066104e-17 -1.5078499169417248e-17 -1 1.7091903061004252
+  children [
+    DEF b1 Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 1 0
+        }
+      }
+      geometry Box {
+        size 2 2 0.04
+      }
+    }
+  ]
+  name "START"
+  boundingObject USE b1
+  recognitionColors [
+    0 0 0
+  ]
+}
