@@ -46,7 +46,7 @@ for name in line_sensor_names:
 
 # Initialize wall distance sensors.
 wall_sensors = {}
-wall_sensor_names = ["w_front", "w_left", "w_right"]
+wall_sensor_names = ["w_front", "w_left", "w_right", "sonarf", "sonarl"]
 for name in wall_sensor_names:
     sensor = robot.getDevice(name)
     if sensor is None:
@@ -120,68 +120,38 @@ def set_wheel_velocity(v1, v2, v3, v4):
     wheels[2].setVelocity(v3)
     wheels[3].setVelocity(v4)
     
-   # print(f"Setting velocities: Wheel1: {v1}, Wheel2: {v2}, Wheel3: {v3}, Wheel4: {v4}")
+    # print(f"Setting velocities: Wheel1: {v1}, Wheel2: {v2}, Wheel3: {v3}, Wheel4: {v4}")
     
 #####################################################################################################     
 
-# Process and analyze camera image and recognized objects
-def process_camera_image():
-    recognized_objects = camera.getRecognitionObjects()
-    
-    for obj in recognized_objects:
-        # Get the pointer to the color array
-        color_ptr = obj.getColors()
+def CheckLine():
+    line_threshold = 1000
+    off_line_threshold = 968
+    # Retrieve sensor values
+    left_value = line_sensors[0].getValue()
+    middle_value = line_sensors[1].getValue()
+    right_value = line_sensors[2].getValue()
+    if left_value < line_threshold and middle_value < line_threshold and right_value < line_threshold:
+        return False
+    else:
+        return True
 
-        # Convert the pointer to an array of three doubles
-        color_array = ctypes.cast(color_ptr, ctypes.POINTER(ctypes.c_double * 3))
-
-        # Access the color values
-        color = color_array.contents
-        
-        # Get object's position, orientation, and size
-        position = obj.getPosition()
-        print(position)
-        orientation = obj.getOrientation()
-        size = obj.getSize()
-        
-    ################# Print statements for debugging #################
-    
-        if color[0] == 1.0:
-            print(f"Recognized object color: Red")
-        elif color[1] == 1.0:
-            print(f"Recognized object color: Green")
-            PickupBox(obj)
-        elif color[2] == 1.0:
-            print(f"Recognized object color: Blue")
-            AvoidBox(obj)
-            
-        # print(f"Recognized object color: {color[0]}, {color[1]}, {color[2]}")
-  
-  
-        # print(f"Position: {position}")
-        
-        
-        
 #####################################################################################################     
 
-#PID
 line_follower = False
-
+#PID
 def follow_line_pid():
-    global line_follower
-    # Get the recognized objects from the camera
-    recognized_objects = camera.getRecognitionObjects()
-    while robot.step(timestep) != -1 and not line_follower and recognized_objects:
-        # PID coefficients
-        Kp = 0.05  # Proportional gain
-        Ki = 0.0   # Integral gain
-        Kd = 0.02  # Derivative gain
-    
-        # PID variables
-        integral = 0
-        last_error = 0
-        base_velocity = 8.0  # Base speed of the robot
-    
+    # PID coefficients
+    Kp = 0.05  # Proportional gain
+    Ki = 0.0   # Integral gain
+    Kd = 0.02  # Derivative gain
+
+    # PID variables
+    integral = 0
+    last_error = 0
+    base_velocity = 8.0  # Base speed of the robot
+    # Main loop for the line following behavior
+    while True:
         # Retrieve sensor values
         left_value = line_sensors[0].getValue()
         middle_value = line_sensors[1].getValue()
@@ -194,15 +164,14 @@ def follow_line_pid():
         off_line_threshold = 968
     
         # Check if robot needs to move straight forward
-        if middle_value == line_threshold:
-            set_wheel_velocity(base_velocity, base_velocity, base_velocity, base_velocity)
-            return
-        elif left_value < line_threshold and middle_value < line_threshold and right_value < line_threshold:
+        # if middle_value == line_threshold:
+            # set_wheel_velocity(base_velocity, base_velocity, base_velocity, base_velocity)
+            # return
+        # elif left_value < line_threshold and middle_value < line_threshold and right_value < line_threshold:
             # Robot entered the maze, exit follow_line_pid and start solving
-            print(f"Done Line")
-            line_follower = True
-            
-        elif left_value < off_line_threshold:
+            # maze_solver()
+            # return
+        if left_value < off_line_threshold:
             if right_value == line_threshold:
                 # Sharp turn to the right
                 set_wheel_velocity(-7.0, 7.0, 0.0, 0.0)
@@ -218,75 +187,138 @@ def follow_line_pid():
             # Calculate error based on the deviation from the line
             error = right_value - left_value
     
-            # PID calculations
-            P = error
-            integral += error
-            I = integral
-            D = error - last_error
-            pid_output = Kp * P + Ki * I + Kd * D
-            last_error = error
-        
-            # Set wheel velocities based on PID output
-            left_wheel_velocity = base_velocity + pid_output
-            right_wheel_velocity = base_velocity - pid_output
-        
-            # Apply new velocities to the wheels
-            set_wheel_velocity(left_wheel_velocity, left_wheel_velocity, right_wheel_velocity, right_wheel_velocity)
+        # PID calculations
+        P = error
+        integral += error
+        I = integral
+        D = error - last_error
+        pid_output = Kp * P + Ki * I + Kd * D
+        last_error = error
     
+        # Set wheel velocities based on PID output
+        left_wheel_velocity = base_velocity + pid_output
+        right_wheel_velocity = base_velocity - pid_output
+    
+        # Apply new velocities to the wheels
+        set_wheel_velocity(left_wheel_velocity, left_wheel_velocity, right_wheel_velocity, right_wheel_velocity)
+        
+        # Break out of the loop if the line ends or an object is detected
+        if not CheckLine() or CheckMaze() or camera.getRecognitionObjects():
+            line_follower = True
+            break
+
+        # Step the simulation
+        if robot.step(timestep) == -1:
+            break
+            
+    
+#PID
+
 #######################################################
-#MAZE SOLVING
 
-SAFE_DISTANCE = 500
+def CheckMaze():
+    RED_AREA_THRESHOLD = 650
+    middle_sensor_value = line_sensors[1].getValue()
+    if middle_sensor_value <= RED_AREA_THRESHOLD:
+        return False
+    else:
+        return True
+        
+#######################################################
 
+
+######################################################
+
+#Hrayr's Edition
+
+SAFE_DISTANCE = 600
+f_speed = 10
 RED_AREA_THRESHOLD = 650 # Define the threshold value for the red area
+DEFAULT_DESIRED_DISTANCE = 400
+DISTANCE_THRESHOLD = 50  # Adjust as needed
+MAX_VELOCITY = 14  # Adjust as needed
+TURNING_DESIRED_DISTANCE = 300  # Adjust as needed for turning
 
-def maze_solver():
+def adjust_speed(desired, actual):
+    # Proportional control to adjust the speed based on the distance difference
+    error = desired - actual
+    k_p = 0.01  # Proportional gain, adjust as needed
+    return max(-MAX_VELOCITY, min(MAX_VELOCITY, k_p * error))
+    
+def maze_solverrr():
     global maze_solved  # Declare the use of the global variable
     print("Starting maze solving.")
-    # Get the recognized objects from the camera
-    recognized_objects = camera.getRecognitionObjects()
-    while robot.step(timestep) != -1 and not maze_solved and not recognized_objects:  # Check the flag in the loop condition
+    
+    while robot.step(timestep) != -1 and not maze_solved:  # Check the flag in the loop condition
 
         front_dist = max(wall_sensors["w_front"].getValue(), 0)
         left_dist = max(wall_sensors["w_left"].getValue(), 0)
-        middle_sensor_value = line_sensors[1].getValue() # This is the ls_middle sensor value
-        
-        print("middle sensor value: ", middle_sensor_value)
+
+        sonarl = max(wall_sensors["sonarl"].getValue(), 0)
+        sonarf = max(wall_sensors["sonarf"].getValue(), 0)
+
+        middle_sensor_value = line_sensors[1].getValue()  # This is the ls_middle sensor value
+
+        # print("middle sensor value: ", middle_sensor_value)
         # Check if the middle sensor detects the red area
         if middle_sensor_value <= RED_AREA_THRESHOLD:
             print("Red area detected. Maze solved!")
             halt()  # Stop the robot
             maze_solved = True  # Set the flag to indicate the maze is solved
             break  # Break out of the while loop
-            
+
+        ############################ MOVING CASES ############################
+
+        # Calculate the adjustment to the left wheel speed based on the distance error
+        left_speed_adjustment = adjust_speed(400, left_dist)
+  
+        # If there's a wall to the left and space in front, move forward with left speed adjustment
         
-        # If there's a wall to the left and space in front, move forward
-        if left_dist < 1000 and front_dist > SAFE_DISTANCE:
-            set_wheel_velocity(7.0, 7.0, 7.0, 7.0)
-
+        
+        if left_dist < 1000 and sonarl < 1000 and front_dist > SAFE_DISTANCE:
+            print("Sonar Front Distance: ",sonarf)
+            print("FORWARD - Adjusted Left Speed:", left_speed_adjustment)
+            set_wheel_velocity(f_speed , f_speed + left_speed_adjustment, f_speed , f_speed + left_speed_adjustment)
+                
         # If there's a wall in front, turn right
-        elif front_dist <= SAFE_DISTANCE:
-            set_wheel_velocity(-TURN_SPEED, TURN_SPEED, -TURN_SPEED, TURN_SPEED)
-            while robot.step(timestep) != -1 and max(wall_sensors["w_front"].getValue(), 0) <= SAFE_DISTANCE:
-                # Turning in place until there's space in front
-                pass
-            # Correct orientation to face down the new corridor
-            set_wheel_velocity(7.0, 7.0, 7.0, 7.0)
-
-        # If the left sensor value equals 1000, stop and turn left in place
-        elif left_dist == 1000:
-            # Stop the robot first
+        elif front_dist <= SAFE_DISTANCE and left_dist < 1000 and sonarf < 1000:
+            print("TURN RIGHT")
             set_wheel_velocity(0, 0, 0, 0)
-            robot.step(timestep) # Update sensors before starting to turn
-            
+            robot.step(timestep)  # Update sensors before starting to turn
+
+            while robot.step(timestep) != -1 and max(wall_sensors["w_front"].getValue(), 0) < 1000:
+                print("TURN RIGHT - Adjusted Left Speed:", left_speed_adjustment)
+                set_wheel_velocity(-14, 14, -14, 14)
+                
+        # If the left sensor value equals 1000, stop and turn left in place
+        elif left_dist == 1000 and sonarl == 1000:
+            print("Sonar Distance: ",sonarl)
+            set_wheel_velocity(0, 0, 0, 0)
+            robot.step(timestep)  # Update sensors before starting to turn
+
+            # Adjust desired distance for turning
+            DEFAULT_DESIRED_DISTANCE = min(TURNING_DESIRED_DISTANCE, left_dist - DISTANCE_THRESHOLD)
+
             # Turn left in place until the left sensor detects the wall again
-            while robot.step(timestep) != -1 and max(wall_sensors["w_left"].getValue(), 0) >= 1000:
-                set_wheel_velocity(TURN_SPEED, -TURN_SPEED, TURN_SPEED, -TURN_SPEED)
+            while robot.step(timestep) != -1 and max(wall_sensors["w_left"].getValue(), 0) >= 900:
+                print("TURN LEFT - Adjusted Left Speed:", left_speed_adjustment)
+                print(f"Sensor Readings - Left: {left_dist}, Front: {front_dist} , Sonar Left: {sonarl}")
+
+                set_wheel_velocity(14, -14, 14, -14)
+
             # Once the wall is detected, the robot can continue moving forward
-            set_wheel_velocity(7.0, 7.0, 7.0, 7.0)
+            set_wheel_velocity(f_speed + left_speed_adjustment, f_speed, f_speed + left_speed_adjustment, f_speed)
+            DEFAULT_DESIRED_DISTANCE = 400  # Reset the desired distance after turning
 
         # Perform a step to update sensor readings after each action
+        print(f"Sensor Readings - Left: {left_dist}, Front: {front_dist} , Sonar Left: {sonarl}")
         robot.step(timestep)
+        
+        
+        
+        
+########################################################
+
 
 ######################################################
 
@@ -496,71 +528,6 @@ def GoalFacing():
 
         return [recognized_object.getPosition(),recognized_object.getOrientation(), recognized_object.getSize()]
   
-        
-######################################################################################    
-
-# def GetBox():
-
-    # box_detected = 0 
-    # going_back = False
-    # while (box_detected == 0):
-
-        # b_dist_front = max(wall_sensors["b_front"].getValue(), 0)
-        
-        # recognized_object_array = camera.getRecognitionObjects()
-        # array_len = len(recognized_object_array)
-
-               
-        # print("FRONT BOX SENSOR: ", b_dist_front) 
-             
-        
-        # if array_len == 0:
-            # print('searching for goal...')
-            # if  b_dist_front < 70:
-                # backward(50)
-                
-            # break
-            
-        # else: 
-            # print('Box in sight! ')
-            # recognized_object = camera.getRecognitionObjects()[0]
-            # image_position = recognized_object.getPositionOnImage()           
-            # print("IMAGE POSITION" , image_position[0])
- 
-            # if  b_dist_front < 80:
-                # going_back = True
-                # backward(50)
-                         
-            # if  b_dist_front < 115 and going_back == False:
-                # halt()
-                # pick_up()
-                # drop()
-                # open_grippers()
-                # hand_up()
-
-
-                               
-            # if image_position[0] > 300:
-            
-                # print("Turning Right")
-                # turn_right() 
-                          
-            # if image_position[0] < 300:
-    
-                # print("Turning Left")
-                # turn_left() 
-                
-            # if image_position[0] > 300 and image_position[0] < 350 :
-                # halt()
-                 
-            # elif image_position[0] == 300:
-                
-                 # forward(3)   
-                          
-            # return [recognized_object.getPosition(),recognized_object.getOrientation(), recognized_object.getSize()]
-          
-
-       
 ######################################################################################    
 # Pickup Box      
  
@@ -619,7 +586,8 @@ def PickupBox(box):
 
 def AvoidBox():
     global Avoided, robot, timestep # Declare the use of the global variable
-    print("############\nAvoiding Loop.")
+    Avoided = False  # Reset the Avoided flag at the beginning
+    print("############\nAvoiding Box.")
     while robot.step(timestep) != -1 and not Avoided:  # Check the flag in the loop condition
     
     
@@ -641,9 +609,9 @@ def AvoidBox():
         turn_duration_left1 = 2.2   # Turning time to the left in seconds
     
     
-        print("############\nAvoiding Box.")
-        print(f"Avoided Value: ", str(Avoided))
-        print(f"Sensors Values: \nLeft: {b_front1}\nRight: {b_front2}\nFront: {b_front}")
+        # print("############\nAvoiding Box.")
+        # print(f"Avoided Value: ", str(Avoided))
+        # print(f"Sensors Values: \nLeft: {b_front1}\nRight: {b_front2}\nFront: {b_front}")
         
         # Calculate the number of simulation steps for the desired turn durations
         num_steps_to_turn_right = int((turn_duration_right * 1000) / timestep)
@@ -698,7 +666,7 @@ def AvoidBox():
             for _ in range(num_steps_to_turn_right):
                 # Perform the turn
                 set_wheel_velocity(forward_speed - turn_speed, forward_speed, forward_speed - turn_speed, forward_speed)
-                print(f"AAAAAAAAAAAAAAAAAAAAAAAAA ")
+                # print(f"AAAAAAAAAAAAAAAAAAAAAAAAA ")
                 Avoided = True
                 # Step simulation to proceed to the next time step
                 if robot.step(timestep) == -1:
@@ -752,7 +720,7 @@ def AvoidBox():
             for _ in range(num_steps_to_turn_right):
                 # Perform the turn
                 set_wheel_velocity(forward_speed - turn_speed, forward_speed, forward_speed - turn_speed, forward_speed)
-                print(f"AAAAAAAAAAAAAAAAAAAAAAAAA ")
+                # print(f"AAAAAAAAAAAAAAAAAAAAAAAAA ")
                 Avoided = True
                 
                 # Step simulation to proceed to the next time step
@@ -775,15 +743,20 @@ def process_camera_image_and_act():
     b_front = max(box_sensors["b_front"].getValue(), 0)
     b_front1 = max(box_sensors["b_front1"].getValue(), 0)
     b_front2 = max(box_sensors["b_front2"].getValue(), 0)
+    
+    left_value = line_sensors[0].getValue()
+    middle_value = line_sensors[1].getValue()
+    right_value = line_sensors[2].getValue()
+    
     # Get the recognized objects from the camera
     recognized_objects = camera.getRecognitionObjects()
     
     # If there are no recognized objects, simply return
-    if not recognized_objects:
-        if not line_follower:
-               follow_line_pid()
-        elif not maze_solved:
-                maze_solver()
+    if not recognized_objects or (b_front >= safe_distance and b_front1 >= safe_distance and b_front2 >= safe_distance):
+        if not line_follower and CheckLine():
+            follow_line_pid()
+        elif not CheckLine() and CheckMaze():
+            maze_solverrr()
         return
 
     # Loop through recognized objects
@@ -799,20 +772,19 @@ def process_camera_image_and_act():
 
         # If first_object_color has not been set, store the color of the first encountered object
         if first_object_color is None:
+            first_object_color = (color[0], color[1], color[2])
+            print(f"Detected first object, Color is:", str(first_object_color))
             if b_front < safe_distance or b_front1 < safe_distance or b_front2 < safe_distance:
-                first_object_color = (color[0], color[1], color[2])
-                print(f"Detected first object, Color is:", str(first_object_color))
                 # Call the AvoidBox() function for the first object
                 AvoidBox()
                 return  # After handling the first object, return
                 
-            else:
-                if not line_follower:
-                    print("line follower L" , line_follower ) 
-                    follow_line_pid()
-                elif not maze_solved:
-
-                    maze_solver()
+            # else:
+                # if CheckLine():
+                    # print("line follower L" , line_follower ) 
+                    # follow_line_pid()
+                # elif not CheckLine() and CheckMaze():
+                    # maze_solver()
             
         else:
             # For subsequent objects, check if their color matches the first object's color
@@ -827,21 +799,22 @@ def process_camera_image_and_act():
             
             elif (color[0], color[1], color[2]) != first_object_color:
                 # Call another function for objects with a different color
-                AnotherFunction(obj)
+                PickupBox(obj)
                 
-            else:
-                    if not line_follower:
-                        follow_line_pid()
-                    elif not maze_solved:
-                        maze_solver()   
+            # else:
+                    # if CheckLine():
+                        # print("line follower B" , line_follower ) 
+                        # follow_line_pid()
+                    # elif not CheckLine() and CheckMaze():
+                        # maze_solver()  
                 
         
 
-def AnotherFunction(obj):
+# def AnotherFunction(obj):
     # Placeholder for another function that handles objects with a different color
     # Implement the desired behavior here
-    print(f"I SHOULD GRAB THAT")
-    pass
+    # print(f"I SHOULD GRAB THAT")
+    # pass
 
 # Main robot control loop
 while robot.step(timestep) != -1:

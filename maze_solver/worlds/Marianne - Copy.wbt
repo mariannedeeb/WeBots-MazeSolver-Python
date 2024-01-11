@@ -8,8 +8,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.5842317455560586 0.0482042461091538 0.8101540706196377 3.04839631841883
-  position 14.837965791291383 -31.065673436932343 12.661789322045307
+  orientation -0.5241042879641986 0.0845746007713234 0.8474442944771717 2.9146182743743503
+  position 17.934680215651877 -31.463444117899456 14.54711014007001
   follow "youBot"
 }
 TexturedBackground {
@@ -32,23 +32,23 @@ Youbot {
   hidden position_0_1 6774.395701917557
   hidden position_0_2 3394.1612935091302
   hidden position_0_3 5641.432971074011
-  hidden position_25_0 -5.506679713484059e-06
-  hidden rotation_26 0 0 -0.9999999999999999 5.506659552487436e-06
-  hidden position_26_0 0.03100421312604356
-  hidden rotation_27 0 -1 0 0.031004213126045215
-  hidden position_27_0 1.2275007388579326e-06
-  hidden rotation_28 0 -1 0 1.2273347545846894e-06
-  hidden position_28_0 -6.4597188527407605e-09
-  hidden position_29_0 3.6080001299132167e-08
-  hidden rotation_30 0 0 1 2.9802322387695313e-08
-  hidden position_30_0 1.5688988883022983e-05
-  hidden position_30_1 1.5190305365886195e-05
-  hidden translation_31 0 1.5688988883022983e-05 0.09
-  hidden translation_32 0 -1.5190305365886195e-05 0.09
-  hidden rotation_33 0 -1 0 5.0859787863336905
-  hidden rotation_34 0 1 0 1.1219407779626127
-  hidden rotation_35 0 1 0 1.2412276321535485
-  hidden rotation_36 0 -1 0 0.8674347732574359
+  hidden position_29_0 -5.506679713484059e-06
+  hidden rotation_30 0 0 -0.9999999999999999 5.506659552487436e-06
+  hidden position_30_0 0.03100421312604356
+  hidden rotation_31 0 -1 0 0.031004213126045215
+  hidden position_31_0 1.2275007388579326e-06
+  hidden rotation_32 0 -1 0 1.2273347545846894e-06
+  hidden position_32_0 -6.4597188527407605e-09
+  hidden position_33_0 3.6080001299132167e-08
+  hidden rotation_34 0 0 1 2.9802322387695313e-08
+  hidden position_34_0 1.5688988883022983e-05
+  hidden position_34_1 1.5190305365886195e-05
+  hidden translation_35 0 1.5688988883022983e-05 0.09
+  hidden translation_36 0 -1.5190305365886195e-05 0.09
+  hidden rotation_37 0 -1 0 5.0859787863336905
+  hidden rotation_38 0 1 0 1.1219407779626127
+  hidden rotation_39 0 1 0 1.2412276321535485
+  hidden rotation_40 0 -1 0 0.8674347732574359
   translation 10.5723 -30.5115 0.0994238
   rotation -0.0006767827057924134 -0.0012775588216285634 0.9999989549037671 3.032305774743198
   controller "youbot_controller"
@@ -72,31 +72,6 @@ Youbot {
         }
       ]
       name "w_front"
-      lookupTable [
-        0 0 0
-        1 1000 0
-      ]
-      type "infra-red"
-    }
-    DistanceSensor {
-      translation 0.303319 0.0689276 -0.03
-      rotation 0.9351127859349406 0.25056194264161724 -0.25056494264093043 -1.6378353071795866
-      children [
-        Solid {
-          translation 0.01 -0.002 0.0006
-          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
-          children [
-            Shape {
-              appearance PBRAppearance {
-              }
-              geometry Box {
-                size 0.01 0.01 0.115
-              }
-            }
-          ]
-        }
-      ]
-      name "sonarf"
       lookupTable [
         0 0 0
         1 1000 0
@@ -199,12 +174,12 @@ Youbot {
       name "w_left"
       lookupTable [
         0 0 0
-        1 1000 0
+        0.9 1000 0
       ]
       type "infra-red"
     }
     DistanceSensor {
-      translation 0.008319 0.180267 -0.03
+      translation 0.00831892 0.180267 -0.07
       rotation 0.5773492691885823 0.5773502691890485 -0.5773512691895147 -2.094395307179586
       children [
         Solid {
@@ -221,12 +196,62 @@ Youbot {
           ]
         }
       ]
-      name "sonarl"
+      name "b_left"
       lookupTable [
         0 0 0
         0.9 1000 0
       ]
       type "sonar"
+    }
+    DistanceSensor {
+      translation -0.151681 0.180267 -0.03
+      rotation 0.5773492691885823 0.5773502691890485 -0.5773512691895147 -2.094395307179586
+      children [
+        Solid {
+          translation 0.01 -0.002 0.0006
+          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Box {
+                size 0.01 0.01 0.115
+              }
+            }
+          ]
+        }
+      ]
+      name "rear_left"
+      lookupTable [
+        0 0 0
+        0.9 1000 0
+      ]
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.158319 0.180267 -0.03
+      rotation 0.5773492691885823 0.5773502691890485 -0.5773512691895147 -2.094395307179586
+      children [
+        Solid {
+          translation 0.01 -0.002 0.0006
+          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Box {
+                size 0.01 0.01 0.115
+              }
+            }
+          ]
+        }
+      ]
+      name "front_left"
+      lookupTable [
+        0 0 0
+        0.9 1000 0
+      ]
+      type "infra-red"
     }
     DistanceSensor {
       translation 0.028319 -0.199733 -0.03
@@ -252,6 +277,31 @@ Youbot {
         0.9 1000 0
       ]
       type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.028319 -0.199733 -0.06
+      rotation -0.5773512691895147 0.5773502691890485 -0.5773492691885823 2.0944
+      children [
+        Solid {
+          translation 0.01 -0.002 0.0006
+          rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
+          children [
+            Shape {
+              appearance PBRAppearance {
+              }
+              geometry Box {
+                size 0.01 0.01 0.115
+              }
+            }
+          ]
+        }
+      ]
+      name "b_right"
+      lookupTable [
+        0 0 0
+        0.9 1000 0
+      ]
+      type "sonar"
     }
     Camera {
       translation 0.28 0 0.04
@@ -566,7 +616,7 @@ Solid {
   ]
 }
 Solid {
-  translation -9.5024 12.4425 0.0397991
+  translation -19.1584 10.0794 0.03979909100304376
   rotation -7.299595048729352e-17 4.2366813447983066e-18 -1 1.9709910307427163
   children [
     DEF b1 Shape {
@@ -586,29 +636,6 @@ Solid {
   }
   recognitionColors [
     1 0 0
-  ]
-}
-Solid {
-  translation 2.54293 19.6367 0.0397991
-  rotation -7.299595048729352e-17 4.2366813447983066e-18 -1 1.9709910307427163
-  children [
-    DEF b1 Shape {
-      appearance Appearance {
-        material Material {
-          diffuseColor 0 1 0
-        }
-      }
-      geometry Box {
-        size 0.08 0.08 0.08
-      }
-    }
-  ]
-  name "BLUE BOX(3)"
-  boundingObject USE b1
-  physics Physics {
-  }
-  recognitionColors [
-    0 1 0
   ]
 }
 Solid {
