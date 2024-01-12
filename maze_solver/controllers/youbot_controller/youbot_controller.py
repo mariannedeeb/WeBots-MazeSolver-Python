@@ -445,11 +445,11 @@ def open_grippers():
 
 def drop():
     armMotors[1].setPosition(0.5)
-    armMotors[3].setPosition(1.3)
-    armMotors[2].setPosition(1)
+    armMotors[3].setPosition(1.25)
+    armMotors[2].setPosition(0)
     while robot.step(timestep) != -1:
 
-        if abs(armPositionSensors[3].getValue() - (-1.2)) > 2.5:
+        if abs(armPositionSensors[3].getValue() - (-1.2)) > 2.44:
         # Motion completed.
             print("READY TO OPEN GRIPPERS")
             break
