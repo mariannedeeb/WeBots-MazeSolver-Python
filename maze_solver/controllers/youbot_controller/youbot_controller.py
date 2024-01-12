@@ -827,7 +827,14 @@ def pickupcamera():
         
 # Main robot control loop
 while robot.step(timestep) != -1:
+    move_duration = 1
     if maze_solved:
+        num_steps_to_end = int((move_duration * 1000) / timestep)
+        for _ in range(num_steps_to_end):
+                set_wheel_velocity(0.7, 0.7, 0.7, 0.7)
+                # Step simulation to proceed to the next time step
+                # if robot.step(timestep) == -1:
+                    # break       
         print("Exiting the program.")
         break  # Exit the loop if the maze is solved
 
