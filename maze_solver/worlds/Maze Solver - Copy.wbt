@@ -8,8 +8,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.47721650006754335 -0.17152689826433531 -0.8618833652154452 3.6802602818324486
-  position 18.96779786798096 -35.979536109097545 24.207806387886546
+  orientation 0.4535771072561155 -0.4171217783878774 -0.7875768088051532 4.330738556861254
+  position 4.6126268684476015 -46.78521934983152 85.78045109247694
   follow "youBot"
 }
 TexturedBackground {
@@ -558,7 +558,7 @@ Solid {
   ]
 }
 Solid {
-  translation -17.7554 27.3665 0.048725
+  translation -8.69467 14.2922 0.048725
   rotation 9.58978e-09 -1.44692e-08 1 1.17059
   children [
     DEF b1 Shape {
@@ -581,13 +581,13 @@ Solid {
   ]
 }
 Solid {
-  translation 3.32242 22.2114 0.048725
+  translation -1.84873 14.7361 0.048725
   rotation 9.58978e-09 -1.44692e-08 1 1.17059
   children [
     DEF b1 Shape {
       appearance Appearance {
         material Material {
-          diffuseColor 1 0 0
+          diffuseColor 0 1 0
         }
       }
       geometry Box {

@@ -753,14 +753,6 @@ def process_camera_image_and_act():
     
     # Get the recognized objects from the camera
     recognized_objects = camera.getRecognitionObjects()
-    
-    # If there are no recognized objects, simply return
-    # if not recognized_objects or (b_front >= safe_distance and b_front1 >= safe_distance and b_front2 >= safe_distance):
-        # if not line_follower and CheckLine():
-            # follow_line_pid()
-        # elif not CheckLine() and CheckMaze():
-            # maze_solverrr()
-        # return
 
     # Loop through recognized objects
     for obj in recognized_objects:
@@ -786,6 +778,7 @@ def process_camera_image_and_act():
                 
             
         else:
+            print(obj.getSizeOnImage()[0])
             # For subsequent objects, check if their color matches the first object's color
             if b_front < safe_distance or b_front1 < safe_distance or b_front2 < safe_distance:
                 if (color[0], color[1], color[2]) == first_object_color:
@@ -796,25 +789,17 @@ def process_camera_image_and_act():
                     return
                 
             
-            elif (color[0], color[1], color[2]) != first_object_color:
+            elif (color[0], color[1], color[2]) != first_object_color and obj.getSizeOnImage()[0] > 20:
                 # Call another function for objects with a different color
                 print(f"PPPPPPPPPPPPPPPPPPPPPP")
-                
+                picked = False
                 while(picked == False):
                     print("picked is false")
-                    PickupBox(obj)
-                    recognized_objects= []
-                slight_left_turn()
-                    
-                     
-                    
-                
-            # else:
-                    # if CheckLine():
-                        # print("line follower B" , line_follower ) 
-                        # follow_line_pid()
-                    # elif not CheckLine() and CheckMaze():
-                        # maze_solver()  
+                    pickupcamera()
+                    if (picked == True):
+                        recognized_objects= []
+                        slight_left_turn()
+                                                           
     # Handle no object or safe distance scenario
     if not recognized_objects or (b_front >= safe_distance and b_front1 >= safe_distance and b_front2 >= safe_distance):
         if not line_follower and CheckLine():
@@ -822,12 +807,6 @@ def process_camera_image_and_act():
         elif not CheckLine() and CheckMaze():
             maze_solverrr()              
         
-
-# def AnotherFunction(obj):
-    # Placeholder for another function that handles objects with a different color
-    # Implement the desired behavior here
-    # print(f"I SHOULD GRAB THAT")
-    # pass
 
 def pickupcamera():
     recognized_objects = camera.getRecognitionObjects()
