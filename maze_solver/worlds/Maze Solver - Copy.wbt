@@ -8,8 +8,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.22093754620263717 -0.876103683527563 -0.4285194702547287 5.624560584406484
-  position -69.19870934468719 -21.29654448279676 56.075972703003416
+  orientation 0.47721650006754335 -0.17152689826433531 -0.8618833652154452 3.6802602818324486
+  position 18.96779786798096 -35.979536109097545 24.207806387886546
   follow "youBot"
 }
 TexturedBackground {
@@ -28,8 +28,8 @@ RectangleArena {
   wallHeight 2
 }
 Youbot {
-  translation -25.2962 -4.69638 0.103055
-  rotation -0.004162809405536571 -0.0009780278603342745 -0.9999908571978834 -1.2211453071795866
+  translation 11.201 -30.5846 0.105032
+  rotation 0.001899619978789488 -0.0015536299826526948 0.999996988834373 3.05373
   controller "youbot_controller"
   bodySlot [
     DistanceSensor {
@@ -341,7 +341,7 @@ DEF red Solid {
   children [
     DEF red Shape {
       appearance PBRAppearance {
-        baseColor 0.7 0.4 0
+        baseColor 1 0.5 0
         roughness 1
         metalness 0
       }
@@ -354,23 +354,120 @@ DEF red Solid {
   ]
   name "LETTERS MAZE"
   boundingObject USE red
-  recognitionColors [
-    0 0 0
-  ]
 }
-DEF black Solid {
-  translation -15.1201 -19.3896 0
+DEF names Solid {
+  translation -15.0989 -19.442 0
   rotation 0 0 1 -0.3926946938995747
   children [
-    DEF black Shape {
+    DEF red Shape {
       appearance PBRAppearance {
-        baseColor 1 1 0.5
+        baseColor 0 0 0
         roughness 1
         metalness 0
       }
       geometry Mesh {
         url [
-          "../protos/90Degrees.stl"
+          "../protos/names.stl"
+        ]
+      }
+    }
+  ]
+  name "LETTERS MAZE(1)"
+  boundingObject USE red
+}
+DEF line_follower_title Solid {
+  translation -15.0989 -19.442 0
+  rotation 0 0 1 -0.3926946938995747
+  children [
+    DEF red Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Mesh {
+        url [
+          "../protos/line_title.stl"
+        ]
+      }
+    }
+  ]
+  name "LETTERS MAZE(2)"
+  boundingObject USE red
+}
+DEF end Solid {
+  translation -15.0989 -19.442 0
+  rotation 0 0 1 -0.3926946938995747
+  children [
+    DEF red Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Mesh {
+        url [
+          "../protos/end.stl"
+        ]
+      }
+    }
+  ]
+  name "LETTERS MAZE(3)"
+  boundingObject USE red
+}
+DEF MAZE Solid {
+  translation -15.0989 -19.442 0
+  rotation 0 0 1 -0.3926946938995747
+  children [
+    DEF red Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Mesh {
+        url [
+          "../protos/maze_title.stl"
+        ]
+      }
+    }
+  ]
+  name "LETTERS MAZE(5)"
+  boundingObject USE red
+}
+DEF start Solid {
+  translation 47.34 -34.8934 0
+  rotation 0 0 1 3.0107
+  children [
+    DEF red Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Mesh {
+        url [
+          "../protos/start.stl"
+        ]
+      }
+    }
+  ]
+  name "LETTERS MAZE(4)"
+  boundingObject USE red
+}
+DEF right_maze Solid {
+  translation -15.1201 -19.3896 0
+  rotation 0 0 1 -0.3926946938995747
+  children [
+    DEF black Shape {
+      appearance PBRAppearance {
+        baseColor 1 0.8 0.6
+        roughness 1
+        metalness 0
+      }
+      geometry Mesh {
+        url [
+          "../protos/maze_end.stl"
         ]
       }
     }
@@ -396,29 +493,6 @@ Solid {
   name "line"
 }
 Solid {
-  translation -24.7162 -3.31698 0.0687247
-  rotation -2.93474e-17 -1.79724e-17 -1 2.23279
-  children [
-    DEF b1 Shape {
-      appearance Appearance {
-        material Material {
-          diffuseColor 0 0 1
-        }
-      }
-      geometry Box {
-        size 0.05 0.05 0.05
-      }
-    }
-  ]
-  name "BLUE BOX"
-  boundingObject USE b1
-  physics Physics {
-  }
-  recognitionColors [
-    0 0 1
-  ]
-}
-Solid {
   translation 28.7319 5.76771 0.0187247
   rotation -2.93474e-17 -1.79724e-17 -1 2.23279
   children [
@@ -442,8 +516,8 @@ Solid {
   ]
 }
 Solid {
-  translation -0.303932 3.26073 0.0487247
-  rotation -2.27507e-17 5.11385e-17 1 1.1706
+  translation -6.25753 -26.5535 0.0487247
+  rotation -2.27507e-17 5.11385e-17 1 1.3014996938995749
   children [
     DEF b1 Shape {
       appearance Appearance {
@@ -456,15 +530,36 @@ Solid {
       }
     }
   ]
-  name "BLUE BOX(1)"
+  name "FIRST"
   boundingObject USE b1
   recognitionColors [
     0 0 1
   ]
 }
 Solid {
-  translation -9.51889 11.9661 0.048725
-  rotation -1.4344e-08 1.64804e-08 -1 -0.9087953071795862
+  translation -20.1083 7.6434 0.0487247
+  rotation -2.27507e-17 5.11385e-17 1 1.1706003061004253
+  children [
+    DEF b1 Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 1
+        }
+      }
+      geometry Box {
+        size 0.08 0.08 0.08
+      }
+    }
+  ]
+  name "SECOND"
+  boundingObject USE b1
+  recognitionColors [
+    0 0 1
+  ]
+}
+Solid {
+  translation -17.7554 27.3665 0.048725
+  rotation 9.58978e-09 -1.44692e-08 1 1.17059
   children [
     DEF b1 Shape {
       appearance Appearance {
@@ -477,7 +572,30 @@ Solid {
       }
     }
   ]
-  name "GREEN BOX"
+  name "THIRD"
+  boundingObject USE b1
+  physics Physics {
+  }
+  recognitionColors [
+    0 1 0
+  ]
+}
+Solid {
+  translation 3.32242 22.2114 0.048725
+  rotation 9.58978e-09 -1.44692e-08 1 1.17059
+  children [
+    DEF b1 Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 1 0 0
+        }
+      }
+      geometry Box {
+        size 0.05 0.05 0.07
+      }
+    }
+  ]
+  name "FOURTH"
   boundingObject USE b1
   physics Physics {
   }
@@ -502,9 +620,6 @@ Solid {
   ]
   name "END"
   boundingObject USE b1
-  recognitionColors [
-    0 0 0
-  ]
 }
 Solid {
   translation 11.8649 -30.6093 -0.011275
@@ -523,7 +638,4 @@ Solid {
   ]
   name "START"
   boundingObject USE b1
-  recognitionColors [
-    0 0 0
-  ]
 }
